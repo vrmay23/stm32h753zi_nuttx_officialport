@@ -1,0 +1,44 @@
+{
+  "terminal.integrated.scrollback": 50000,
+  "C_Cpp.errorSquiggles": "enabled",
+  "C_Cpp.enhancedColorization": "enabled",
+  "C_Cpp.dimInactiveRegions": true,
+  "C_Cpp.inactiveRegionOpacity": 1,
+  "C_Cpp.default.forcedInclude": [
+    "${workspaceFolder}/nuttx/include/nuttx/config.h"
+  ],
+  "C_Cpp.inactiveRegionBackgroundColor": "#000000",
+  "C_Cpp.inactiveRegionForegroundColor": "#FFFFFF",
+  "ctags.languages": [
+    "Kconfig",
+    "Make"
+  ],
+  "cortex-debug.variableUseNaturalFormat": true,
+  "cortex-debug.gdbPath": "gdb-multiarch",
+
+  /* NuttX Style and Tools Configuration */
+  "nuttx.checkPatch": true,
+  "nuttx.checkPatchPath": "${workspaceFolder}/nuttx/tools/checkpatch.sh",
+  "nuttx.configureScriptPath": "${workspaceFolder}/nuttx/tools/configure.sh",
+
+  "editor.renderWhitespace": "all",
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.rulers": [80],
+  "editor.detectIndentation": false,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  /* File Associations and Paths */
+  "files.associations": {
+    "xedge.h": "c",
+    "array": "c",
+    "string": "c",
+    "string_view": "c",
+    "ranges": "c",
+    "*.h": "c"
+  },
+  "cmake.sourceDirectory": "/home/vinicius/embedded_sys/nuttxspace/stm32h753zi_clean/apps",
+  "restructuredtext.syntaxHighlighting.disabled": true,
+  "cmake.configureOnOpen": true
+}
