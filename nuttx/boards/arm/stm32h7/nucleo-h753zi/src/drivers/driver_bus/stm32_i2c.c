@@ -30,6 +30,7 @@
 #include <string.h>
 #include <errno.h>
 #include <syslog.h>
+#include <stdio.h>
 
 #include "stm32_i2c.h"
 #include <nuttx/i2c/i2c_master.h>
