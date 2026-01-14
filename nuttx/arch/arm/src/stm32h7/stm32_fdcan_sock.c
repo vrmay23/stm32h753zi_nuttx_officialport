@@ -142,8 +142,11 @@
 
 /* CAN Clock Configuration **************************************************/
 
-#define STM32_FDCANCLK      STM32_HSE_FREQUENCY
+#ifndef STM32_FDCANCLK
+#  define STM32_FDCANCLK    STM32_HSE_FREQUENCY
+#endif
 #define CLK_FREQ            STM32_FDCANCLK
+
 #define PRESDIV_MAX         256
 
 /* Interrupts ***************************************************************/
@@ -1276,6 +1279,14 @@ static void fdcan_receive_work(void *arg)
 
 static void fdcan_txdone(struct fdcan_driver_s *priv)
 {
+  
+  /* 
+   DEBUG
+  printf("[vmay] TXDONE: IR=0x%lx RXF0S=0x%lx\n",
+         getreg32(priv->base + STM32_FDCAN_IR_OFFSET),
+         getreg32(priv->base + STM32_FDCAN_RXF0S_OFFSET));
+  */
+         
   /* Read and reset the interrupt flag */
 
   uint32_t ir = getreg32(priv->base + STM32_FDCAN_IR_OFFSET);
@@ -1420,7 +1431,7 @@ static int fdcan_interrupt(int irq, void *context,
 
   if (irq == priv->config->mb_irq[0])
     {
-      fdcan_receive(priv);
+     fdcan_receive(priv);
     }
   else if (irq == priv->config->mb_irq[1])
     {
@@ -1788,7 +1799,7 @@ static int fdcan_ifup(struct net_driver_s *dev)
 
   fdcan_setinit(priv->base, 1);
   fdcan_setconfig(priv->base, 1);
-
+  
   /* Enable interrupts (at both device and NVIC level) */
 
   fdcan_enable_interrupts(priv);
@@ -2041,6 +2052,11 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
   uint32_t regval;
 
   irqstate_t flags = enter_critical_section();
+  
+  /* 
+    DEBUG
+  printf("[vmay] CLK_FREQ=%lu Hz (expected 25000000)\n", (unsigned long)CLK_FREQ);
+  */
 
   /* Reset the peripheral clock bus (only do this once) */
 
@@ -2061,6 +2077,10 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
   /* Enter Configuration Changes Enabled mode */
 
   fdcan_setconfig(priv->base, 1);
+  
+  /* Clear Message RAM */
+  
+  memset((void *)STM32_CANRAM_BASE, 0, 2560 * 4);
 
   /* Disable interrupts while we configure the hardware */
 
@@ -2183,7 +2203,7 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
 
   regval = getreg32(priv->base + STM32_FDCAN_ILS_OFFSET);
   regval |= FDCAN_ILS_TCL;
-  putreg32(FDCAN_ILS_TCL, priv->base + STM32_FDCAN_ILS_OFFSET);
+  putreg32(regval, priv->base + STM32_FDCAN_ILS_OFFSET);
 
   /* Enable Tx buffer transmission interrupts
    * Note: Still need fdcan_enable_interrupts() to set ILE (IR line enable)
@@ -2247,9 +2267,12 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
    *
    * Discussion:
    * https://community.st.com/s/question/0D73W000001nzqFSAQ
+   * 
+   * Using 64  --> some messages are being received but some are not
+   * Using 128 --> according to the tests, everything is working fine
    */
 
-  const uint8_t n_extid = 64;
+  const uint8_t n_extid = 128;
   priv->message_ram.filt_extid_addr = gl_ram_base + ram_offset * WORD_LENGTH;
 
   regval = (n_extid << FDCAN_XIDFC_LSE_SHIFT) & FDCAN_XIDFC_LSE_MASK;
@@ -2271,7 +2294,7 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
   putreg32(0, priv->base + STM32_FDCAN_TXESC_OFFSET);  /* 8 byte space for every element (Tx buffer) */
 #endif
 
-  priv->message_ram.n_rxfifo0 = NUM_RX_FIFO0;
+priv->message_ram.n_rxfifo0 = NUM_RX_FIFO0;
   priv->message_ram.n_rxfifo1 = NUM_RX_FIFO1;
   priv->message_ram.n_txfifo = NUM_TX_FIFO;
 
@@ -2284,7 +2307,23 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
 
   regval = (ram_offset << FDCAN_RXF0C_F0SA_SHIFT) & FDCAN_RXF0C_F0SA_MASK;
   regval |= (NUM_RX_FIFO0 << FDCAN_RXF0C_F0S_SHIFT) & FDCAN_RXF0C_F0S_MASK;
+  
+  /* 
+  DEBUG 
+  printf("[vmay] NUM_RX_FIFO0=%d SHIFT=%d MASK=0x%lx\n",
+       NUM_RX_FIFO0, FDCAN_RXF0C_F0S_SHIFT, FDCAN_RXF0C_F0S_MASK);
+  */
+  
   putreg32(regval, priv->base + STM32_FDCAN_RXF0C_OFFSET);
+ 
+  /* 
+  DEBUG  
+  printf("[vmay] RXF0C written=0x%lx readback=0x%lx ram_offset=%lu\n",
+         regval,
+         getreg32(priv->base + STM32_FDCAN_RXF0C_OFFSET),
+         ram_offset);
+  */
+    
   ram_offset += NUM_RX_FIFO0 * FIFO_ELEMENT_SIZE;
 
   /* Not using Rx FIFO1 */
@@ -2320,6 +2359,16 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
   fdcan_dumpregs(priv);
 #endif
 
+  /*
+    Debug
+    
+  printf("[vmay] IE=0x%lx ILS=0x%lx GFC=0x%lx RXF0C=0x%lx\n",
+       getreg32(priv->base + STM32_FDCAN_IE_OFFSET),
+       getreg32(priv->base + STM32_FDCAN_ILS_OFFSET),
+       getreg32(priv->base + STM32_FDCAN_GFC_OFFSET),
+       getreg32(priv->base + STM32_FDCAN_RXF0C_OFFSET));
+  */
+  
   leave_critical_section(flags);
 
   return 0;

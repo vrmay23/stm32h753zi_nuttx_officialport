@@ -499,13 +499,13 @@ static int nucleo_automotive_initialize(void)
  * Name: nucleo_communication_initialize
  *
  * Description:
- * Initialize general-purpose communication bus drivers (SPI, I2C)
- * Priority: HIGH (required by sensors and other peripherals)
+ *   Initialize general-purpose communication bus drivers (SPI, I2C)
+ *   Priority: HIGH (required by sensors and other peripherals)
  *
  * Dependencies: GPIO
  *
  * Returned Value:
- * Zero (OK) on success; a negated errno value on failure.
+ *   Zero (OK) on success; a negated errno value on failure.
  *
  ****************************************************************************/
 
@@ -514,7 +514,7 @@ static int nucleo_communication_initialize(void)
   int ret = OK;
   int local_ret;
 
-  /* 1. Initialize SPI Hardware (Buses) */
+  UNUSED(local_ret);
 
 #ifdef CONFIG_STM32H7_SPI
   local_ret = stm32_spi_initialize();
@@ -533,8 +533,6 @@ static int nucleo_communication_initialize(void)
     }
 #endif
 
-  /* 2. Register SPI Character Drivers (/dev/spiN) */
-
 #ifdef CONFIG_SPI_DRIVER
   local_ret = stm32_spidev_register_all();
   if (local_ret < 0)
@@ -548,15 +546,12 @@ static int nucleo_communication_initialize(void)
     }
 #endif
 
-  /* 3. Initialize I2C Hardware (Buses) */
-
 #ifdef CONFIG_STM32H7_I2C
   local_ret = stm32_i2c_initialize();
   if (local_ret < 0)
     {
-      syslog(LOG_ERR,
-             "ERROR: I2C bus initialization failed: %d\n", local_ret);
-
+      syslog(LOG_ERR, "ERROR: I2C bus initialization failed: %d\n",
+             local_ret);
       if (ret == OK)
         {
           ret = local_ret;
@@ -565,9 +560,6 @@ static int nucleo_communication_initialize(void)
   else
     {
       syslog(LOG_INFO, "I2C buses initialized\n");
-
-      /* 4. Register I2C Debug Tools (Depends on hardware being ready) */
-
 #if defined(CONFIG_I2C) && defined(CONFIG_SYSTEM_I2CTOOL)
       local_ret = nucleo_i2c_tools_initialize();
       if (local_ret < 0)
