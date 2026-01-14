@@ -202,9 +202,9 @@ static uint32_t parse_gpio_pin(FAR const char *pin_str, FAR int *error)
         port_base = GPIO_PORTD; break;
       case 'E':
         port_base = GPIO_PORTE; break;
-      case 'F'
+      case 'F':
         port_base = GPIO_PORTF; break;
-      case 'G'
+      case 'G':
         port_base = GPIO_PORTG; break;
       case 'H':
         port_base = GPIO_PORTH; break;
@@ -237,7 +237,7 @@ static uint32_t parse_gpio_pin(FAR const char *pin_str, FAR int *error)
         gpio_pin = GPIO_PIN8;  break;
       case 9:
         gpio_pin = GPIO_PIN9;  break;
-      case 10
+      case 10:
         gpio_pin = GPIO_PIN10; break;
       case 11:
         gpio_pin = GPIO_PIN11; break;
