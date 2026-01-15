@@ -492,16 +492,19 @@ static void spi_dc_control(int spi_bus, uint32_t devid, bool cmd)
 
   stm32_gpiowrite(device->gpio_config, !cmd);
 
-  spiinfo("SPI%d DC%lu: %s (pin %s)\n",
-          spi_bus, (unsigned long)actual_devid,
-          cmd ? "COMMAND" : "DATA",
-          cmd ? "LOW" : "HIGH");
-
-  syslog(LOG_INFO, "SPI%d DC%lu: %s (pin %s) [GPIO=0x%08lx]\n",
-          spi_bus, (unsigned long)actual_devid,
-          cmd ? "COMMAND" : "DATA",
-          cmd ? "LOW" : "HIGH",
-          (unsigned long)device->gpio_config);
+  
+  /* DEBUG SESSION 
+   * spiinfo("SPI%d DC%lu: %s (pin %s)\n",
+   *       spi_bus, (unsigned long)actual_devid,
+   *       cmd ? "COMMAND" : "DATA",
+   *       cmd ? "LOW" : "HIGH");
+   *
+   * syslog(LOG_INFO, "SPI%d DC%lu: %s (pin %s) [GPIO=0x%08lx]\n",
+   *       spi_bus, (unsigned long)actual_devid,
+   *       cmd ? "COMMAND" : "DATA",
+   *       cmd ? "LOW" : "HIGH",
+   *      (unsigned long)device->gpio_config);
+   */
 }
 #endif
 
