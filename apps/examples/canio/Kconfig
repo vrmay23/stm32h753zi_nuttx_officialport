@@ -1,0 +1,26 @@
+#
+# Exemplo CAN + LED + Botao
+#
+
+config EXAMPLES_CANIO
+	tristate "CAN I/O (LED + Botao)"
+	default n
+	depends on NET_CAN && INPUT_BUTTONS
+	---help---
+		Exemplo que controla LEDs via CAN e envia CAN via botao.
+
+if EXAMPLES_CANIO
+
+config EXAMPLES_CANIO_PROGNAME
+	string "Nome do programa"
+	default "canio"
+
+config EXAMPLES_CANIO_PRIORITY
+	int "Prioridade"
+	default 100
+
+config EXAMPLES_CANIO_STACKSIZE
+	int "Stack size"
+	default 4096
+
+endif
