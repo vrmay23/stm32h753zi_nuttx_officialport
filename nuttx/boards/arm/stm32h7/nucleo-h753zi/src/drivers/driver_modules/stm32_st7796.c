@@ -215,7 +215,7 @@ static struct st7796_config_s g_st7796_config =
   .xres      = ST7796_XRES,
   .yres      = ST7796_YRES,
   .bpp       = 16,
-  .madctl    = ST7796_MADCTL_BASE,
+  .madctl    =  ST7796_MADCTL_BASE /* 0x28 -> will fix it */,
   .rotation  = ST7796_INIT_ROTATION,
 };
 
