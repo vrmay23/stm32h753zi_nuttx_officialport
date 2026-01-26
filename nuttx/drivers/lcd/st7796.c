@@ -683,6 +683,13 @@ static int st7796_ioctl(FAR struct fb_vtable_s *vtable, int cmd,
         }
         break;
 
+      case FBIO_UPDATE:
+        {
+          FAR struct fb_area_s *area = (FAR struct fb_area_s *)arg;
+          ret = st7796_updatearea(vtable, area);
+        }
+        break;
+
       default:
         ret = -ENOTTY;
         break;
