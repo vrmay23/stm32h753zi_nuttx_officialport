@@ -73,7 +73,7 @@
 #define DIRECTION_BYTE       0               /* Direction in byte 0         */
 
 /* guess: 0.1V of resolution ---> 16 bits of resolution
- * 
+ *
  * Big endian format:
  *
  * Byte:   [0]   [1]   [2]   [3]   [4]   [5]   [6]   [7]
@@ -104,7 +104,7 @@
 
 /* Place holders
  * #define BTN3_CAN_ID          CAN_ID_HAZARD
- * #define BNT3_ACTION          HAZARD_ON     --->  how to disable it later? 
+ * #define BNT3_ACTION          HAZARD_ON     --->  how to disable it later?
  * #define BTN4_CAN_ID          CAN_ID_BLINK_ARROW
  * #define BTN4_ACTION          BLINK_ARROW_LEFT
  * #define BTN5_CAN_ID          CAN_ID_BLINK_ARROW
@@ -137,7 +137,7 @@ static int g_btn_fd = -1;
 static void *g_fb_mem = NULL; /* nuttx reference --> similar to -1 for fd   */
 
 /* LVGL labels
- * we need a pointers to LVGL widgets 
+ * we need a pointers to LVGL widgets
  * basic type is 'lv_obj_t'.
  *
  * Use it to avoid parsing 'text'.
@@ -151,7 +151,7 @@ static lv_obj_t *g_voltage_label;
 static lv_obj_t *g_current_label;
 static lv_obj_t *g_direction_label;
 
-/* Vehicle data 
+/* Vehicle data
  *
  * real values via socket_can
  * */
@@ -166,7 +166,8 @@ static int g_direction = DIR_NEUTRAL;
 /* volatile for avoid optimziation. Maybe it is not needed but,
  * since we are literraly handling with the hardware here (from kernel),
  * such as in a microcontroller, it is might needed...
- * */
+ */
+
 static volatile int g_button_pressed = -1;
 
 /****************************************************************************
@@ -180,18 +181,19 @@ static volatile int g_button_pressed = -1;
  *   LVGL callback to flush display buffer.
  ****************************************************************************/
 
-/* Private function, no return, LVGL callback 
+/* Private function, no return, LVGL callback
  *
  *   When you change a label, e.g.:
  *   lv_label_set_text(g_speed_label, "80");
  *
  * LVGL marks the affected area as "dirty" (needs redraw).
- * On the next call to lv_timer_handler(), LVGL renders the new pixels into 
+ * On the next call to lv_timer_handler(), LVGL renders the new pixels into
  * the draw buffer.
  *
  * LVGL then calls fb_flush(), saying: "area X,Y to X2,Y2 has been updated".
  * We notify the display driver: "update this region on the physical screen".
- * Finally, we call lv_display_flush_ready() to say: "done, you can continue".
+ * Finally, we call lv_display_flush_ready() to say:
+ * "done, you can continue".
  */
 
 static void fb_flush(lv_display_t *disp,      /* LVGL display */
@@ -203,30 +205,30 @@ static void fb_flush(lv_display_t *disp,      /* LVGL display */
   struct fb_area_s fb_area;
 
   /* Copy X position of top-left corner */
-  
+
   fb_area.x = area->x1;
 
   /* Copy Y position of top-left corner */
-  
+
   fb_area.y = area->y1;
 
   /* Calculate width (inclusive limits, hence +1) */
-  
+
   fb_area.w = area->x2 - area->x1 + 1;
 
   /* Calculate height */
-  
+
   fb_area.h = area->y2 - area->y1 + 1;
 
-  /* Tell driver: "update this region on physical screen" 
+  /* Tell driver: "update this region on physical screen"
    * we just need to update the 'changed' aread. Actually, we are sending
    * 300k every time we update any area, since 320x480, RGB565 --> 300Kbytes
    * */
-  
+
   ioctl(g_fb_fd, FBIO_UPDATE, (unsigned long)&fb_area);
 
   /* Tell LVGL: "done, you can continue rendering" */
-  
+
   lv_display_flush_ready(disp);
 }
 
@@ -241,7 +243,7 @@ static void fb_flush(lv_display_t *disp,      /* LVGL display */
  ****************************************************************************/
 
 /* Signal handles
- * 
+ *
  * 1. press the button
  * 2. GPIO pin changes state
  * 3. hardware generates an interrupt
@@ -274,15 +276,14 @@ static void button_handler(int signo, siginfo_t *info, void *context)
 
   /* Read which button was pressed */
 
-
- /* POSIX read signature
-  * read(g_btn_fd, &buttons, sizeof(buttons))
-  *     |          |         |
-  *     |          |         | quantos bytes? tamanho de 
-  *     |          |         | btn_buttonset_t (4 bytes)
-  *     |          |-- onde guardar? no endereço da variável buttons
-  *     |-- de onde ler? do device de botões
-  */
+  /* POSIX read signature
+   * read(g_btn_fd, &buttons, sizeof(buttons))
+   *     |          |         |
+   *     |          |         | quantos bytes? tamanho de
+   *     |          |         | btn_buttonset_t (4 bytes)
+   *     |          |-- onde guardar? no endereço da variável buttons
+   *     |-- de onde ler? do device de botões
+   */
 
   if (read(g_btn_fd, &buttons, sizeof(buttons)) == sizeof(buttons))
     {
@@ -313,17 +314,17 @@ static void button_handler(int signo, siginfo_t *info, void *context)
  * };
  */
 
-/* just a recap:                          0x18FEF300   DIR_NEUTRAL
- * */
+/* just a recap:                          0x18FEF300   DIR_NEUTRAL */
+
 static void send_can_direction(uint32_t can_id, uint8_t direction)
 {
   struct can_frame frame;
-                                         /* 0x1FFFFFFF */
-  frame.can_id = can_id | CAN_EFF_FLAG;  /* 0x80000000 --> extend_id        */
-                                         /* this is why we see 98 rather 18 */
+
+  /* 0x1fffffff | 0x80000000 = extended ID (0x98 instead of 0x18) */
+
+  frame.can_id = can_id | CAN_EFF_FLAG;
   frame.can_dlc = 8;
   frame.data[0] = direction;
-  frame.data[1] = 0;
   frame.data[2] = 0;
   frame.data[3] = 0;
   frame.data[4] = 0;
@@ -355,9 +356,9 @@ static void process_button(int button)
       send_can_direction(BTN1_CAN_ID, BTN1_ACTION);
     }
   else if (button == 2)
-   {
+    {
       send_can_direction(BTN1_CAN_ID, BTN2_ACTION);
-   }
+    }
 }
 
 /****************************************************************************
@@ -437,19 +438,19 @@ static void update_display(void)
     {
       lv_label_set_text(g_direction_label, "FORWARD");
       lv_obj_set_style_text_color(g_direction_label,
-                                   lv_color_hex(0x00FF00), 0);
+                                   lv_color_hex(0x00ff00), 0);
     }
   else if (g_direction == DIR_REVERSE)
     {
       lv_label_set_text(g_direction_label, "REVERSE");
       lv_obj_set_style_text_color(g_direction_label,
-                                   lv_color_hex(0xFF0000), 0);
+                                   lv_color_hex(0xff0000), 0);
     }
   else
     {
       lv_label_set_text(g_direction_label, "NEUTRAL");
       lv_obj_set_style_text_color(g_direction_label,
-                                   lv_color_hex(0xFFFFFF), 0);
+                                   lv_color_hex(0xffffff), 0);
     }
 }
 
