@@ -396,7 +396,7 @@ static int nucleo_automotive_initialize(void)
       syslog(LOG_INFO,
              "[FDCAN1] Driver initialized as /dev/can0\n");
 
-      /* DEBUG 
+      /* DEBUG
        *
        * NOW force GPIO configuration AFTER driver init
        * syslog(LOG_INFO,
@@ -411,14 +411,14 @@ static int nucleo_automotive_initialize(void)
        *      (unsigned long)GPIO_CAN1_TX);
        *
        *
-       * Verify GPIO and RCC configuration     
+       * Verify GPIO and RCC configuration
        * syslog(LOG_INFO,
-       * 
+       *
        *  uint32_t rcc_apb1henr = getreg32(STM32_RCC_APB1HENR);
        *  uint32_t rcc_d2ccip1r = getreg32(STM32_RCC_D2CCIP1R);
-       *  
+       *
        *  uint32_t gpiob_otyper = getreg32(STM32_GPIOB_OTYPER);
-       *   
+       *
        * "[FDCAN1] POST-CONFIG:\n");
        * syslog(LOG_INFO,
        * "[FDCAN1]   RCC_APB1HENR: 0x%08lx (bit 8=%d)\n",
@@ -449,13 +449,13 @@ static int nucleo_automotive_initialize(void)
        * AFRH: PB8=9 (AF9), PB9=9 (AF9)
        * OTYPER: PB8=0 (push-pull), PB9=0 (push-pull)
        */
-       
+
       stm32_configgpio(GPIO_CAN1_RX);  /* PB8 */
       stm32_configgpio(GPIO_CAN1_TX);  /* PB9 */
 
       uint32_t gpiob_moder = getreg32(STM32_GPIOB_MODER);
       uint32_t gpiob_afrh = getreg32(STM32_GPIOB_AFRH);
-      
+
       if (((gpiob_moder >> 16) & 0x3) != 0x2 ||
           ((gpiob_moder >> 18) & 0x3) != 0x2)
         {
