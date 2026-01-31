@@ -30,7 +30,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <signal.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <time.h>
@@ -45,8 +44,8 @@
  ****************************************************************************/
 
 #define DEFAULT_IFACE   "can0"
-#define DEFAULT_DELAY   1          /* 1 ms delay between frames */
-#define DEFAULT_COUNT   0          /* 0 = infinite */
+#define DEFAULT_DELAY   1             /* 1 ms delay between frames */
+#define DEFAULT_COUNT   1000          /* 0 = infinite */
 #define CAN_DATA_LEN    8
 
 /****************************************************************************
@@ -66,27 +65,9 @@ struct canflood_config_s
  * Private Data
  ****************************************************************************/
 
-static volatile bool g_running = true;
-
 /****************************************************************************
  * Private Functions
  ****************************************************************************/
-
-/****************************************************************************
- * Name: canflood_sighandler
- *
- * Description:
- *   Handle SIGINT to stop the flood gracefully.
- *
- ****************************************************************************/
-
-static void canflood_sighandler(int signo)
-{
-  if (signo == SIGINT)
-    {
-      g_running = false;
-    }
-}
 
 /****************************************************************************
  * Name: canflood_random32
@@ -158,7 +139,6 @@ static void canflood_show_usage(const char *progname)
   printf("  -s           Use standard (11-bit) IDs (default)\n");
   printf("  -v           Verbose output\n");
   printf("  -h           Show this help\n");
-  printf("\nPress Ctrl+C to stop.\n");
 }
 
 /****************************************************************************
@@ -255,10 +235,6 @@ int main(int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  /* Setup signal handler for graceful exit */
-
-  signal(SIGINT, canflood_sighandler);
-
   /* Open urandom for random data */
 
   urandom_fd = open("/dev/urandom", O_RDONLY);
@@ -323,11 +299,10 @@ int main(int argc, char *argv[])
   printf("Interface: %s, Delay: %lu ms, Count: %s\n",
          config.iface, (unsigned long)config.delay_ms,
          config.count == 0 ? "infinite" : "limited");
-  printf("Press Ctrl+C to stop...\n\n");
 
   /* Main flood loop */
 
-  while (g_running)
+  while (true)
     {
       /* Check if we reached the count limit */
 
