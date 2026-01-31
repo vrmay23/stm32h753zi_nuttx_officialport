@@ -4,28 +4,17 @@
 #
 
 config EXAMPLES_BEV_CLUSTER
-	tristate "BEV Cluster Application"
+	tristate "BEV Truck Digital Cluster"
 	default n
 	depends on GRAPHICS_LVGL
-	select LIBC_FLOATINGPOINT
 	---help---
-		Enable the BEV (Battery Electric Vehicle) Cluster application.
-		This application provides a complete instrument cluster with:
-		- CAN bus integration (10 message/signal placeholders)
-		- LVGL graphical display (speed, battery, power, temp, direction)
-		- Button handling (auto-detects from board config)
-		- Notification system (permanent + 5s timeout)
-
-		Requirements:
-		- GRAPHICS_LVGL=y (Graphics library with framebuffer)
-		- Optional: CAN support (SocketCAN)
-		- Optional: Button driver (/dev/buttons)
+		Enable BEV truck digital cluster with speedometer and battery display
 
 if EXAMPLES_BEV_CLUSTER
 
 config EXAMPLES_BEV_CLUSTER_PROGNAME
 	string "Program name"
-	default "bev_cluster"
+	default "cluster"
 	---help---
 		This is the name of the program that will be used when the NSH ELF
 		program is installed.
@@ -36,9 +25,6 @@ config EXAMPLES_BEV_CLUSTER_PRIORITY
 
 config EXAMPLES_BEV_CLUSTER_STACKSIZE
 	int "BEV Cluster stack size"
-	default 8192
-	---help---
-		Stack size for the BEV Cluster application.
-		8192 bytes is recommended for LVGL + CAN + buttons.
+	default 16384
 
 endif
