@@ -464,7 +464,6 @@ int main(int argc, char *argv[])
 
   printf("\n");
   printf("Ready! Waiting for CAN messages and buttons...\n");
-  printf("(Ctrl+C to exit)\n");
   printf("\n");
 
   while (1)
