@@ -54,6 +54,7 @@ if EXAMPLES_BUTTONS_NAMES
 config EXAMPLES_BUTTONS_QTD
 	int "Number of Buttons in the Board"
 	default 8
+	range 1 32
 
 config EXAMPLES_BUTTONS_NAME0
 	string "Button 0 Name"
@@ -62,30 +63,157 @@ config EXAMPLES_BUTTONS_NAME0
 config EXAMPLES_BUTTONS_NAME1
 	string "Button 1 Name"
 	default "BUTTON1"
+	depends on EXAMPLES_BUTTONS_QTD > 1
 
 config EXAMPLES_BUTTONS_NAME2
 	string "Button 2 Name"
 	default "BUTTON2"
+	depends on EXAMPLES_BUTTONS_QTD > 2
 
 config EXAMPLES_BUTTONS_NAME3
 	string "Button 3 Name"
 	default "BUTTON3"
+	depends on EXAMPLES_BUTTONS_QTD > 3
 
 config EXAMPLES_BUTTONS_NAME4
 	string "Button 4 Name"
 	default "BUTTON4"
+	depends on EXAMPLES_BUTTONS_QTD > 4
 
 config EXAMPLES_BUTTONS_NAME5
 	string "Button 5 Name"
 	default "BUTTON5"
+	depends on EXAMPLES_BUTTONS_QTD > 5
 
 config EXAMPLES_BUTTONS_NAME6
 	string "Button 6 Name"
 	default "BUTTON6"
+	depends on EXAMPLES_BUTTONS_QTD > 6
 
 config EXAMPLES_BUTTONS_NAME7
 	string "Button 7 Name"
 	default "BUTTON7"
+	depends on EXAMPLES_BUTTONS_QTD > 7
+
+config EXAMPLES_BUTTONS_NAME8
+	string "Button 8 Name"
+	default "BUTTON8"
+	depends on EXAMPLES_BUTTONS_QTD > 8
+
+config EXAMPLES_BUTTONS_NAME9
+	string "Button 9 Name"
+	default "BUTTON9"
+	depends on EXAMPLES_BUTTONS_QTD > 9
+
+config EXAMPLES_BUTTONS_NAME10
+	string "Button 10 Name"
+	default "BUTTON10"
+	depends on EXAMPLES_BUTTONS_QTD > 10
+
+config EXAMPLES_BUTTONS_NAME11
+	string "Button 11 Name"
+	default "BUTTON11"
+	depends on EXAMPLES_BUTTONS_QTD > 11
+
+config EXAMPLES_BUTTONS_NAME12
+	string "Button 12 Name"
+	default "BUTTON12"
+	depends on EXAMPLES_BUTTONS_QTD > 12
+
+config EXAMPLES_BUTTONS_NAME13
+	string "Button 13 Name"
+	default "BUTTON13"
+	depends on EXAMPLES_BUTTONS_QTD > 13
+
+config EXAMPLES_BUTTONS_NAME14
+	string "Button 14 Name"
+	default "BUTTON14"
+	depends on EXAMPLES_BUTTONS_QTD > 14
+
+config EXAMPLES_BUTTONS_NAME15
+	string "Button 15 Name"
+	default "BUTTON15"
+	depends on EXAMPLES_BUTTONS_QTD > 15
+
+config EXAMPLES_BUTTONS_NAME16
+	string "Button 16 Name"
+	default "BUTTON16"
+	depends on EXAMPLES_BUTTONS_QTD > 16
+
+config EXAMPLES_BUTTONS_NAME17
+	string "Button 17 Name"
+	default "BUTTON17"
+	depends on EXAMPLES_BUTTONS_QTD > 17
+
+config EXAMPLES_BUTTONS_NAME18
+	string "Button 18 Name"
+	default "BUTTON18"
+	depends on EXAMPLES_BUTTONS_QTD > 18
+
+config EXAMPLES_BUTTONS_NAME19
+	string "Button 19 Name"
+	default "BUTTON19"
+	depends on EXAMPLES_BUTTONS_QTD > 19
+
+config EXAMPLES_BUTTONS_NAME20
+	string "Button 20 Name"
+	default "BUTTON20"
+	depends on EXAMPLES_BUTTONS_QTD > 20
+
+config EXAMPLES_BUTTONS_NAME21
+	string "Button 21 Name"
+	default "BUTTON21"
+	depends on EXAMPLES_BUTTONS_QTD > 21
+
+config EXAMPLES_BUTTONS_NAME22
+	string "Button 22 Name"
+	default "BUTTON22"
+	depends on EXAMPLES_BUTTONS_QTD > 22
+
+config EXAMPLES_BUTTONS_NAME23
+	string "Button 23 Name"
+	default "BUTTON23"
+	depends on EXAMPLES_BUTTONS_QTD > 23
+
+config EXAMPLES_BUTTONS_NAME24
+	string "Button 24 Name"
+	default "BUTTON24"
+	depends on EXAMPLES_BUTTONS_QTD > 24
+
+config EXAMPLES_BUTTONS_NAME25
+	string "Button 25 Name"
+	default "BUTTON25"
+	depends on EXAMPLES_BUTTONS_QTD > 25
+
+config EXAMPLES_BUTTONS_NAME26
+	string "Button 26 Name"
+	default "BUTTON26"
+	depends on EXAMPLES_BUTTONS_QTD > 26
+
+config EXAMPLES_BUTTONS_NAME27
+	string "Button 27 Name"
+	default "BUTTON27"
+	depends on EXAMPLES_BUTTONS_QTD > 27
+
+config EXAMPLES_BUTTONS_NAME28
+	string "Button 28 Name"
+	default "BUTTON28"
+	depends on EXAMPLES_BUTTONS_QTD > 28
+
+config EXAMPLES_BUTTONS_NAME29
+	string "Button 29 Name"
+	default "BUTTON29"
+	depends on EXAMPLES_BUTTONS_QTD > 29
+
+config EXAMPLES_BUTTONS_NAME30
+	string "Button 30 Name"
+	default "BUTTON30"
+	depends on EXAMPLES_BUTTONS_QTD > 30
+
+config EXAMPLES_BUTTONS_NAME31
+	string "Button 31 Name"
+	default "BUTTON31"
+	depends on EXAMPLES_BUTTONS_QTD > 31
 
 endif # EXAMPLES_BUTTONS_NAMES
 endif # EXAMPLES_BUTTONS
