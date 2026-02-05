@@ -73,6 +73,10 @@
 
 #define CAN_ERROR_WARNING_THRESHOLD 96
 
+#define WORD_LENGTH         4U
+
+#define CANRAM_WORDS        2560U  /* Total words in Message RAM (RM0433) */
+
 /* General Configuration ****************************************************/
 
 #if !defined(CONFIG_SCHED_WORKQUEUE)
@@ -1279,12 +1283,6 @@ static void fdcan_receive_work(void *arg)
 
 static void fdcan_txdone(struct fdcan_driver_s *priv)
 {
-  /* DEBUG
-   * printf("[vmay] TXDONE: IR=0x%lx RXF0S=0x%lx\n",
-   *      getreg32(priv->base + STM32_FDCAN_IR_OFFSET),
-   *      getreg32(priv->base + STM32_FDCAN_RXF0S_OFFSET));
-   */
-
   /* Read and reset the interrupt flag */
 
   uint32_t ir = getreg32(priv->base + STM32_FDCAN_IR_OFFSET);
@@ -1429,7 +1427,7 @@ static int fdcan_interrupt(int irq, void *context,
 
   if (irq == priv->config->mb_irq[0])
     {
-     fdcan_receive(priv);
+      fdcan_receive(priv);
     }
   else if (irq == priv->config->mb_irq[1])
     {
@@ -2051,15 +2049,15 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
 
   irqstate_t flags = enter_critical_section();
 
-  /* DEBUG
-   * printf("[vmay] CLK_FREQ=%lu Hz (expected 25000000)\n",
-   * (unsigned long)CLK_FREQ);
-   */
-
   /* Reset the peripheral clock bus (only do this once) */
 
   if (!g_apb1h_init)
     {
+      /* Clear Message RAM (shared between FDCAN1/2/3) */
+
+      memset((void *)STM32_CANRAM_BASE, 0,
+             CANRAM_WORDS * WORD_LENGTH);
+
       fdcan_apb1hreset();
       g_apb1h_init = true;
     }
@@ -2075,10 +2073,6 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
   /* Enter Configuration Changes Enabled mode */
 
   fdcan_setconfig(priv->base, 1);
-
-  /* Clear Message RAM */
-
-  memset((void *)STM32_CANRAM_BASE, 0, 2560 * 4);
 
   /* Disable interrupts while we configure the hardware */
 
@@ -2238,7 +2232,9 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
    * and relative address (in words) used for configuration
    */
 
-  const uint32_t iface_ram_base = (2560 / 2) * priv->iface_idx;
+  const uint32_t iface_ram_base =
+                 (CANRAM_WORDS / 2) * priv->iface_idx;
+
   const uint32_t gl_ram_base = STM32_CANRAM_BASE;
   uint32_t ram_offset = iface_ram_base;
 
@@ -2307,19 +2303,7 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
   regval = (ram_offset << FDCAN_RXF0C_F0SA_SHIFT) & FDCAN_RXF0C_F0SA_MASK;
   regval |= (NUM_RX_FIFO0 << FDCAN_RXF0C_F0S_SHIFT) & FDCAN_RXF0C_F0S_MASK;
 
-  /* DEBUG
-   * printf("[vmay] NUM_RX_FIFO0=%d SHIFT=%d MASK=0x%lx\n",
-   * NUM_RX_FIFO0, FDCAN_RXF0C_F0S_SHIFT, FDCAN_RXF0C_F0S_MASK);
-   */
-
   putreg32(regval, priv->base + STM32_FDCAN_RXF0C_OFFSET);
-
-  /* DEBUG
-   * printf("[vmay] RXF0C written=0x%lx readback=0x%lx ram_offset=%lu\n",
-   *    regval,
-   *    getreg32(priv->base + STM32_FDCAN_RXF0C_OFFSET),
-   *    ram_offset);
-   */
 
   ram_offset += NUM_RX_FIFO0 * FIFO_ELEMENT_SIZE;
 
@@ -2355,14 +2339,6 @@ int fdcan_initialize(struct fdcan_driver_s *priv)
 #ifdef CONFIG_STM32H7_FDCAN_REGDEBUG
   fdcan_dumpregs(priv);
 #endif
-
-  /* Debug
-   * printf("[vmay] IE=0x%lx ILS=0x%lx GFC=0x%lx RXF0C=0x%lx\n",
-   *    getreg32(priv->base + STM32_FDCAN_IE_OFFSET),
-   *    getreg32(priv->base + STM32_FDCAN_ILS_OFFSET),
-   *    getreg32(priv->base + STM32_FDCAN_GFC_OFFSET),
-   *    getreg32(priv->base + STM32_FDCAN_RXF0C_OFFSET));
-   */
 
   leave_critical_section(flags);
 
