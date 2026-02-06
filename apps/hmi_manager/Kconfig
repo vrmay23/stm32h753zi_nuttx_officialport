@@ -1,0 +1,36 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+config EXAMPLES_HMI_MANAGER
+	tristate "HMI Manager Application"
+	default n
+	depends on NETUTILS_NETLIB && NET_CAN && VIDEO_FB && GRAPHICS_LVGL
+	depends on INPUT_BUTTONS
+	---help---
+		Enable the HMI Manager application for vehicle cluster display.
+
+if EXAMPLES_HMI_MANAGER
+
+config EXAMPLES_HMI_MANAGER_PROGNAME
+	string "Program name"
+	default "hmi_manager"
+	---help---
+		This is the name of the program that will be used when the NSH ELF
+		program is installed.
+
+config EXAMPLES_HMI_MANAGER_PRIORITY
+	int "HMI Manager task priority"
+	default 100
+
+config EXAMPLES_HMI_MANAGER_STACKSIZE
+	int "HMI Manager stack size"
+	default 8192
+
+config EXAMPLES_HMI_MANAGER_LOG_LEVEL
+	int "Default log level (0=ERROR, 1=WARN, 2=INFO, 3=DEBUG)"
+	default 2
+	range 0 3
+
+endif
