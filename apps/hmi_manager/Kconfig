@@ -4,7 +4,7 @@
 #
 
 config EXAMPLES_HMI_MANAGER
-	tristate "HMI Manager Application"
+	tristate "HMI_Manager_Application"
 	default n
 	depends on NETUTILS_NETLIB && NET_CAN && VIDEO_FB && GRAPHICS_LVGL
 	depends on INPUT_BUTTONS
@@ -26,7 +26,7 @@ config EXAMPLES_HMI_MANAGER_PRIORITY
 
 config EXAMPLES_HMI_MANAGER_STACKSIZE
 	int "HMI Manager stack size"
-	default 8192
+	default 16384
 
 config EXAMPLES_HMI_MANAGER_LOG_LEVEL
 	int "Default log level (0=ERROR, 1=WARN, 2=INFO, 3=DEBUG)"

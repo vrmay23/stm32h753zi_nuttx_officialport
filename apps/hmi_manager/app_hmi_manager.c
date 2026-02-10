@@ -27,7 +27,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 #include <nuttx/can.h>
 #include <lvgl/lvgl.h>
 
@@ -37,12 +41,15 @@
 #include "io_handler/button_irq.h"
 #include "uiux/fb_handler.h"
 #include "uiux/widgets.h"
+#include "cmd/commands.h"
 
 /****************************************************************************
  * Pre-processor Definitions
  ****************************************************************************/
 
-#define LVGL_TICK_MS  10
+#define LVGL_TICK_MS     10
+#define HMI_SOCKET_PATH  "/tmp/hmi_cmd"
+#define CMD_BUFFER_SIZE  256
 
 /* Button to CAN mapping */
 
@@ -70,9 +77,6 @@ static int g_direction = WIDGET_DIR_NEUTRAL;
 
 /****************************************************************************
  * Name: process_button_press
- *
- * Description:
- *   Process button press and send CAN message.
  ****************************************************************************/
 
 static void process_button_press(int button)
@@ -121,8 +125,6 @@ static void process_button_press(int button)
       return;
     }
 
-  /* Log TX frame for trace */
-
   memset(&frame, 0, sizeof(frame));
   frame.can_id = CAR_CAN_DRIVER_COMMANDS_FRAME_ID;
   if (CAR_CAN_DRIVER_COMMANDS_IS_EXTENDED)
@@ -139,9 +141,6 @@ static void process_button_press(int button)
 
 /****************************************************************************
  * Name: process_can_frame
- *
- * Description:
- *   Process received CAN frame and update widgets.
  ****************************************************************************/
 
 static void process_can_frame(struct can_frame *frame)
@@ -150,8 +149,6 @@ static void process_can_frame(struct can_frame *frame)
   int ret;
 
   id = frame->can_id & CAN_EFF_MASK;
-
-  /* Speed */
 
   if (id == CAR_CAN_INVERTER_DEMANDERS_FRAME_ID)
     {
@@ -166,9 +163,6 @@ static void process_can_frame(struct can_frame *frame)
           widgets_set_speed(g_speed);
         }
     }
-
-  /* Battery voltage/current */
-
   else if (id == CAR_CAN_SYSTEM_VOLTAGES_FRAME_ID)
     {
       struct car_can_system_voltages_t msg;
@@ -182,9 +176,6 @@ static void process_can_frame(struct can_frame *frame)
           widgets_set_voltage(g_voltage);
         }
     }
-
-  /* Direction */
-
   else if (id == CAR_CAN_DRIVER_COMMANDS_FRAME_ID)
     {
       struct car_can_driver_commands_t msg;
@@ -200,14 +191,97 @@ static void process_can_frame(struct can_frame *frame)
 }
 
 /****************************************************************************
- * Public Functions
+ * Name: process_command
  ****************************************************************************/
 
+static void process_command(const char *cmd_str)
+{
+  char *argv[16];
+  char cmd_copy[CMD_BUFFER_SIZE];
+  int argc;
+  char *token;
+  int i;
+
+  printf("DEBUG: Received command: '%s'\n", cmd_str);
+
+  strncpy(cmd_copy, cmd_str, sizeof(cmd_copy) - 1);
+  cmd_copy[sizeof(cmd_copy) - 1] = '\0';
+
+  argc = 0;
+  token = strtok(cmd_copy, " ");
+  while (token != NULL && argc < 16)
+    {
+      argv[argc++] = token;
+      token = strtok(NULL, " ");
+    }
+
+  if (argc > 0)
+    {
+      for (i = argc; i > 0; i--)
+        {
+          argv[i] = argv[i - 1];
+        }
+
+      argv[0] = "hmi_ctl";
+      argc++;
+
+      commands_parse(argc, argv);
+    }
+}
+
 /****************************************************************************
- * Name: main
- *
- * Description:
- *   HMI Manager application entry point.
+ * Name: init_command_socket
+ ****************************************************************************/
+
+static int init_command_socket(void)
+{
+  struct sockaddr_un addr;
+  int sock;
+  int ret;
+  int flags;
+
+  unlink(HMI_SOCKET_PATH);
+
+  /* Create STREAM socket */
+  sock = socket(AF_UNIX, SOCK_STREAM, 0);
+  if (sock < 0)
+    {
+      printf("ERROR: socket() failed: %d\n", errno);
+      return -1;
+    }
+
+  /* Set non-blocking */
+  flags = fcntl(sock, F_GETFL, 0);
+  fcntl(sock, F_SETFL, flags | O_NONBLOCK);
+
+  /* Bind */
+  memset(&addr, 0, sizeof(addr));
+  addr.sun_family = AF_UNIX;
+  strncpy(addr.sun_path, HMI_SOCKET_PATH, sizeof(addr.sun_path) - 1);
+
+  ret = bind(sock, (struct sockaddr *)&addr, sizeof(addr));
+  if (ret < 0)
+    {
+      printf("ERROR: bind() failed: %d\n", errno);
+      close(sock);
+      return -1;
+    }
+
+  /* Listen for connections */
+  ret = listen(sock, 5);
+  if (ret < 0)
+    {
+      printf("ERROR: listen() failed: %d\n", errno);
+      close(sock);
+      return -1;
+    }
+
+  printf("Command socket: %s (fd=%d)\n", HMI_SOCKET_PATH, sock);
+  return sock;
+}
+
+/****************************************************************************
+ * Public Functions
  ****************************************************************************/
 
 int main(int argc, char *argv[])
@@ -215,17 +289,16 @@ int main(int argc, char *argv[])
   struct can_frame frame;
   struct timeval tv;
   fd_set readfds;
+  char cmd_buffer[CMD_BUFFER_SIZE];
   int can_fd;
+  int cmd_fd;
   int button;
+  int maxfd;
   int ret;
 
-  printf("\n");
-  printf("================================\n");
-  printf("  HMI Manager\n");
-  printf("================================\n");
-  printf("\n");
-
-  /* Initialize framebuffer + LVGL */
+  printf("\n================================\n");
+  printf("  HMI Manager Daemon\n");
+  printf("================================\n\n");
 
   printf("Initializing display...\n");
   ret = fb_handler_init("/dev/fb0");
@@ -234,8 +307,6 @@ int main(int argc, char *argv[])
       printf("ERROR: fb_handler_init failed: %d\n", ret);
       return 1;
     }
-
-  /* Initialize CAN */
 
   printf("Initializing CAN...\n");
   ret = can_handler_init("can0");
@@ -248,13 +319,9 @@ int main(int argc, char *argv[])
 
   can_fd = can_handler_get_fd();
 
-  /* Initialize CAN trace */
-
   printf("Initializing CAN trace...\n");
   can_trace_init();
-  can_trace_enable(true);  /* enabled by default */
-
-  /* Initialize buttons */
+  can_trace_enable(false);
 
   printf("Initializing buttons...\n");
   ret = button_irq_init("/dev/buttons");
@@ -263,43 +330,39 @@ int main(int argc, char *argv[])
       printf("WARNING: button_irq_init failed: %d\n", ret);
     }
 
-  /* Create widgets */
+  printf("Initializing command interface...\n");
+  cmd_fd = init_command_socket();
+  if (cmd_fd < 0)
+    {
+      printf("ERROR: init_command_socket failed\n");
+      can_handler_close();
+      fb_handler_close();
+      return 1;
+    }
 
   printf("Creating UI...\n");
   ret = widgets_init();
   if (ret < 0)
     {
       printf("ERROR: widgets_init failed: %d\n", ret);
+      close(cmd_fd);
       can_handler_close();
       fb_handler_close();
       return 1;
     }
-
-  /* Initial display update */
 
   widgets_set_speed(g_speed);
   widgets_set_voltage(g_voltage);
   widgets_set_current(g_current);
   widgets_set_direction(g_direction);
 
-  printf("\n");
-  printf("Ready!\n");
-  printf("\n");
-  printf("CAN RX IDs:\n");
-  printf("  InverterDemanders: 0x%08lX\n",
-         (unsigned long)CAR_CAN_INVERTER_DEMANDERS_FRAME_ID);
-  printf("  SystemVoltages:    0x%08lX\n",
-         (unsigned long)CAR_CAN_SYSTEM_VOLTAGES_FRAME_ID);
-  printf("  DriverCommands:    0x%08lX\n",
-         (unsigned long)CAR_CAN_DRIVER_COMMANDS_FRAME_ID);
-  printf("\n");
+  printf("\nReady!\n");
+  printf("Use 'hmi_ctl <command>' to control the daemon\n\n");
 
-  /* Main loop */
+  maxfd = (can_fd > cmd_fd ? can_fd : cmd_fd) + 1;
 
   while (1)
     {
-      /* Check button press */
-
       button = button_irq_get_pressed();
       if (button != BUTTON_INVALID)
         {
@@ -307,14 +370,14 @@ int main(int argc, char *argv[])
           button_irq_clear();
         }
 
-      /* Wait for CAN message with timeout */
-
       FD_ZERO(&readfds);
       FD_SET(can_fd, &readfds);
+      FD_SET(cmd_fd, &readfds);
       tv.tv_sec = 0;
       tv.tv_usec = LVGL_TICK_MS * 1000;
 
-      ret = select(can_fd + 1, &readfds, NULL, NULL, &tv);
+      ret = select(maxfd, &readfds, NULL, NULL, &tv);
+
       if (ret > 0 && FD_ISSET(can_fd, &readfds))
         {
           ret = can_handler_read(&frame);
@@ -325,14 +388,45 @@ int main(int argc, char *argv[])
             }
         }
 
-      /* Update LVGL */
+      if (ret > 0 && FD_ISSET(cmd_fd, &readfds))
+        {
+          int client_fd;
+          struct sockaddr_un client_addr;
+          socklen_t client_len = sizeof(client_addr);
+
+          printf("DEBUG daemon: accepting connection...\n");
+          client_fd = accept(cmd_fd, (struct sockaddr *)&client_addr,
+                             &client_len);
+          if (client_fd >= 0)
+            {
+              printf("DEBUG daemon: client connected fd=%d\n", client_fd);
+              ret = recv(client_fd, cmd_buffer, sizeof(cmd_buffer) - 1, 0);
+              printf("DEBUG daemon: recv returned %d\n", ret);
+              if (ret > 0)
+                {
+                  cmd_buffer[ret] = '\0';
+                  printf("DEBUG daemon: received '%s'\n", cmd_buffer);
+                  process_command(cmd_buffer);
+                }
+              else if (ret < 0)
+                {
+                  printf("DEBUG daemon: recv error %d\n", errno);
+                }
+
+              close(client_fd);
+            }
+          else
+            {
+              printf("DEBUG daemon: accept error %d\n", errno);
+            }
+        }
 
       lv_tick_inc(LVGL_TICK_MS);
       lv_timer_handler();
     }
 
-  /* Cleanup (never reached) */
-
+  close(cmd_fd);
+  unlink(HMI_SOCKET_PATH);
   button_irq_close();
   can_handler_close();
   fb_handler_close();
