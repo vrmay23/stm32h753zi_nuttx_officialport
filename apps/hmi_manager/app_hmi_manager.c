@@ -2,11 +2,12 @@
  * apps/hmi_manager/app_hmi_manager.c
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to you under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * contributor license agreements.  See the NOTICE file distributed
+ * with this work for additional information regarding copyright
+ * ownership. The ASF licenses this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this file
+ * except in compliance with the License.  You may obtain a copy of
+ * the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -29,12 +30,14 @@
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <pthread.h>
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <nuttx/can.h>
+#include <nuttx/clock.h>
+#include <nuttx/sched.h>
 #include <lvgl/lvgl.h>
-#include <nuttx/wqueue.h>
 
 #include "can/can_handler.h"
 #include "can/car_can.h"
@@ -59,10 +62,15 @@
 
 #define CAN_MAX_PAYLOAD       8
 
+/* CAN TX thread stack size */
+
+#define CAN_TX_STACK_SIZE     2048
+
 /* Speed conversion parameters */
 
 #define GEAR_RATIO      CONFIG_HMI_MANAGER_GEAR_RATIO
-#define WHEEL_DIAM_M    (CONFIG_HMI_MANAGER_WHEEL_DIAMETER_MM / 1000.0)
+#define WHEEL_DIAM_M \
+    (CONFIG_HMI_MANAGER_WHEEL_DIAMETER_MM / 1000.0)
 
 /****************************************************************************
  * Private Data
@@ -80,11 +88,6 @@ static int g_direction = WIDGET_DIR_NEUTRAL;
 static uint8_t g_dc_link_state =
     CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_OFF_CHOICE;
 
-/* Work queue structures for periodic CAN transmission */
-
-static struct work_s can_tx_100ms_work;
-static struct work_s can_tx_1000ms_work;
-
 /* Global CAN TX messages (persistent state) */
 
 static struct car_can_driver_commands_t driver_commands_msg;
@@ -100,13 +103,13 @@ static struct car_can_hmi_info_t hmi_info_msg;
  * Description:
  *   Converts motor RPM to vehicle speed in km/h.
  *
- *   Formula: km/h = (RPM × π × D × 60) / (ratio × 1000)
+ *   Formula: km/h = (RPM x pi x D x 60) / (ratio x 1000)
  *
  *   Derivation:
  *     1. Wheel RPM = Motor RPM / GEAR_RATIO
- *     2. Wheel circumference = π × D (meters)
- *     3. Distance per minute = Wheel RPM × circumference
- *     4. Distance per hour = distance per minute × 60
+ *     2. Wheel circumference = pi x D (meters)
+ *     3. Distance per minute = Wheel RPM x circumference
+ *     4. Distance per hour = distance per minute x 60
  *     5. km/h = distance per hour / 1000
  *
  *   Example:
@@ -115,9 +118,9 @@ static struct car_can_hmi_info_t hmi_info_msg;
  *     WHEEL_DIAM_M = 0.6 (600mm)
  *
  *     Wheel RPM = 3000 / 10 = 300
- *     Circumference = 3.14159 × 0.6 = 1.885m
- *     Distance/min = 300 × 1.885 = 565.5 m/min
- *     Distance/hour = 565.5 × 60 = 33,930 m/h
+ *     Circumference = 3.14159 x 0.6 = 1.885m
+ *     Distance/min = 300 x 1.885 = 565.5 m/min
+ *     Distance/hour = 565.5 x 60 = 33,930 m/h
  *     Speed = 33,930 / 1000 = 33.9 km/h
  *
  ****************************************************************************/
@@ -132,12 +135,10 @@ static int rpm_to_kmh(int rpm)
   circumference = 3.14159 * WHEEL_DIAM_M;
   kmh = (wheel_rpm * circumference * 60.0) / 1000.0;
 
-  /* cansend can0 -i 0c0afefe -d 00BB8000000000  # RPM=3000 
-   * need to remove this printf later. This is just for debug!
-  */
+  /* Debug only - remove later */
 
-  printf("Speed calc: Motor=%dRPM -> Wheel=%.1fRPM -> %.1fkm/h\n",
-         rpm, wheel_rpm, kmh);
+  printf("Speed calc: Motor=%dRPM -> Wheel=%.1fRPM "
+         "-> %.1fkm/h\n", rpm, wheel_rpm, kmh);
 
   return (int)kmh;
 }
@@ -147,8 +148,8 @@ static int rpm_to_kmh(int rpm)
  *
  * Description:
  *   Toggles DC Link demand state (ON <-> OFF).
- *   Updates driver_commands_msg.dc_link_active_demand which is sent
- *   cyclically via CAN TX work queue.
+ *   Updates driver_commands_msg.dc_link_active_demand which is
+ *   sent cyclically via CAN TX thread.
  *
  ****************************************************************************/
 
@@ -175,7 +176,7 @@ static void toggle_dc_link_demand(void)
  * Description:
  *   Handles button press events and updates CAN message state.
  *   Does NOT send CAN directly - state is transmitted by cyclic
- *   100ms work queue.
+ *   100ms TX thread.
  *
  * Button Mapping:
  *   BTN0: Toggle DC Link demand (ON/OFF)
@@ -203,12 +204,14 @@ static void process_button_press(int button)
         if (g_dc_link_state !=
             CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_ON_CHOICE)
           {
-            printf("ERROR: Cannot enable drive - DC Link not ready "
-                   "(state=%d)\n", g_dc_link_state);
+            printf("ERROR: Cannot enable drive - "
+                   "DC Link not ready (state=%d)\n",
+                   g_dc_link_state);
             return;
           }
 
-        driver_commands_msg.demanded_drive_direction = WIDGET_DIR_FORWARD;
+        driver_commands_msg.demanded_drive_direction =
+            WIDGET_DIR_FORWARD;
         driver_commands_msg.demanded_drive_state =
             CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_ENABLE_CHOICE;
         printf("Drive: FORWARD enabled\n");
@@ -221,19 +224,22 @@ static void process_button_press(int button)
         if (g_dc_link_state !=
             CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_ON_CHOICE)
           {
-            printf("ERROR: Cannot enable drive - DC Link not ready "
-                   "(state=%d)\n", g_dc_link_state);
+            printf("ERROR: Cannot enable drive - "
+                   "DC Link not ready (state=%d)\n",
+                   g_dc_link_state);
             return;
           }
 
-        driver_commands_msg.demanded_drive_direction = WIDGET_DIR_REVERSE;
+        driver_commands_msg.demanded_drive_direction =
+            WIDGET_DIR_REVERSE;
         driver_commands_msg.demanded_drive_state =
             CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_ENABLE_CHOICE;
         printf("Drive: REVERSE enabled\n");
         break;
 
       case BUTTON_NEUTRAL:
-        driver_commands_msg.demanded_drive_direction = WIDGET_DIR_NEUTRAL;
+        driver_commands_msg.demanded_drive_direction =
+            WIDGET_DIR_NEUTRAL;
         driver_commands_msg.demanded_drive_state =
             CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE;
         printf("Drive: NEUTRAL (disabled)\n");
@@ -247,7 +253,8 @@ static void process_button_press(int button)
       case BUTTON_PEDAL_MODE:
         driver_commands_msg.pedal_setting =
             (driver_commands_msg.pedal_setting + 1) % 3;
-        printf("Pedal mode: %d ", driver_commands_msg.pedal_setting);
+        printf("Pedal mode: %d ",
+               driver_commands_msg.pedal_setting);
         switch (driver_commands_msg.pedal_setting)
           {
             case 0:
@@ -277,8 +284,9 @@ static void process_button_press(int button)
         break;
     }
 
-  /* NOTE: CAN message not sent here. State is transmitted cyclically
-   * by can_tx_100ms_worker() every 100ms (max latency: 100ms).
+  /* NOTE: CAN message not sent here. State is transmitted
+   * cyclically by can_tx_100ms_thread() every 100ms
+   * (max latency: 100ms).
    */
 }
 
@@ -297,12 +305,13 @@ static void process_can_frame(struct can_frame *frame)
     {
       struct car_can_inverter_speed_info_t msg;
 
-      ret = car_can_inverter_speed_info_unpack(&msg, frame->data,
-                                                 frame->can_dlc);
+      ret = car_can_inverter_speed_info_unpack(
+              &msg, frame->data, frame->can_dlc);
       if (ret == 0)
         {
-          int rpm = (int)car_can_inverter_speed_info_em_speed_rpm_decode(
-                              msg.em_speed_rpm);
+          int rpm =
+              (int)car_can_inverter_speed_info_em_speed_rpm_decode(
+                  msg.em_speed_rpm);
           g_speed = rpm_to_kmh(rpm);
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
           widgets_set_speed(g_speed);
@@ -313,12 +322,13 @@ static void process_can_frame(struct can_frame *frame)
     {
       struct car_can_system_voltages_t msg;
 
-      ret = car_can_system_voltages_unpack(&msg, frame->data,
-                                            frame->can_dlc);
+      ret = car_can_system_voltages_unpack(
+              &msg, frame->data, frame->can_dlc);
       if (ret == 0)
         {
-          g_voltage = (int)(car_can_system_voltages_meas_batt_voltage_decode(
-                              msg.meas_batt_voltage) * 10.0);
+          g_voltage =
+              (int)(car_can_system_voltages_meas_batt_voltage_decode(
+                  msg.meas_batt_voltage) * 10.0);
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
           widgets_set_voltage(g_voltage);
 #endif
@@ -328,8 +338,8 @@ static void process_can_frame(struct can_frame *frame)
     {
       struct car_can_driver_commands_t msg;
 
-      ret = car_can_driver_commands_unpack(&msg, frame->data,
-                                            frame->can_dlc);
+      ret = car_can_driver_commands_unpack(
+              &msg, frame->data, frame->can_dlc);
       if (ret == 0)
         {
           g_direction = msg.demanded_drive_direction;
@@ -342,8 +352,8 @@ static void process_can_frame(struct can_frame *frame)
     {
       struct car_can_inverter_info_t msg;
 
-      ret = car_can_inverter_info_unpack(&msg, frame->data,
-                                           frame->can_dlc);
+      ret = car_can_inverter_info_unpack(
+              &msg, frame->data, frame->can_dlc);
       if (ret == 0)
         {
           /* Update global state (used for safety interlock) */
@@ -359,7 +369,7 @@ static void process_can_frame(struct can_frame *frame)
               led_control_off(LED_DC_LINK_PRECHARGE);
             }
           else if (msg.dc_link_state ==
-                   CAR_CAN_INVERTER_INFO_DC_LINK_STATE_PRE_CHARGING_CHOICE)
+              CAR_CAN_INVERTER_INFO_DC_LINK_STATE_PRE_CHARGING_CHOICE)
             {
               led_control_off(LED_DC_LINK_ON);
               led_control_on(LED_DC_LINK_PRECHARGE);
@@ -443,7 +453,8 @@ static int init_command_socket(void)
 
   memset(&addr, 0, sizeof(addr));
   addr.sun_family = AF_UNIX;
-  strncpy(addr.sun_path, HMI_SOCKET_PATH, sizeof(addr.sun_path) - 1);
+  strncpy(addr.sun_path, HMI_SOCKET_PATH,
+          sizeof(addr.sun_path) - 1);
 
   ret = bind(sock, (struct sockaddr *)&addr, sizeof(addr));
   if (ret < 0)
@@ -463,72 +474,83 @@ static int init_command_socket(void)
       return -1;
     }
 
-  printf("Command socket: %s (fd=%d)\n", HMI_SOCKET_PATH, sock);
+  printf("Command socket: %s (fd=%d)\n",
+         HMI_SOCKET_PATH, sock);
   return sock;
 }
 
 /****************************************************************************
- * Name: can_tx_100ms_worker
+ * Name: can_tx_100ms_thread
  *
  * Description:
- *   Work queue callback - sends DRIVER_COMMANDS every 100ms.
- *   Runs in LPWORK thread context (safe for CAN operations).
+ *   Thread function - sends DRIVER_COMMANDS every 100ms.
+ *   Runs as pthread (inherits parent fd table, so CAN socket
+ *   is accessible).
  *
  ****************************************************************************/
 
-static void can_tx_100ms_worker(void *arg)
+static void *can_tx_100ms_thread(void *arg)
 {
   uint8_t data[CAN_MAX_PAYLOAD];
 
-  /* Pack message */
+  while (true)
+    {
+      /* Pack message using current state */
 
-  car_can_driver_commands_pack(data, &driver_commands_msg,
-                                CAR_CAN_DRIVER_COMMANDS_LENGTH);
+      car_can_driver_commands_pack(
+          data, &driver_commands_msg,
+          CAR_CAN_DRIVER_COMMANDS_LENGTH);
 
-  /* Send CAN - SAFE (worker thread context) */
+      /* Send CAN frame */
 
-  can_handler_send(CAR_CAN_DRIVER_COMMANDS_FRAME_ID,
-                   CAR_CAN_DRIVER_COMMANDS_IS_EXTENDED,
-                   data, CAR_CAN_DRIVER_COMMANDS_LENGTH);
+      can_handler_send(CAR_CAN_DRIVER_COMMANDS_FRAME_ID,
+                       CAR_CAN_DRIVER_COMMANDS_IS_EXTENDED,
+                       data,
+                       CAR_CAN_DRIVER_COMMANDS_LENGTH);
 
-  /* Re-schedule for next cycle (100ms later) */
+      nxsched_msleep(100);
+    }
 
-  work_queue(LPWORK, &can_tx_100ms_work, can_tx_100ms_worker,
-             NULL, MSEC2TICK(100));
+  return NULL;
 }
 
 /****************************************************************************
- * Name: can_tx_1000ms_worker
+ * Name: can_tx_1000ms_thread
  *
  * Description:
- *   Work queue callback - sends HMI_INFO every 1000ms.
- *   Runs in LPWORK thread context.
+ *   Thread function - sends HMI_INFO every 1000ms.
+ *   Runs as pthread (inherits parent fd table).
  *
  ****************************************************************************/
 
-static void can_tx_1000ms_worker(void *arg)
+static void *can_tx_1000ms_thread(void *arg)
 {
   uint8_t data[CAN_MAX_PAYLOAD];
 
-  /* Update timestamp */
+  while (true)
+    {
+      /* Update timestamp */
 
-  hmi_info_msg.hmi1ms_ticks = TICK2MSEC(clock_systime_ticks());
+      hmi_info_msg.hmi1ms_ticks =
+          TICK2MSEC(clock_systime_ticks());
 
-  /* Pack message */
+      /* Pack message */
 
-  car_can_hmi_info_pack(data, &hmi_info_msg,
-                        CAR_CAN_HMI_INFO_LENGTH);
+      car_can_hmi_info_pack(
+          data, &hmi_info_msg,
+          CAR_CAN_HMI_INFO_LENGTH);
 
-  /* Send CAN */
+      /* Send CAN frame */
 
-  can_handler_send(CAR_CAN_HMI_INFO_FRAME_ID,
-                   CAR_CAN_HMI_INFO_IS_EXTENDED,
-                   data, CAR_CAN_HMI_INFO_LENGTH);
+      can_handler_send(CAR_CAN_HMI_INFO_FRAME_ID,
+                       CAR_CAN_HMI_INFO_IS_EXTENDED,
+                       data,
+                       CAR_CAN_HMI_INFO_LENGTH);
 
-  /* Re-schedule for next cycle (1000ms later) */
+      nxsched_msleep(1000);
+    }
 
-  work_queue(LPWORK, &can_tx_1000ms_work, can_tx_1000ms_worker,
-             NULL, MSEC2TICK(1000));
+  return NULL;
 }
 
 /****************************************************************************
@@ -541,6 +563,10 @@ int main(int argc, char *argv[])
   struct timeval tv;
   fd_set readfds;
   char cmd_buffer[CMD_BUFFER_SIZE];
+  pthread_t tx_100ms_tid;
+  pthread_t tx_1000ms_tid;
+  pthread_attr_t attr;
+  struct sched_param param;
   int can_fd;
   int cmd_fd;
   int button;
@@ -588,7 +614,8 @@ int main(int argc, char *argv[])
   driver_commands_msg.dc_link_active_demand =
       CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_NO_DEMAND_CHOICE;
 
-  driver_commands_msg.demanded_drive_direction = WIDGET_DIR_FORWARD;
+  driver_commands_msg.demanded_drive_direction =
+      WIDGET_DIR_FORWARD;
 
   driver_commands_msg.demanded_drive_state =
       CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE;
@@ -597,15 +624,6 @@ int main(int argc, char *argv[])
   driver_commands_msg.pedal_setting = 0;
 
   hmi_info_msg.hmi1ms_ticks = 0;
-
-  /* Start periodic CAN transmission work */
-
-  work_queue(LPWORK, &can_tx_100ms_work, can_tx_100ms_worker,
-             NULL, MSEC2TICK(100));
-  work_queue(LPWORK, &can_tx_1000ms_work, can_tx_1000ms_worker,
-             NULL, MSEC2TICK(1000));
-
-  printf("CAN TX work queues started\n");
 
   printf("Initializing buttons...\n");
   ret = button_irq_init("/dev/buttons");
@@ -645,6 +663,35 @@ int main(int argc, char *argv[])
   printf("\nReady!\n");
   printf("Use 'hmi_ctl <command>' to control the daemon\n\n");
 
+  /* Start periodic CAN TX threads (AFTER everything init) */
+
+  pthread_attr_init(&attr);
+  pthread_attr_setstacksize(&attr, CAN_TX_STACK_SIZE);
+  param.sched_priority = SCHED_PRIORITY_DEFAULT;
+  pthread_attr_setschedparam(&attr, &param);
+
+  ret = pthread_create(&tx_100ms_tid, &attr,
+                       can_tx_100ms_thread, NULL);
+  if (ret != 0)
+    {
+      printf("ERROR: pthread_create(100ms) failed: %d\n",
+             ret);
+      return 1;
+    }
+
+  ret = pthread_create(&tx_1000ms_tid, &attr,
+                       can_tx_1000ms_thread, NULL);
+  if (ret != 0)
+    {
+      printf("ERROR: pthread_create(1000ms) failed: %d\n",
+             ret);
+      return 1;
+    }
+
+  pthread_attr_destroy(&attr);
+
+  printf("CAN TX threads started\n");
+
   maxfd = (can_fd > cmd_fd ? can_fd : cmd_fd) + 1;
 
   while (1)
@@ -681,29 +728,36 @@ int main(int argc, char *argv[])
           socklen_t client_len = sizeof(client_addr);
 
           printf("DEBUG daemon: accepting connection...\n");
-          client_fd = accept(cmd_fd, (struct sockaddr *)&client_addr,
+          client_fd = accept(cmd_fd,
+                             (struct sockaddr *)&client_addr,
                              &client_len);
           if (client_fd >= 0)
             {
-              printf("DEBUG daemon: client connected fd=%d\n", client_fd);
-              ret = recv(client_fd, cmd_buffer, sizeof(cmd_buffer) - 1, 0);
-              printf("DEBUG daemon: recv returned %d\n", ret);
+              printf("DEBUG daemon: client connected "
+                     "fd=%d\n", client_fd);
+              ret = recv(client_fd, cmd_buffer,
+                         sizeof(cmd_buffer) - 1, 0);
+              printf("DEBUG daemon: recv returned %d\n",
+                     ret);
               if (ret > 0)
                 {
                   cmd_buffer[ret] = '\0';
-                  printf("DEBUG daemon: received '%s'\n", cmd_buffer);
+                  printf("DEBUG daemon: received '%s'\n",
+                         cmd_buffer);
                   process_command(cmd_buffer);
                 }
               else if (ret < 0)
                 {
-                  printf("DEBUG daemon: recv error %d\n", errno);
+                  printf("DEBUG daemon: recv error %d\n",
+                         errno);
                 }
 
               close(client_fd);
             }
           else
             {
-              printf("DEBUG daemon: accept error %d\n", errno);
+              printf("DEBUG daemon: accept error %d\n",
+                     errno);
             }
         }
 
@@ -714,6 +768,10 @@ int main(int argc, char *argv[])
 
     }
 
+  /* Cleanup (never reached in normal operation) */
+
+  pthread_join(tx_100ms_tid, NULL);
+  pthread_join(tx_1000ms_tid, NULL);
   close(cmd_fd);
   unlink(HMI_SOCKET_PATH);
   button_irq_close();
