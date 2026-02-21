@@ -214,6 +214,10 @@ static void process_button_press(int button)
             WIDGET_DIR_FORWARD;
         driver_commands_msg.demanded_drive_state =
             CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_ENABLE_CHOICE;
+        g_direction = WIDGET_DIR_FORWARD;
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
+        widgets_set_direction(g_direction);
+#endif
         printf("Drive: FORWARD enabled\n");
         break;
 
@@ -234,6 +238,10 @@ static void process_button_press(int button)
             WIDGET_DIR_REVERSE;
         driver_commands_msg.demanded_drive_state =
             CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_ENABLE_CHOICE;
+        g_direction = WIDGET_DIR_REVERSE;
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
+        widgets_set_direction(g_direction);
+#endif
         printf("Drive: REVERSE enabled\n");
         break;
 
@@ -242,6 +250,10 @@ static void process_button_press(int button)
             WIDGET_DIR_NEUTRAL;
         driver_commands_msg.demanded_drive_state =
             CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE;
+        g_direction = WIDGET_DIR_NEUTRAL;
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
+        widgets_set_direction(g_direction);
+#endif
         printf("Drive: NEUTRAL (disabled)\n");
         break;
 
@@ -285,7 +297,7 @@ static void process_button_press(int button)
     }
 
   /* NOTE: CAN message not sent here. State is transmitted
-   * cyclically by can_tx_100ms_thread() every 100ms
+   * cyclically by can_send_loop_100ms() every 100ms
    * (max latency: 100ms).
    */
 }
@@ -480,7 +492,7 @@ static int init_command_socket(void)
 }
 
 /****************************************************************************
- * Name: can_tx_100ms_thread
+ * Name: can_send_loop_100ms
  *
  * Description:
  *   Thread function - sends DRIVER_COMMANDS every 100ms.
@@ -489,7 +501,7 @@ static int init_command_socket(void)
  *
  ****************************************************************************/
 
-static void *can_tx_100ms_thread(void *arg)
+static void *can_send_loop_100ms(void *arg)
 {
   uint8_t data[CAN_MAX_PAYLOAD];
 
@@ -515,7 +527,7 @@ static void *can_tx_100ms_thread(void *arg)
 }
 
 /****************************************************************************
- * Name: can_tx_1000ms_thread
+ * Name: can_send_loop_1000ms
  *
  * Description:
  *   Thread function - sends HMI_INFO every 1000ms.
@@ -523,7 +535,7 @@ static void *can_tx_100ms_thread(void *arg)
  *
  ****************************************************************************/
 
-static void *can_tx_1000ms_thread(void *arg)
+static void *can_send_loop_1000ms(void *arg)
 {
   uint8_t data[CAN_MAX_PAYLOAD];
 
@@ -671,7 +683,7 @@ int main(int argc, char *argv[])
   pthread_attr_setschedparam(&attr, &param);
 
   ret = pthread_create(&tx_100ms_tid, &attr,
-                       can_tx_100ms_thread, NULL);
+                       can_send_loop_100ms, NULL);
   if (ret != 0)
     {
       printf("ERROR: pthread_create(100ms) failed: %d\n",
@@ -680,7 +692,7 @@ int main(int argc, char *argv[])
     }
 
   ret = pthread_create(&tx_1000ms_tid, &attr,
-                       can_tx_1000ms_thread, NULL);
+                       can_send_loop_1000ms, NULL);
   if (ret != 0)
     {
       printf("ERROR: pthread_create(1000ms) failed: %d\n",
