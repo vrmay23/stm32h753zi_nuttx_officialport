@@ -33,6 +33,19 @@
 
 #define BUTTON_INVALID  -1
 
+/* Button indices (hardware mapping via /dev/buttons)
+ * TODO: Make configurable via Kconfig
+ */
+
+#define BUTTON_DC_LINK_TOGGLE   0
+#define BUTTON_FORWARD          1
+#define BUTTON_REVERSE          2
+#define BUTTON_NEUTRAL          3
+#define BUTTON_RESET_FAULTS     4
+#define BUTTON_PEDAL_MODE       5
+
+/* BUTTON 6-10: Reserved for future use */
+
 /****************************************************************************
  * Public Function Prototypes
  ****************************************************************************/
