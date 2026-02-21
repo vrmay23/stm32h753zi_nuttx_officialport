@@ -10,6 +10,7 @@ if(CONFIG_EXAMPLES_HMI_MANAGER)
       can/car_can.c
       can/can_trace.c
       io_handler/button_irq.c
+      io_handler/led_control.c
       uiux/fb_handler.c
       uiux/widgets.c
       uiux/aux_disp.c
