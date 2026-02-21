@@ -332,6 +332,40 @@ static void process_can_frame(struct can_frame *frame)
           widgets_set_direction(g_direction);
         }
     }
+  
+    else if (id == CAR_CAN_INVERTER_INFO_FRAME_ID)
+    {
+      struct car_can_inverter_info_t msg;
+
+      ret = car_can_inverter_info_unpack(&msg, frame->data,
+                                           frame->can_dlc);
+      if (ret == 0)
+        {
+          /* Update global state (used for safety interlock) */
+
+          g_dc_link_state = msg.dc_link_state;
+
+          /* Control LEDs based on DC Link state */
+
+          if (msg.dc_link_state ==
+              CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_ON_CHOICE)
+            {
+              led_control_on(LED_DC_LINK_ON);
+              led_control_off(LED_DC_LINK_PRECHARGE);
+            }
+          else if (msg.dc_link_state ==
+                   CAR_CAN_INVERTER_INFO_DC_LINK_STATE_PRE_CHARGING_CHOICE)
+            {
+              led_control_off(LED_DC_LINK_ON);
+              led_control_on(LED_DC_LINK_PRECHARGE);
+            }
+          else
+            {
+              led_control_off(LED_DC_LINK_ON);
+              led_control_off(LED_DC_LINK_PRECHARGE);
+            }
+        }
+    }
 }
 
 
