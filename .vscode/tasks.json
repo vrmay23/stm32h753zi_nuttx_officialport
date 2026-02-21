@@ -1,31 +1,61 @@
 {
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-        // {
-        //     "label": "Configure",
-        //     "command": "${workspaceFolder}/nuttx/tools/configure.sh",
-        //     "type": "shell",
-        //     "args": [
-        //         "-l",
-        //         "${command:nuttx.chooseFromConfigureList}"
-        //     ],
-        //     "problemMatcher": [],
-        //     "presentation": {
-        //         "reveal": "always"
-        //     },
-        //     "icon": {
-        //         "id": "list-selection",
-        //         "color": "terminal.ansiBlue"
-        //     },
-        //     "group": "build"
-        // },
         {
+            "label": "configure",
+            "command": "cp ./.config ./.config.keep && make distclean && ./tools/configure.sh nucleo-h753zi:evaluation",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/nuttx"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "configure evaluation",
+            "command": "make distclean && ./tools/configure.sh nucleo-h753zi:evaluation",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/nuttx"
+            },
+            "problemMatcher": []
+        },
+                {
+            "label": "reconfigure",
+            "command": "mv .config.keep .config",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/nuttx"
+            },
+            "dependsOn": [
+                "configure"
+            ],
+            "problemMatcher": []
+        },
+         {
             "label": "Build",
             "type": "shell",
             "command": "make",
             "args": [
                 "-j",
                 "$(nproc)"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/nuttx"
+            },
+            "problemMatcher": [],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiRed"
+            },
+            "group": "build"
+        },
+         {
+            "label": "Flash and run",
+            "type": "shell",
+            "command": "openocd -f interface/stlink.cfg -f target/stm32h7x.cfg -c \"init\" -c \"reset halt\" -c \"flash write_image erase nuttx.bin 0x08000000\" -c \"reset run\"",
+            "args": [
             ],
             "options": {
                 "cwd": "${workspaceFolder}/nuttx"
@@ -100,11 +130,17 @@
         },
         {
             "label": "ST-Link Flash",
-            "type": "shell",
-            "command": "bash",
+            "command": "STM32_Programmer_CLI",
             "args": [
                 "-c",
-                "st-flash --format ihex --freq=4000 write ${workspaceFolder}/nuttx/nuttx.hex && st-flash reset"
+                "port=SWD",
+                "reset=HWrst",
+                "-e all",
+                "-w",
+                "${workspaceFolder}/nuttx/nuttx.bin",
+                "0x08000000",
+                "-v",
+                "--go"
             ],
             "problemMatcher": [],
             "presentation": {
@@ -112,11 +148,21 @@
                 "clear": true,
                 "panel": "shared"
             },
+
             "icon": {
                 "id": "debug-start",
                 "color": "terminal.ansiGreen"
             },
             "group": "build"
         },
+        {
+            "label": "ST-Link Flash",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "st-flash --format ihex --freq=4000 write ${workspaceFolder}/nuttx/nuttx.hex && st-flash reset"
+            ]
+        }
     ]
 }

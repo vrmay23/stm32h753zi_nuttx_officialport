@@ -1,6 +1,34 @@
 {
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+         // STM32Cube Debug
+        // Requier STM32Cube Debug STLink GDB Server extention and dependency
+        // Easy setup, just install extention in vscode and run.
+        // Optionall install STM2Cube Register View extention for registers tree view
+        {
+            "type": "stlinkgdbtarget",
+            "request": "launch",
+            "name": "STM32Cube: STM32 Launch ST-Link GDB Server",
+            "origin": "snippet",
+            "cwd": "${workspaceFolder}/nuttx",
+            "preBuild": "build",
+            "runEntry": "main",
+            "deviceName": "STM32H753ZIT6",
+            "deviceCore": "Cortex-M7",
+            "imagesAndSymbols": [
+                {
+                    "imageFileName": "${workspaceFolder}/nuttx/nuttx"
+                }
+            ],
+            "preLaunchTask": "Build",
+            "liveWatch": {
+                "enabled": true,
+                 "samplesPerSecond": "4"
+            }
+        },
         {
             "name": "J-Link",
             "cwd": "${workspaceRoot}",
@@ -51,6 +79,27 @@
                 "-k",
                 "--frequency",
                 "8000"
+            ],
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 4
+            },
+            "preLaunchTask": "Build",
+            "showDevDebugOutput": "raw"
+        },
+                {
+            "name": "Tobias ST-Link - Debug",
+            "device": "stm32h753zi",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/nuttx/nuttx",
+            "interface": "swd",
+            "request": "launch",
+            "type": "cortex-debug",
+            //"runToEntryPoint": "main",
+            "servertype": "stlink",
+            "serverArgs": [
+                "-v",
+                "-t",
             ],
             "liveWatch": {
                 "enabled": true,
