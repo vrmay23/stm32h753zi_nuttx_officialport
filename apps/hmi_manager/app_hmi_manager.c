@@ -59,6 +59,11 @@
 
 #define CAN_MAX_PAYLOAD       8
 
+/* Speed conversion parameters */
+
+#define GEAR_RATIO      CONFIG_HMI_MANAGER_GEAR_RATIO
+#define WHEEL_DIAM_M    (CONFIG_HMI_MANAGER_WHEEL_DIAMETER_MM / 1000.0)
+
 /****************************************************************************
  * Private Data
  ****************************************************************************/
@@ -88,6 +93,54 @@ static struct car_can_hmi_info_t hmi_info_msg;
 /****************************************************************************
  * Private Functions
  ****************************************************************************/
+
+/****************************************************************************
+ * Name: rpm_to_kmh
+ *
+ * Description:
+ *   Converts motor RPM to vehicle speed in km/h.
+ *
+ *   Formula: km/h = (RPM × π × D × 60) / (ratio × 1000)
+ *
+ *   Derivation:
+ *     1. Wheel RPM = Motor RPM / GEAR_RATIO
+ *     2. Wheel circumference = π × D (meters)
+ *     3. Distance per minute = Wheel RPM × circumference
+ *     4. Distance per hour = distance per minute × 60
+ *     5. km/h = distance per hour / 1000
+ *
+ *   Example:
+ *     Motor RPM = 3000
+ *     GEAR_RATIO = 10
+ *     WHEEL_DIAM_M = 0.6 (600mm)
+ *
+ *     Wheel RPM = 3000 / 10 = 300
+ *     Circumference = 3.14159 × 0.6 = 1.885m
+ *     Distance/min = 300 × 1.885 = 565.5 m/min
+ *     Distance/hour = 565.5 × 60 = 33,930 m/h
+ *     Speed = 33,930 / 1000 = 33.9 km/h
+ *
+ ****************************************************************************/
+
+static int rpm_to_kmh(int rpm)
+{
+  double wheel_rpm;
+  double circumference;
+  double kmh;
+
+  wheel_rpm = (double)rpm / GEAR_RATIO;
+  circumference = 3.14159 * WHEEL_DIAM_M;
+  kmh = (wheel_rpm * circumference * 60.0) / 1000.0;
+
+  /* cansend can0 -i 0c0afefe -d 00BB8000000000  # RPM=3000 
+   * need to remove this printf later. This is just for debug!
+  */
+
+  printf("Speed calc: Motor=%dRPM -> Wheel=%.1fRPM -> %.1fkm/h\n",
+         rpm, wheel_rpm, kmh);
+
+  return (int)kmh;
+}
 
 /****************************************************************************
  * Name: toggle_dc_link_demand
@@ -240,16 +293,17 @@ static void process_can_frame(struct can_frame *frame)
 
   id = frame->can_id & CAN_EFF_MASK;
 
-  if (id == CAR_CAN_INVERTER_DEMANDERS_FRAME_ID)
+  if (id == CAR_CAN_INVERTER_SPEED_INFO_FRAME_ID)
     {
-      struct car_can_inverter_demanders_t msg;
+      struct car_can_inverter_speed_info_t msg;
 
-      ret = car_can_inverter_demanders_unpack(&msg, frame->data,
-                                               frame->can_dlc);
+      ret = car_can_inverter_speed_info_unpack(&msg, frame->data,
+                                                 frame->can_dlc);
       if (ret == 0)
         {
-          g_speed = (int)car_can_inverter_demanders_pedal_request_decode(
-                            msg.pedal_request);
+          int rpm = (int)car_can_inverter_speed_info_em_speed_rpm_decode(
+                              msg.em_speed_rpm);
+          g_speed = rpm_to_kmh(rpm);
           widgets_set_speed(g_speed);
         }
     }
@@ -279,6 +333,7 @@ static void process_can_frame(struct can_frame *frame)
         }
     }
 }
+
 
 /****************************************************************************
  * Name: process_command
