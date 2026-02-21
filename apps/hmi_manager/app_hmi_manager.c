@@ -304,7 +304,9 @@ static void process_can_frame(struct can_frame *frame)
           int rpm = (int)car_can_inverter_speed_info_em_speed_rpm_decode(
                               msg.em_speed_rpm);
           g_speed = rpm_to_kmh(rpm);
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
           widgets_set_speed(g_speed);
+#endif
         }
     }
   else if (id == CAR_CAN_SYSTEM_VOLTAGES_FRAME_ID)
@@ -317,7 +319,9 @@ static void process_can_frame(struct can_frame *frame)
         {
           g_voltage = (int)(car_can_system_voltages_meas_batt_voltage_decode(
                               msg.meas_batt_voltage) * 10.0);
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
           widgets_set_voltage(g_voltage);
+#endif
         }
     }
   else if (id == CAR_CAN_DRIVER_COMMANDS_FRAME_ID)
@@ -329,11 +333,12 @@ static void process_can_frame(struct can_frame *frame)
       if (ret == 0)
         {
           g_direction = msg.demanded_drive_direction;
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
           widgets_set_direction(g_direction);
+#endif
         }
     }
-  
-    else if (id == CAR_CAN_INVERTER_INFO_FRAME_ID)
+  else if (id == CAR_CAN_INVERTER_INFO_FRAME_ID)
     {
       struct car_can_inverter_info_t msg;
 
@@ -367,7 +372,6 @@ static void process_can_frame(struct can_frame *frame)
         }
     }
 }
-
 
 /****************************************************************************
  * Name: process_command
@@ -547,6 +551,7 @@ int main(int argc, char *argv[])
   printf("  HMI Manager Daemon          \n");
   printf("============================\n\n");
 
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
   printf("Initializing display...\n");
   ret = fb_handler_init("/dev/fb0");
   if (ret < 0)
@@ -554,6 +559,7 @@ int main(int argc, char *argv[])
       printf("ERROR: fb_handler_init failed: %d\n", ret);
       return 1;
     }
+#endif
 
   printf("Initializing LEDs...\n");
   ret = led_control_init("/dev/userleds");
@@ -618,6 +624,7 @@ int main(int argc, char *argv[])
       return 1;
     }
 
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
   printf("Creating UI...\n");
   ret = widgets_init();
   if (ret < 0)
@@ -633,6 +640,7 @@ int main(int argc, char *argv[])
   widgets_set_voltage(g_voltage);
   widgets_set_current(g_current);
   widgets_set_direction(g_direction);
+#endif
 
   printf("\nReady!\n");
   printf("Use 'hmi_ctl <command>' to control the daemon\n\n");
@@ -699,8 +707,11 @@ int main(int argc, char *argv[])
             }
         }
 
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
       lv_tick_inc(LVGL_TICK_MS);
       lv_timer_handler();
+#endif
+
     }
 
   close(cmd_fd);
@@ -708,7 +719,10 @@ int main(int argc, char *argv[])
   button_irq_close();
   led_control_close();
   can_handler_close();
+
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
   fb_handler_close();
+#endif
 
   return 0;
 }
