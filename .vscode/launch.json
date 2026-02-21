@@ -87,7 +87,7 @@
             "preLaunchTask": "Build",
             "showDevDebugOutput": "raw"
         },
-                {
+            {
             "name": "Tobias ST-Link - Debug",
             "device": "stm32h753zi",
             "cwd": "${workspaceFolder}",
@@ -100,6 +100,31 @@
             "serverArgs": [
                 "-v",
                 "-t",
+            ],
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 4
+            },
+            "preLaunchTask": "Build",
+            "showDevDebugOutput": "raw"
+        },
+        {
+            "name": "vrmay23 ST-Link - Debug",
+            "device": "stm32h753zi",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/nuttx/nuttx",
+            "interface": "swd",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "stlink",
+            "serverpath": "/opt/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.stlink-gdb-server.linux64_2.2.200.202505060755/tools/bin/ST-LINK_gdbserver",
+            "stm32cubeprogrammer": "/opt/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.linux64_2.2.200.202503041107/tools/bin",
+            "toolchainPath": "/usr/bin",
+            "toolchainPrefix": "arm-none-eabi",
+            "gdbPath": "gdb-multiarch",
+            "serverArgs": [
+                "-v",
+                "-t"
             ],
             "liveWatch": {
                 "enabled": true,
