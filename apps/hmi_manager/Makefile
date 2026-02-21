@@ -27,6 +27,7 @@ CSRCS += can/can_handler.c
 CSRCS += can/car_can.c
 CSRCS += can/can_trace.c
 CSRCS += io_handler/button_irq.c
+CSRCS += io_handler/led_control.c
 CSRCS += uiux/fb_handler.c
 CSRCS += uiux/widgets.c
 CSRCS += uiux/aux_disp.c
