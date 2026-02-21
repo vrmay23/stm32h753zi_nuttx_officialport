@@ -55,15 +55,6 @@
 #define CMD_BUFFER_SIZE       256
 #define HMI_SOCKET_PATH       "/tmp/hmi_cmd"
 
-/* Button to CAN mapping */
-
-#define BTN0_ACTION_ID        CAR_CAN_DRIVER_COMMANDS_FRAME_ID
-#define BTN0_ACTION_DIR       WIDGET_DIR_NEUTRAL
-#define BTN1_ACTION_ID        CAR_CAN_DRIVER_COMMANDS_FRAME_ID
-#define BTN1_ACTION_DIR       WIDGET_DIR_FORWARD
-#define BTN2_ACTION_ID        CAR_CAN_DRIVER_COMMANDS_FRAME_ID
-#define BTN2_ACTION_DIR       WIDGET_DIR_REVERSE
-
 /* CAN 2.0B MAX Payload */
 
 #define CAN_MAX_PAYLOAD       8
@@ -74,10 +65,15 @@
 
 /* Truck interaction (HMI) */
 
-static int g_speed   = 0;
+static int g_speed = 0;
 static int g_voltage = 0;
 static int g_current = 0;
 static int g_direction = WIDGET_DIR_NEUTRAL;
+
+/* Global DC Link state (updated from INVERTER_INFO CAN message) */
+
+static uint8_t g_dc_link_state =
+    CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_OFF_CHOICE;
 
 /* Work queue structures for periodic CAN transmission */
 
@@ -94,67 +90,143 @@ static struct car_can_hmi_info_t hmi_info_msg;
  ****************************************************************************/
 
 /****************************************************************************
+ * Name: toggle_dc_link_demand
+ *
+ * Description:
+ *   Toggles DC Link demand state (ON <-> OFF).
+ *   Updates driver_commands_msg.dc_link_active_demand which is sent
+ *   cyclically via CAN TX work queue.
+ *
+ ****************************************************************************/
+
+static void toggle_dc_link_demand(void)
+{
+  if (driver_commands_msg.dc_link_active_demand ==
+      CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_NO_DEMAND_CHOICE)
+    {
+      driver_commands_msg.dc_link_active_demand =
+          CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_ACTIVE_DEMAND_CHOICE;
+      printf("DC Link: Demand ON\n");
+    }
+  else
+    {
+      driver_commands_msg.dc_link_active_demand =
+          CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_NO_DEMAND_CHOICE;
+      printf("DC Link: Demand OFF\n");
+    }
+}
+
+/****************************************************************************
  * Name: process_button_press
+ *
+ * Description:
+ *   Handles button press events and updates CAN message state.
+ *   Does NOT send CAN directly - state is transmitted by cyclic
+ *   100ms work queue.
+ *
+ * Button Mapping:
+ *   BTN0: Toggle DC Link demand (ON/OFF)
+ *   BTN1: Enable drive Forward (requires DC Link ON)
+ *   BTN2: Enable drive Reverse (requires DC Link ON)
+ *   BTN3: Disable drive (Neutral)
+ *   BTN4: Reset inverter faults
+ *   BTN5: Toggle pedal mode (ECO/NORMAL/SPORT)
+ *   BTN6-10: Reserved for future use
+ *
  ****************************************************************************/
 
 static void process_button_press(int button)
 {
-  struct car_can_driver_commands_t cmd;
-  uint8_t data[CAR_CAN_DRIVER_COMMANDS_LENGTH];
-  struct can_frame frame;
-  int ret;
-
-  car_can_driver_commands_init(&cmd);
-
   switch (button)
     {
-      case 0:
-        cmd.demanded_drive_direction = BTN0_ACTION_DIR;
-        cmd.demanded_drive_state = 0;
+      case BUTTON_DC_LINK_TOGGLE:
+        toggle_dc_link_demand();
         break;
 
-      case 1:
-        cmd.demanded_drive_direction = BTN1_ACTION_DIR;
-        cmd.demanded_drive_state = 1;
+      case BUTTON_FORWARD:
+
+        /* Safety interlock: Check DC Link is ON */
+
+        if (g_dc_link_state !=
+            CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_ON_CHOICE)
+          {
+            printf("ERROR: Cannot enable drive - DC Link not ready "
+                   "(state=%d)\n", g_dc_link_state);
+            return;
+          }
+
+        driver_commands_msg.demanded_drive_direction = WIDGET_DIR_FORWARD;
+        driver_commands_msg.demanded_drive_state =
+            CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_ENABLE_CHOICE;
+        printf("Drive: FORWARD enabled\n");
         break;
 
-      case 2:
-        cmd.demanded_drive_direction = BTN2_ACTION_DIR;
-        cmd.demanded_drive_state = 1;
+      case BUTTON_REVERSE:
+
+        /* Safety interlock: Check DC Link is ON */
+
+        if (g_dc_link_state !=
+            CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_ON_CHOICE)
+          {
+            printf("ERROR: Cannot enable drive - DC Link not ready "
+                   "(state=%d)\n", g_dc_link_state);
+            return;
+          }
+
+        driver_commands_msg.demanded_drive_direction = WIDGET_DIR_REVERSE;
+        driver_commands_msg.demanded_drive_state =
+            CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_ENABLE_CHOICE;
+        printf("Drive: REVERSE enabled\n");
+        break;
+
+      case BUTTON_NEUTRAL:
+        driver_commands_msg.demanded_drive_direction = WIDGET_DIR_NEUTRAL;
+        driver_commands_msg.demanded_drive_state =
+            CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE;
+        printf("Drive: NEUTRAL (disabled)\n");
+        break;
+
+      case BUTTON_RESET_FAULTS:
+        driver_commands_msg.reset_inverter_errrors = 1;
+        printf("Inverter faults: RESET requested\n");
+        break;
+
+      case BUTTON_PEDAL_MODE:
+        driver_commands_msg.pedal_setting =
+            (driver_commands_msg.pedal_setting + 1) % 3;
+        printf("Pedal mode: %d ", driver_commands_msg.pedal_setting);
+        switch (driver_commands_msg.pedal_setting)
+          {
+            case 0:
+              printf("(ECO)\n");
+              break;
+            case 1:
+              printf("(NORMAL)\n");
+              break;
+            case 2:
+              printf("(SPORT)\n");
+              break;
+          }
+        break;
+
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+      case 10:
+
+        /* Reserved for future features */
+
+        printf("Button %d: Reserved (no action)\n", button);
         break;
 
       default:
-        return;
+        break;
     }
 
-  ret = car_can_driver_commands_pack(data, &cmd, sizeof(data));
-  if (ret < 0)
-    {
-      printf("ERROR: pack failed\n");
-      return;
-    }
-
-  ret = can_handler_send(CAR_CAN_DRIVER_COMMANDS_FRAME_ID,
-                         CAR_CAN_DRIVER_COMMANDS_IS_EXTENDED,
-                         data, ret);
-  if (ret < 0)
-    {
-      printf("ERROR: send failed\n");
-      return;
-    }
-
-  memset(&frame, 0, sizeof(frame));
-  frame.can_id = CAR_CAN_DRIVER_COMMANDS_FRAME_ID;
-  if (CAR_CAN_DRIVER_COMMANDS_IS_EXTENDED)
-    {
-      frame.can_id |= CAN_EFF_FLAG;
-    }
-
-  frame.can_dlc = ret;
-  memcpy(frame.data, data, ret);
-  can_trace_tx(&frame);
-
-  printf("TX: BTN%d -> DIR=%d\n", button, cmd.demanded_drive_direction);
+  /* NOTE: CAN message not sent here. State is transmitted cyclically
+   * by can_tx_100ms_worker() every 100ms (max latency: 100ms).
+   */
 }
 
 /****************************************************************************
@@ -421,8 +493,7 @@ int main(int argc, char *argv[])
   driver_commands_msg.dc_link_active_demand =
       CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_NO_DEMAND_CHOICE;
 
-  driver_commands_msg.demanded_drive_direction =
-      CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_DIRECTION_FORWARD_CHOICE;
+  driver_commands_msg.demanded_drive_direction = WIDGET_DIR_FORWARD;
 
   driver_commands_msg.demanded_drive_state =
       CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE;
