@@ -133,12 +133,6 @@
 #  define CONFIG_NUCLEO_H753ZI_ST7796_DEVID 0
 #endif
 
-/* SPI frequency from Kconfig with default */
-
-#ifndef CONFIG_NUCLEO_H753ZI_ST7796_FREQUENCY
-#  define CONFIG_NUCLEO_H753ZI_ST7796_FREQUENCY ST7796_SPI_MAXFREQUENCY
-#endif
-
 /* Reset timing (from ST7796 datasheet) */
 
 #define ST7796_RESET_DELAY_MS      10
@@ -150,53 +144,6 @@
 #define ST7796_GPIO_CONFIG_MASK    0xffff0000
 #define ST7796_GPIO_IN_FLOAT       (GPIO_INPUT | GPIO_FLOAT | GPIO_SPEED_50MHz)
 
-/* Display resolution based on orientation from Kconfig */
-
-#if defined(CONFIG_NUCLEO_H753ZI_ST7796_LANDSCAPE) || \
-    defined(CONFIG_NUCLEO_H753ZI_ST7796_RLANDSCAPE)
-#  define ST7796_XRES              ST7796_YRES_RAW
-#  define ST7796_YRES              ST7796_XRES_RAW
-#else
-#  define ST7796_XRES              ST7796_XRES_RAW
-#  define ST7796_YRES              ST7796_YRES_RAW
-#endif
-
-/* Base MADCTL value based on orientation and BGR from Kconfig */
-
-#if defined(CONFIG_NUCLEO_H753ZI_ST7796_LANDSCAPE)
-#  ifdef CONFIG_NUCLEO_H753ZI_ST7796_BGR
-#    define ST7796_MADCTL_BASE     ST7796_MADCTL_LANDSCAPE_BGR
-#  else
-#    define ST7796_MADCTL_BASE     ST7796_MADCTL_LANDSCAPE
-#  endif
-#elif defined(CONFIG_NUCLEO_H753ZI_ST7796_RPORTRAIT)
-#  ifdef CONFIG_NUCLEO_H753ZI_ST7796_BGR
-#    define ST7796_MADCTL_BASE     ST7796_MADCTL_RPORTRAIT_BGR
-#  else
-#    define ST7796_MADCTL_BASE     ST7796_MADCTL_RPORTRAIT
-#  endif
-#elif defined(CONFIG_NUCLEO_H753ZI_ST7796_RLANDSCAPE)
-#  ifdef CONFIG_NUCLEO_H753ZI_ST7796_BGR
-#    define ST7796_MADCTL_BASE     ST7796_MADCTL_RLANDSCAPE_BGR
-#  else
-#    define ST7796_MADCTL_BASE     ST7796_MADCTL_RLANDSCAPE
-#  endif
-#else /* Portrait (default) */
-#  ifdef CONFIG_NUCLEO_H753ZI_ST7796_BGR
-#    define ST7796_MADCTL_BASE     ST7796_MADCTL_PORTRAIT_BGR
-#  else
-#    define ST7796_MADCTL_BASE     ST7796_MADCTL_PORTRAIT
-#  endif
-#endif
-
-/* Initial rotation from Kconfig */
-
-#ifdef CONFIG_NUCLEO_H753ZI_ST7796_ROTATION_180
-#  define ST7796_INIT_ROTATION     180
-#else
-#  define ST7796_INIT_ROTATION     0
-#endif
-
 /****************************************************************************
  * Private Data
  ****************************************************************************/
@@ -206,18 +153,6 @@ static uint32_t g_led_pin;
 static bool g_st7796_initialized = false;
 static FAR struct spi_dev_s *g_spi_dev = NULL;
 static FAR struct fb_vtable_s *g_fb_vtable = NULL;
-
-/* Board-specific configuration passed to generic driver */
-
-static struct st7796_config_s g_st7796_config =
-{
-  .frequency = CONFIG_NUCLEO_H753ZI_ST7796_FREQUENCY,
-  .xres      = ST7796_XRES,
-  .yres      = ST7796_YRES,
-  .bpp       = 16,
-  .madctl    =  ST7796_MADCTL_BASE /* 0x28 -> will fix it */,
-  .rotation  = ST7796_INIT_ROTATION,
-};
 
 /****************************************************************************
  * Private Functions
@@ -495,7 +430,7 @@ int up_fbinitialize(int display)
       return -EINVAL;
     }
 
-  g_fb_vtable = st7796_fbinitialize(g_spi_dev, &g_st7796_config);
+  g_fb_vtable = st7796_fbinitialize(g_spi_dev);
   if (g_fb_vtable == NULL)
     {
       syslog(LOG_ERR, "ERROR: st7796_fbinitialize() failed\n");
@@ -602,6 +537,7 @@ int stm32_st7796initialize(int devno)
 int stm32_st7796_flush_fb(void)
 {
   struct fb_area_s area;
+  struct fb_videoinfo_s vinfo;
 
   if (g_fb_vtable == NULL || g_fb_vtable->updatearea == NULL)
     {
@@ -609,10 +545,16 @@ int stm32_st7796_flush_fb(void)
       return -ENODEV;
     }
 
+  if (g_fb_vtable->getvideoinfo(g_fb_vtable, &vinfo) < 0)
+    {
+      syslog(LOG_ERR, "ERROR: Failed to get video info\n");
+      return -EIO;
+    }
+
   area.x = 0;
   area.y = 0;
-  area.w = ST7796_XRES;
-  area.h = ST7796_YRES;
+  area.w = vinfo.xres;
+  area.h = vinfo.yres;
 
   return g_fb_vtable->updatearea(g_fb_vtable, &area);
 }

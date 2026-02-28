@@ -110,15 +110,6 @@
 #define ST7796_MADCTL_RLANDSCAPE_BGR     (ST7796_MADCTL_MY | ST7796_MADCTL_MX | \
                                           ST7796_MADCTL_MV | ST7796_MADCTL_BGR)
 
-/* Display raw dimensions (before orientation transform) */
-
-#define ST7796_XRES_RAW         320
-#define ST7796_YRES_RAW         480
-
-/* Default SPI frequency */
-
-#define ST7796_SPI_MAXFREQUENCY 40000000
-
 /* Rotation ioctl commands (if not defined in fb.h) */
 
 #ifndef FBIOSET_ROTATION
@@ -135,31 +126,6 @@
 
 #ifndef __ASSEMBLY__
 
-/* Command sequence entry for initialization */
-
-struct st7796_cmd_s
-{
-  uint8_t cmd;              /* Command byte */
-  FAR const uint8_t *data;  /* Parameter data (NULL if no params) */
-  uint8_t len;              /* Number of parameter bytes */
-  uint16_t delay_ms;        /* Delay after command in milliseconds */
-};
-
-/* Board-specific configuration passed to driver at initialization.
- * This structure allows board code to configure the driver without
- * requiring board-specific Kconfig options in the generic driver.
- */
-
-struct st7796_config_s
-{
-  uint32_t frequency;       /* SPI clock frequency in Hz */
-  uint16_t xres;            /* Horizontal resolution (after orientation) */
-  uint16_t yres;            /* Vertical resolution (after orientation) */
-  uint16_t rotation;        /* Initial rotation: 0, 90, 180, or 270 */
-  uint8_t bpp;              /* Bits per pixel: 16 (RGB565) or 18 (RGB666) */
-  uint8_t madctl;           /* Base MADCTL register value for orientation */
-};
-
 /****************************************************************************
  * Public Function Prototypes
  ****************************************************************************/
@@ -175,14 +141,14 @@ extern "C"
  * Description:
  *   Initialize the ST7796 LCD controller as a framebuffer device.
  *
- *   This function initializes the ST7796 display controller using the
- *   provided configuration and returns a framebuffer virtual table.
- *   The driver uses CONFIG_SPI_CMDDATA to control the DC (Data/Command)
- *   pin automatically via the SPI driver.
+ *   This function initializes the ST7796 display controller and returns
+ *   a framebuffer virtual table. Display parameters (resolution, color
+ *   depth, orientation, frequency) are taken from CONFIG_LCD_ST7796_*
+ *   Kconfig options. The driver uses CONFIG_SPI_CMDDATA to control the
+ *   DC (Data/Command) pin automatically via the SPI driver.
  *
  * Input Parameters:
- *   spi    - SPI device instance configured for the ST7796
- *   config - Board-specific configuration (frequency, resolution, etc.)
+ *   spi - SPI device instance configured for the ST7796
  *
  * Returned Value:
  *   Pointer to framebuffer vtable on success; NULL on failure.
@@ -195,9 +161,7 @@ extern "C"
  *
  ****************************************************************************/
 
-FAR struct fb_vtable_s *st7796_fbinitialize(FAR struct spi_dev_s *spi,
-                                            FAR const struct st7796_config_s
-                                            *config);
+FAR struct fb_vtable_s *st7796_fbinitialize(FAR struct spi_dev_s *spi);
 
 /****************************************************************************
  * Name: st7796_setrotation
