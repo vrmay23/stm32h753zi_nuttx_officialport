@@ -104,6 +104,10 @@ ifeq ($(CONFIG_MMCSD),y)
   CSRCS += drivers/driver_modules/stm32_mmcsd.c
 endif
 
+ifeq ($(CONFIG_ETC_ROMFS),y)
+  RCSRCS = etc/init.d/rc.sysinit etc/init.d/rcS
+endif
+
 include $(TOPDIR)/boards/Board.mk
 
 # Clean up garbage in subdirectories

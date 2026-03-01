@@ -102,6 +102,19 @@ if(CONFIG_MMCSD)
   list(APPEND SRCS drivers/driver_modules/stm32_mmcsd.c)
 endif()
 
+if(CONFIG_ETC_ROMFS)
+  nuttx_add_romfs(
+    NAME
+    etc
+    MOUNTPOINT
+    etc
+    RCSRCS
+    etc/init.d/rcS
+    etc/init.d/rc.sysinit
+    PATH
+    ${CMAKE_CURRENT_BINARY_DIR}/etc)
+endif()
+
 target_sources(board PRIVATE ${SRCS})
 
 # Adiciona os paths de drivers ao include path do target 'board'
