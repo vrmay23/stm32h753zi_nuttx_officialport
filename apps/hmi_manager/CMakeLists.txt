@@ -13,6 +13,9 @@ if(CONFIG_EXAMPLES_HMI_MANAGER)
       io_handler/led_control.c
       uiux/fb_handler.c
       uiux/widgets.c
+      uiux/screen/screen_manager.c
+      #uiux/assets/img_bifrostox2.c
+      uiux/assets/img_main_retro.c
       uiux/aux_disp.c
       uiux/notifications.c
       modules/rfid.c

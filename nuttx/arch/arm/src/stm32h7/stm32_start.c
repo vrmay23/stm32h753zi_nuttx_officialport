@@ -199,31 +199,30 @@ void __start(void)
 #endif
 
   /* If enabled reset the MPU */
-
+  
   mpu_early_reset();
-
   /* Clear .bss.  We'll do this inline (vs. calling memset) just to be
    * certain that there are no issues with the state of global variables.
    */
-
+  
   for (dest = (uint32_t *)_sbss; dest < (uint32_t *)_ebss; )
     {
       *dest++ = 0;
     }
-
+  
   /* Move the initialized data section from his temporary holding spot in
    * FLASH into the correct place in SRAM.  The correct place in SRAM is
    * give by _sdata and _edata.  The temporary location is in FLASH at the
    * end of all of the other read-only data (.text, .rodata) at _eronly.
    */
-
+  
   for (src = (const uint32_t *)_eronly,
        dest = (uint32_t *)_sdata; dest < (uint32_t *)_edata;
       )
     {
       *dest++ = *src++;
     }
-
+  
   /* Copy any necessary code sections from FLASH to RAM.  The correct
    * destination in SRAM is given by _sramfuncs and _eramfuncs.  The
    * temporary location is in flash after the data initialization code
