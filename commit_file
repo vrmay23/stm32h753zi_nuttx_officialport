@@ -1,0 +1,75 @@
+feat(hmi_manager): add screen manager with PNG splash screen support
+
+Implement a two-phase screen manager architecture that allows static
+PNG assets stored in flash to be displayed via LVGL 9.x on the
+ST7796 480x320 display.
+
+## Screen Manager Architecture
+
+Two-phase initialization to respect LVGL thread-safety constraints:
+
+Phase 1 - screen_manager_init() called from main() before threads:
+  Creates bare lv_obj_t skeletons for all screens (no assets).
+  Safe to call before lvgl_thread starts because lv_obj_create(NULL)
+  does not trigger rendering.
+
+Phase 2 - screen_manager_setup_assets() called from lvgl_thread:
+  Attaches lv_img assets and builds widget tree inside LVGL context.
+  This is mandatory - lv_img_create() must run in lvgl_thread only.
+
+Screens:
+  SCREEN_SPLASH    (0) - BifrostOX2 PNG splash screen
+  SCREEN_DASHBOARD (1) - existing LVGL widgets dashboard
+  SCREEN_BLACK     (2) - blank black screen
+
+Button mapping:
+  BTN6 -> SCREEN_DASHBOARD
+  BTN7 -> SCREEN_SPLASH
+  BTN8 -> SCREEN_BLACK
+
+## Asset Pipeline (scripts/codetools/)
+
+preview.py:
+  Converts any image to 480x320 RGB565-simulated PNG for visual
+  validation before embedding. Output suffix: _lcd.png.
+  Fit modes: stretch (default), contain, crop.
+  Run without args to batch-process all images in assets/png/.
+
+png2code.py:
+  Converts *_lcd.png files to LVGL 9.x compatible C arrays.
+  Format: LV_COLOR_FORMAT_RGB565, little-endian uint16_t, stored
+  in .rodata (flash). Zero RAM copy - LVGL reads via pointer.
+  Reverse mode (--reverse): reconstructs _reverse.png from C array
+  for display emulation without hardware.
+  Run without args to batch-process all *_lcd.png in assets/png/.
+
+Workflow:
+  1. Designer exports PNG at any resolution
+  2. ./preview.py          -> generates *_lcd.png (480x320, RGB565 sim)
+  3. ./png2code.py         -> generates uiux/assets/<symbol>.c
+  4. make && flash         -> asset visible on display
+  5. ./png2code.py --reverse -> verify output matches display
+
+## Flash note
+
+OpenOCD must be invoked with DUAL_BANK=1 when firmware exceeds
+Bank 0 (1024KB). Standard FLASH_STM32H7x alias does not configure
+Bank 1, causing HardFault on boot when .rodata crosses 0x08100000.
+
+Correct flash command:
+  openocd -f interface/stlink.cfg \
+          -c "set DUAL_BANK 1" \
+          -f target/stm32h7x.cfg \
+          -c "init" \
+          -c "reset halt" \
+          -c "flash write_image erase nuttx.bin 0x08000000" \
+          -c "reset run"
+
+## Files changed
+  app_hmi_manager.c          - two-phase init, button mapping
+  uiux/screen/screen_manager.c/h - new screen state machine
+  uiux/assets/img_bifrostox2.c   - generated splash asset (300KB)
+  Makefile                   - add screen_manager.c, img_bifrostox2.c
+  CMakeLists.txt             - same
+  scripts/codetools/preview.py   - image preview tool
+  scripts/codetools/png2code.py  - PNG to LVGL C array converter

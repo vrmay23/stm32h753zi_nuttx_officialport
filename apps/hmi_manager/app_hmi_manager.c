@@ -71,6 +71,7 @@
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
 #include "uiux/fb_handler.h"
 #include "uiux/widgets.h"
+#include "uiux/screen/screen_manager.h"
 #endif
 
 /****************************************************************************
@@ -317,8 +318,23 @@ static void process_button_press(int button)
         break;
 
       case 6:
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
+        screen_manager_load(SCREEN_DASHBOARD);
+#endif
+        break;
+
       case 7:
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
+        screen_manager_load(SCREEN_SPLASH);
+#endif
+        break;
+
       case 8:
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
+        screen_manager_load(SCREEN_BLACK);
+#endif
+        break;
+
       case 9:
       case 10:
 
@@ -652,6 +668,12 @@ static void *lvgl_thread(void *arg)
 {
   printf("[LVGL] Thread started\n");
 
+  /* Phase 2: attach assets and build widget tree.
+   * Must run inside lvgl_thread - LVGL is not thread-safe.
+   */
+
+  screen_manager_setup_assets();
+
   while (true)
     {
       lv_tick_inc(LVGL_TICK_MS);
@@ -829,24 +851,19 @@ int main(int argc, char *argv[])
       return 1;
     }
 
-  /* --- 8. UI widgets init --- */
+  /* --- 8. UI screen manager init (phase 1 - no assets yet) --- */
 
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
   printf("Creating UI...\n");
-  ret = widgets_init();
+  ret = screen_manager_init();
   if (ret < 0)
     {
-      printf("ERROR: widgets_init failed: %d\n", ret);
+      printf("ERROR: screen_manager_init failed: %d\n", ret);
       close(cmd_fd);
       can_handler_close();
       fb_handler_close();
       return 1;
     }
-
-  widgets_set_speed(g_speed);
-  widgets_set_voltage(g_voltage);
-  widgets_set_current(g_current);
-  widgets_set_direction(g_direction);
 #endif
 
   /* --- 9. Spawn worker threads --- */
