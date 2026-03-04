@@ -43,10 +43,11 @@
 
 typedef enum
 {
-  SCREEN_SPLASH     = 0,  /* Static PNG image (flash asset)   */
-  SCREEN_DASHBOARD  = 1,  /* Existing LVGL widgets dashboard  */
-  SCREEN_BLACK      = 2,  /* Blank black screen               */
-  SCREEN_COUNT            /* Sentinel - do not use directly   */
+  SCREEN_SPLASH     = 0,  /* Splash image (startup animation)  */
+  SCREEN_DASHBOARD  = 1,  /* Theme background + LVGL widgets   */
+  SCREEN_THEME      = 2,  /* Theme background only (no widgets)*/
+  SCREEN_BLACK      = 3,  /* Blank black screen                */
+  SCREEN_COUNT            /* Sentinel - do not use directly    */
 } screen_id_t;
 
 /****************************************************************************
