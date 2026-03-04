@@ -3,7 +3,6 @@
 # ##############################################################################
 
 if(CONFIG_EXAMPLES_HMI_MANAGER)
-
   # Shared sources
   set(COMMON_SRCS
       can/can_handler.c
@@ -14,8 +13,6 @@ if(CONFIG_EXAMPLES_HMI_MANAGER)
       uiux/fb_handler.c
       uiux/widgets.c
       uiux/screen/screen_manager.c
-      #uiux/assets/img_bifrostox2.c
-      uiux/assets/img_main_retro.c
       uiux/aux_disp.c
       uiux/notifications.c
       modules/rfid.c
@@ -23,6 +20,50 @@ if(CONFIG_EXAMPLES_HMI_MANAGER)
       cmd/commands.c
       config/config_manager.c
       logs/logger.c)
+
+  # Splash screen asset (selected via menuconfig)
+
+  if(CONFIG_HMI_SPLASH_BIFROSTOX_FLAT)
+    list(APPEND COMMON_SRCS uiux/assets/img_bifrostox_flat.c)
+  endif()
+
+  if(CONFIG_HMI_SPLASH_BIFROSTOX_NORDIC)
+    list(APPEND COMMON_SRCS uiux/assets/img_bifrostox_nordic.c)
+  endif()
+
+  if(CONFIG_HMI_SPLASH_MAIN_CYBERPUNK)
+    list(APPEND COMMON_SRCS uiux/assets/img_main_cyberpunk.c)
+  endif()
+
+  if(CONFIG_HMI_SPLASH_MAIN_MODERN)
+    list(APPEND COMMON_SRCS uiux/assets/img_main_modern.c)
+  endif()
+
+  if(CONFIG_HMI_SPLASH_MAIN_RETRO)
+    list(APPEND COMMON_SRCS uiux/assets/img_main_retro.c)
+  endif()
+
+  # Driver screen theme asset (selected via menuconfig)
+
+  if(CONFIG_HMI_THEME_BIFROSTOX_FLAT)
+    list(APPEND COMMON_SRCS uiux/assets/img_bifrostox_flat.c)
+  endif()
+
+  if(CONFIG_HMI_THEME_BIFROSTOX_NORDIC)
+    list(APPEND COMMON_SRCS uiux/assets/img_bifrostox_nordic.c)
+  endif()
+
+  if(CONFIG_HMI_THEME_MAIN_CYBERPUNK)
+    list(APPEND COMMON_SRCS uiux/assets/img_main_cyberpunk.c)
+  endif()
+
+  if(CONFIG_HMI_THEME_MAIN_MODERN)
+    list(APPEND COMMON_SRCS uiux/assets/img_main_modern.c)
+  endif()
+
+  if(CONFIG_HMI_THEME_MAIN_RETRO)
+    list(APPEND COMMON_SRCS uiux/assets/img_main_retro.c)
+  endif()
 
   # Include directories
   set(INCDIR
