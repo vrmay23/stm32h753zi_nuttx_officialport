@@ -122,6 +122,26 @@
 #define WHEEL_DIAM_M \
     (CONFIG_HMI_MANAGER_WHEEL_DIAMETER_MM / 1000.0)
 
+/* Splash screen hold duration (from Kconfig choice).
+ * HMI_SPLASH_TIME_0 or HMI_SPLASH_NONE -> 0 ms
+ * HMI_SPLASH_TIME_1 -> 1000 ms
+ * HMI_SPLASH_TIME_2 -> 2000 ms
+ */
+
+#if defined(CONFIG_HMI_SPLASH_TIME_2)
+#  define SPLASH_TIME_MS  2000
+#elif defined(CONFIG_HMI_SPLASH_TIME_1)
+#  define SPLASH_TIME_MS  1000
+#else
+#  define SPLASH_TIME_MS  0
+#endif
+
+/* Button 6 carousel: cycles through these screens in order.
+ * SCREEN_DASHBOARD -> SCREEN_THEME -> SCREEN_SPLASH -> repeat
+ */
+
+#define BTN6_CAROUSEL_COUNT  3
+
 /****************************************************************************
  * Private Data
  ****************************************************************************/
@@ -144,6 +164,19 @@ static uint8_t g_dc_link_state =
 
 static struct car_can_driver_commands_t g_driver_cmd;
 static struct car_can_hmi_info_t g_hmi_info;
+
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
+/* Button 6 carousel sequence */
+
+static const screen_id_t g_btn6_carousel[BTN6_CAROUSEL_COUNT] =
+{
+  SCREEN_DASHBOARD,
+  SCREEN_THEME,
+  SCREEN_SPLASH
+};
+
+static int g_btn6_index = 0;
+#endif
 
 /****************************************************************************
  * Private Functions
@@ -221,7 +254,8 @@ static void toggle_dc_link_demand(void)
  *   BTN3: Disable drive (Neutral)
  *   BTN4: Reset inverter faults
  *   BTN5: Toggle pedal mode (ECO/NORMAL/SPORT)
- *   BTN6-10: Reserved for future use
+ *   BTN6: Carousel: dashboard -> theme -> splash
+ *   BTN7-10: Reserved
  *
  ****************************************************************************/
 
@@ -319,22 +353,20 @@ static void process_button_press(int button)
 
       case 6:
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-        screen_manager_load(SCREEN_DASHBOARD);
+        g_btn6_index = (g_btn6_index + 1)
+                       % BTN6_CAROUSEL_COUNT;
+        screen_manager_load(
+            g_btn6_carousel[g_btn6_index]);
 #endif
         break;
 
       case 7:
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-        screen_manager_load(SCREEN_SPLASH);
-#endif
-        break;
-
-      case 8:
-#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
         screen_manager_load(SCREEN_BLACK);
 #endif
         break;
 
+      case 8:
       case 9:
       case 10:
 
@@ -659,6 +691,13 @@ static void *can_tx_loop_1000ms(void *arg)
  *   Dedicated LVGL rendering thread. Calls lv_tick_inc and
  *   lv_timer_handler at LVGL_TICK_MS intervals.
  *
+ *   Boot sequence:
+ *     1. Attach assets (phase 2)
+ *     2. Render splash (one LVGL cycle to flush framebuffer)
+ *     3. Hold splash for configured duration
+ *     4. Switch to dashboard
+ *     5. Enter render loop
+ *
  *   Runs at lower priority than CAN threads so rendering
  *   never starves CAN communication.
  *
@@ -673,6 +712,27 @@ static void *lvgl_thread(void *arg)
    */
 
   screen_manager_setup_assets();
+
+  /* Render one LVGL cycle so the splash image is actually
+   * flushed to the framebuffer before we hold.
+   */
+
+  lv_tick_inc(LVGL_TICK_MS);
+  lv_timer_handler();
+
+  /* Hold splash screen for the configured duration.
+   * SPLASH_TIME_MS is 0 when HMI_SPLASH_NONE is selected
+   * or when HMI_SPLASH_TIME_0 is selected.
+   */
+
+#if SPLASH_TIME_MS > 0
+  printf("[LVGL] Splash hold %d ms\n", SPLASH_TIME_MS);
+  nxsched_msleep(SPLASH_TIME_MS);
+#endif
+
+  /* Transition to dashboard */
+
+  screen_manager_load(SCREEN_DASHBOARD);
 
   while (true)
     {
@@ -749,11 +809,12 @@ static int create_thread(pthread_t *tid,
  *     2. LEDs
  *     3. CAN (socket + bind)
  *     4. CAN trace
- *     5. Buttons
- *     6. Command socket
- *     7. UI widgets
- *     8. Spawn threads (CAN RX, CAN TX x2, LVGL)
- *     9. Main loop (command socket + buttons only)
+ *     5. CAN TX message defaults
+ *     6. Buttons
+ *     7. Command socket
+ *     8. Screen manager (phase 1 - skeletons only)
+ *     9. Spawn threads (CAN RX, CAN TX x2, LVGL)
+ *    10. Main loop (command socket + buttons only)
  *
  ****************************************************************************/
 
@@ -851,14 +912,15 @@ int main(int argc, char *argv[])
       return 1;
     }
 
-  /* --- 8. UI screen manager init (phase 1 - no assets yet) --- */
+  /* --- 8. UI screen manager init (phase 1 - no assets) --- */
 
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
   printf("Creating UI...\n");
   ret = screen_manager_init();
   if (ret < 0)
     {
-      printf("ERROR: screen_manager_init failed: %d\n", ret);
+      printf("ERROR: screen_manager_init failed: %d\n",
+             ret);
       close(cmd_fd);
       can_handler_close();
       fb_handler_close();

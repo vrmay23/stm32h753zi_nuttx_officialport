@@ -46,9 +46,145 @@ config HMI_MANAGER_SCREEN_ENABLE
 	default y
 	---help---
 		Enable LVGL display and UI widgets.
-		
+
 		Disable for headless operation (CAN-only mode without display).
 		Useful for testing CAN communication without connected screen.
+
+if HMI_MANAGER_SCREEN_ENABLE
+
+#
+# Sound Design (placeholder)
+#
+
+menu "Sound Design"
+
+config HMI_SOUND_ENABLE
+	bool "Enable sound feedback"
+	default n
+	---help---
+		Placeholder for future sound design integration.
+
+endmenu
+
+#
+# Splash Screen Selection
+#
+# The selected image is shown at boot for the configured duration.
+# Each option maps 1:1 to an asset .c file in uiux/assets/.
+#
+# NOTE: Do NOT select the same image for both Splash Screen
+# and Driver Screen Theme. They must be different.
+#
+
+menu "Splash Screen"
+
+choice
+	prompt "Splash Screen Image"
+	default HMI_SPLASH_NONE
+
+config HMI_SPLASH_NONE
+	bool "None (black screen)"
+	---help---
+		No splash screen image. Boot shows a black screen
+		and transitions immediately to the dashboard.
+
+config HMI_SPLASH_BIFROSTOX_FLAT
+	bool "BifrostOX Flat"
+	---help---
+		Asset: uiux/assets/img_bifrostox_flat.c
+
+config HMI_SPLASH_BIFROSTOX_NORDIC
+	bool "BifrostOX Nordic"
+	---help---
+		Asset: uiux/assets/img_bifrostox_nordic.c
+
+config HMI_SPLASH_MAIN_CYBERPUNK
+	bool "Cyberpunk"
+	---help---
+		Asset: uiux/assets/img_main_cyberpunk.c
+
+config HMI_SPLASH_MAIN_MODERN
+	bool "Modern"
+	---help---
+		Asset: uiux/assets/img_main_modern.c
+
+config HMI_SPLASH_MAIN_RETRO
+	bool "Retro"
+	---help---
+		Asset: uiux/assets/img_main_retro.c
+
+endchoice
+
+choice
+	prompt "Splash Screen Duration"
+	default HMI_SPLASH_TIME_0
+	depends on !HMI_SPLASH_NONE
+
+config HMI_SPLASH_TIME_0
+	bool "0 seconds (immediate)"
+
+config HMI_SPLASH_TIME_1
+	bool "1 second"
+
+config HMI_SPLASH_TIME_2
+	bool "2 seconds"
+
+endchoice
+
+endmenu
+
+#
+# Driver Screen Theme Selection
+#
+# The selected image is the permanent dashboard background.
+# Each option maps 1:1 to an asset .c file in uiux/assets/.
+#
+# NOTE: Do NOT select the same image for both Splash Screen
+# and Driver Screen Theme. They must be different.
+#
+
+menu "Driver Screen Theme"
+
+choice
+	prompt "Driver Screen Theme"
+	default HMI_THEME_NONE
+
+config HMI_THEME_NONE
+	bool "None (default widgets only)"
+	---help---
+		No background theme image. Dashboard uses default
+		LVGL widgets on black background.
+
+config HMI_THEME_BIFROSTOX_FLAT
+	bool "BifrostOX Flat"
+	---help---
+		Asset: uiux/assets/img_bifrostox_flat.c
+
+config HMI_THEME_BIFROSTOX_NORDIC
+	bool "BifrostOX Nordic"
+	---help---
+		Asset: uiux/assets/img_bifrostox_nordic.c
+
+config HMI_THEME_MAIN_CYBERPUNK
+	bool "Cyberpunk"
+	---help---
+		Asset: uiux/assets/img_main_cyberpunk.c
+
+config HMI_THEME_MAIN_MODERN
+	bool "Modern"
+	---help---
+		Asset: uiux/assets/img_main_modern.c
+
+config HMI_THEME_MAIN_RETRO
+	bool "Retro"
+	---help---
+		Asset: uiux/assets/img_main_retro.c
+
+endchoice
+
+endmenu
+
+endif # HMI_MANAGER_SCREEN_ENABLE
 
 #
 # Vehicle Speed Calculation
@@ -61,12 +197,12 @@ config HMI_MANAGER_GEAR_RATIO
 	---help---
 		Total reduction from motor shaft to wheel.
 		Example: 10 means motor rotates 10 times for 1 wheel rotation.
-		
+
 		When to change:
 		  - Replace gearbox
 		  - Change motor
 		  - Modify transmission
-		
+
 		Common values:
 		  Direct drive: 1
 		  Go-kart: 5-8
@@ -79,17 +215,17 @@ config HMI_MANAGER_WHEEL_DIAMETER_MM
 	range 100 2000
 	---help---
 		Outer diameter of the wheel/tire in millimeters.
-		
+
 		When to change:
 		  - Change tire size
 		  - Tire wear (diameter decreases)
 		  - Different tire pressure
-		
+
 		Common values:
 		  Small go-kart: 300-400mm
 		  Medium truck: 600-800mm (24-32 inches)
 		  Large truck: 900-1200mm (36-48 inches)
-		
+
 		Default 600mm = approximately 24 inch wheel.
 
 endif
