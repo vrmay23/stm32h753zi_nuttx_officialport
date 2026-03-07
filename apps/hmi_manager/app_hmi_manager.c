@@ -58,6 +58,8 @@
 #include <nuttx/sched.h>
 
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
+#include <sys/ioctl.h>
+#include <nuttx/video/fb.h>
 #include <lvgl/lvgl.h>
 #endif
 
@@ -353,16 +355,42 @@ static void process_button_press(int button)
 
       case 6:
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-        g_btn6_index = (g_btn6_index + 1)
-                       % BTN6_CAROUSEL_COUNT;
-        screen_manager_load(
-            g_btn6_carousel[g_btn6_index]);
+        {
+          int fb_fd;
+
+          /* Re-enable backlight if leaving black screen */
+
+          if (screen_manager_current() == SCREEN_BLACK)
+            {
+              fb_fd = open("/dev/fb0", O_RDWR);
+              if (fb_fd >= 0)
+                {
+                  ioctl(fb_fd, FBIOSET_POWER, 1);
+                  close(fb_fd);
+                }
+            }
+
+          g_btn6_index = (g_btn6_index + 1)
+                         % BTN6_CAROUSEL_COUNT;
+          screen_manager_load(
+              g_btn6_carousel[g_btn6_index]);
+        }
 #endif
         break;
 
       case 7:
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-        screen_manager_load(SCREEN_BLACK);
+        {
+          int fb_fd;
+
+          screen_manager_load(SCREEN_BLACK);
+          fb_fd = open("/dev/fb0", O_RDWR);
+          if (fb_fd >= 0)
+            {
+              ioctl(fb_fd, FBIOSET_POWER, 0);
+              close(fb_fd);
+            }
+        }
 #endif
         break;
 

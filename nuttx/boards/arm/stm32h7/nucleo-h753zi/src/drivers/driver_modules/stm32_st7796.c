@@ -573,6 +573,21 @@ void stm32_st7796_backlight(bool on)
 }
 
 /****************************************************************************
+ * Name: st7796_board_power
+ *
+ * Description:
+ *   Board-level callback invoked by the ST7796 driver when
+ *   FBIOSET_POWER ioctl is received via /dev/fb0.
+ *   Controls the backlight GPIO pin.
+ *
+ ****************************************************************************/
+
+void st7796_board_power(bool on)
+{
+  stm32_gpiowrite(g_led_pin, on);
+}
+
+/****************************************************************************
  * Name: stm32_st7796_power
  *
  * Description:
