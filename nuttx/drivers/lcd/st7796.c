@@ -144,6 +144,9 @@ static int st7796_getplaneinfo(FAR struct fb_vtable_s *vtable, int planeno,
                                FAR struct fb_planeinfo_s *pinfo);
 static int st7796_updatearea(FAR struct fb_vtable_s *vtable,
                              FAR const struct fb_area_s *area);
+static int st7796_getpower(FAR struct fb_vtable_s *vtable);
+static int st7796_setpower(FAR struct fb_vtable_s *vtable,
+                           int power);
 static int st7796_ioctl(FAR struct fb_vtable_s *vtable, int cmd,
                         unsigned long arg);
 static void st7796_select(FAR struct st7796_dev_s *priv);
@@ -681,6 +684,54 @@ static int st7796_updatearea(FAR struct fb_vtable_s *vtable,
 }
 
 /****************************************************************************
+ * Name: st7796_getpower
+ *
+ * Description:
+ *   Get current panel power state.
+ *
+ * Returned Value:
+ *   Current power level (0 = off, 1 = on).
+ ****************************************************************************/
+
+static int st7796_getpower(FAR struct fb_vtable_s *vtable)
+{
+  FAR struct st7796_dev_s *priv =
+      (FAR struct st7796_dev_s *)vtable;
+
+  return priv->power ? 1 : 0;
+}
+
+/****************************************************************************
+ * Name: st7796_setpower
+ *
+ * Description:
+ *   Enable or disable panel power (backlight).
+ *   Delegates to st7796_board_power() which the board must
+ *   implement to control the backlight GPIO.
+ *
+ * Input Parameters:
+ *   vtable - Reference to the framebuffer virtual table
+ *   power  - 0 to turn off, >0 to turn on
+ *
+ * Returned Value:
+ *   OK on success.
+ ****************************************************************************/
+
+static int st7796_setpower(FAR struct fb_vtable_s *vtable,
+                           int power)
+{
+  FAR struct st7796_dev_s *priv =
+      (FAR struct st7796_dev_s *)vtable;
+
+  priv->power = (power > 0);
+  st7796_board_power(priv->power);
+
+  lcdinfo("ST7796: power %s\n", priv->power ? "ON" : "OFF");
+
+  return OK;
+}
+
+/****************************************************************************
  * Name: st7796_ioctl
  *
  * Description:
@@ -948,6 +999,8 @@ FAR struct fb_vtable_s *st7796_fbinitialize(FAR struct spi_dev_s *spi)
   priv->vtable.getvideoinfo = st7796_getvideoinfo;
   priv->vtable.getplaneinfo = st7796_getplaneinfo;
   priv->vtable.updatearea   = st7796_updatearea;
+  priv->vtable.getpower     = st7796_getpower;
+  priv->vtable.setpower     = st7796_setpower;
   priv->vtable.ioctl        = st7796_ioctl;
   priv->spi                 = spi;
   priv->power               = false;

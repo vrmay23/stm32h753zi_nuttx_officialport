@@ -198,6 +198,22 @@ int st7796_setrotation(FAR struct fb_vtable_s *vtable, uint16_t rotation);
 
 uint16_t st7796_getrotation(FAR struct fb_vtable_s *vtable);
 
+/****************************************************************************
+ * Name: st7796_board_power
+ *
+ * Description:
+ *   Board-level callback to control display backlight/power.
+ *   Called by the ST7796 driver when FBIOSET_POWER ioctl is
+ *   received. The board must implement this function to
+ *   control the backlight GPIO pin.
+ *
+ * Input Parameters:
+ *   on - true to turn backlight on, false to turn off
+ *
+ ****************************************************************************/
+
+void st7796_board_power(bool on);
+
 #ifdef __cplusplus
 }
 #endif
