@@ -56,27 +56,6 @@ endif
 CSRCS += uiux/assets/img_bifrostox_nordic.c
 endif
 
-ifdef CONFIG_HMI_SPLASH_MAIN_CYBERPUNK
-ifeq ($(wildcard uiux/assets/img_main_cyberpunk.c),)
-$(warning img_main_cyberpunk.c not found! Run png2code.py)
-endif
-CSRCS += uiux/assets/img_main_cyberpunk.c
-endif
-
-ifdef CONFIG_HMI_SPLASH_MAIN_MODERN
-ifeq ($(wildcard uiux/assets/img_main_modern.c),)
-$(warning img_main_modern.c not found! Run png2code.py)
-endif
-CSRCS += uiux/assets/img_main_modern.c
-endif
-
-ifdef CONFIG_HMI_SPLASH_MAIN_RETRO
-ifeq ($(wildcard uiux/assets/img_main_retro.c),)
-$(warning img_main_retro.c not found! Run png2code.py)
-endif
-CSRCS += uiux/assets/img_main_retro.c
-endif
-
 # Driver screen theme asset (selected via menuconfig)
 
 ifdef CONFIG_HMI_THEME_BIFROSTOX_FLAT
@@ -112,6 +91,13 @@ ifeq ($(wildcard uiux/assets/img_main_retro.c),)
 $(warning img_main_retro.c not found! Run png2code.py)
 endif
 CSRCS += uiux/assets/img_main_retro.c
+endif
+
+ifdef CONFIG_HMI_THEME_MAIN_RETRO_T3
+ifeq ($(wildcard uiux/assets/img_main_retro_t3.c),)
+$(warning img_main_retro.c not found! Run png2code.py)
+endif
+CSRCS += uiux/assets/img_main_retro_t3.c
 endif
 
 # Include paths

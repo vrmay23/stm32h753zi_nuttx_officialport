@@ -31,18 +31,6 @@ if(CONFIG_EXAMPLES_HMI_MANAGER)
     list(APPEND COMMON_SRCS uiux/assets/img_bifrostox_nordic.c)
   endif()
 
-  if(CONFIG_HMI_SPLASH_MAIN_CYBERPUNK)
-    list(APPEND COMMON_SRCS uiux/assets/img_main_cyberpunk.c)
-  endif()
-
-  if(CONFIG_HMI_SPLASH_MAIN_MODERN)
-    list(APPEND COMMON_SRCS uiux/assets/img_main_modern.c)
-  endif()
-
-  if(CONFIG_HMI_SPLASH_MAIN_RETRO)
-    list(APPEND COMMON_SRCS uiux/assets/img_main_retro.c)
-  endif()
-
   # Driver screen theme asset (selected via menuconfig)
 
   if(CONFIG_HMI_THEME_BIFROSTOX_FLAT)
@@ -65,6 +53,10 @@ if(CONFIG_EXAMPLES_HMI_MANAGER)
     list(APPEND COMMON_SRCS uiux/assets/img_main_retro.c)
   endif()
 
+  if(CONFIG_HMI_THEME_MAIN_RETRO_T3)
+    list(APPEND COMMON_SRCS uiux/assets/img_main_retro_t3.c)
+  endif()
+ 
   # Include directories
   set(INCDIR
       ${CMAKE_CURRENT_SOURCE_DIR}
