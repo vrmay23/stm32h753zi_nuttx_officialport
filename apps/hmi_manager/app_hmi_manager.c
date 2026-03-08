@@ -79,6 +79,13 @@
 /****************************************************************************
  * Pre-processor Definitions
  ****************************************************************************/
+/* SCHED PRIORITY */
+
+#define SCHED_PRIORITY_VERRY_HIGH (SCHED_PRIORITY_DEFAULT + 20)
+#define SCHED_PRIORITY_HIGH       (SCHED_PRIORITY_DEFAULT + 10)
+#define SCHED_PRIORITY_STD        (SCHED_PRIORITY_DEFAULT +  0)
+#define SCHED_PRIORITY_LOW        (SCHED_PRIORITY_DEFAULT - 10) 
+#define SCHED_PRIORITY_VERRY_LOW  (SCHED_PRIORITY_DEFAULT - 20)
 
 /* LVGL tick period in milliseconds */
 
@@ -110,9 +117,9 @@
  * Main at default for command processing.
  */
 
-#define CAN_RX_PRIORITY       (SCHED_PRIORITY_DEFAULT + 10)
-#define CAN_TX_PRIORITY       SCHED_PRIORITY_DEFAULT
-#define LVGL_PRIORITY         (SCHED_PRIORITY_DEFAULT - 10)
+#define CAN_RX_PRIORITY       SCHED_PRIORITY_VERRY_HIGH
+#define CAN_TX_PRIORITY       SCHED_PRIORITY_HIGH 
+#define LVGL_PRIORITY         SCHED_PRIORITY_LOW
 
 /* Command socket poll timeout (milliseconds) */
 
@@ -144,9 +151,15 @@
 
 #define BTN6_CAROUSEL_COUNT  3
 
+#define POWER_ON  1
+#define POWER_OFF 0
+
 /****************************************************************************
  * Private Data
  ****************************************************************************/
+
+/* */
+static bool g_screen_off = false;
 
 /* Vehicle state (updated from CAN RX, read by LVGL) */
 
@@ -257,7 +270,8 @@ static void toggle_dc_link_demand(void)
  *   BTN4: Reset inverter faults
  *   BTN5: Toggle pedal mode (ECO/NORMAL/SPORT)
  *   BTN6: Carousel: dashboard -> theme -> splash
- *   BTN7-10: Reserved
+ *   BTN7: ScreenOff
+ *   BTN8-10: Reserved
  *
  ****************************************************************************/
 
@@ -380,17 +394,22 @@ static void process_button_press(int button)
 
       case 7:
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-        {
-          int fb_fd;
+{
+    g_screen_off = !g_screen_off;
+    int fb_fd = open("/dev/fb0", O_RDWR);
 
-          screen_manager_load(SCREEN_BLACK);
-          fb_fd = open("/dev/fb0", O_RDWR);
-          if (fb_fd >= 0)
-            {
-              ioctl(fb_fd, FBIOSET_POWER, 0);
-              close(fb_fd);
-            }
-        }
+    if (fb_fd >= 0) 
+    {
+        int mode = g_screen_off ? POWER_OFF : POWER_ON;
+        ioctl(fb_fd, FBIOSET_POWER, mode);
+        close(fb_fd);
+        printf("screen_off: %s\n", g_screen_off ? "True" : "False");
+    }
+    else 
+    {
+       /* goto? */
+    }
+}
 #endif
         break;
 
