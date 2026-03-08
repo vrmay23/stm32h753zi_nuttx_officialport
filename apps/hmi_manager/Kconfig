@@ -97,22 +97,6 @@ config HMI_SPLASH_BIFROSTOX_NORDIC
 	bool "BifrostOX Nordic"
 	---help---
 		Asset: uiux/assets/img_bifrostox_nordic.c
-
-config HMI_SPLASH_MAIN_CYBERPUNK
-	bool "Cyberpunk"
-	---help---
-		Asset: uiux/assets/img_main_cyberpunk.c
-
-config HMI_SPLASH_MAIN_MODERN
-	bool "Modern"
-	---help---
-		Asset: uiux/assets/img_main_modern.c
-
-config HMI_SPLASH_MAIN_RETRO
-	bool "Retro"
-	---help---
-		Asset: uiux/assets/img_main_retro.c
-
 endchoice
 
 choice
@@ -179,6 +163,11 @@ config HMI_THEME_MAIN_RETRO
 	bool "Retro"
 	---help---
 		Asset: uiux/assets/img_main_retro.c
+
+config HMI_THEME_MAIN_RETRO_T3
+	bool "Retro_T3"
+	---help---
+		Asset: uiux/assets/img_main_retro_t3.c
 
 endchoice
 

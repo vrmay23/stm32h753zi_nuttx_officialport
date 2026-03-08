@@ -106,6 +106,9 @@ extern const lv_img_dsc_t img_main_modern;
 #elif defined(CONFIG_HMI_THEME_MAIN_RETRO)
 extern const lv_img_dsc_t img_main_retro;
 #  define THEME_ASSET  (&img_main_retro)
+#elif defined(CONFIG_HMI_THEME_MAIN_RETRO_T3)
+extern const lv_img_dsc_t img_main_retro_t3;
+#  define THEME_ASSET  (&img_main_retro_t3)
 #else
 #  define THEME_ASSET  NULL
 #endif
