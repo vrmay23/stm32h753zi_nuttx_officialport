@@ -151,22 +151,18 @@
 
 #define BTN6_CAROUSEL_COUNT  3
 
-#define POWER_ON  1
-#define POWER_OFF 0
-
 /****************************************************************************
  * Private Data
  ****************************************************************************/
 
-/* */
-static bool g_screen_off = false;
-
 /* Vehicle state (updated from CAN RX, read by LVGL) */
 
-static int g_speed = 0;
-static int g_voltage = 0;
-static int g_current = 0;
-static int g_direction = WIDGET_DIR_NEUTRAL;
+static int g_speed      = 0;   /* km/h converted from RPM           */
+static int g_rpm        = 0;   /* raw motor RPM                     */
+static int g_voltage    = 0;   /* battery voltage decivolts         */
+static int g_current    = 0;   /* motor current amps                */
+static int g_direction  = WIDGET_DIR_NEUTRAL;
+static int g_drive_mode = WIDGET_MODE_STANDARD;
 
 /* DC Link state (updated from INVERTER_INFO CAN message) */
 
@@ -351,6 +347,10 @@ static void process_button_press(int button)
       case BUTTON_PEDAL_MODE:
         g_driver_cmd.pedal_setting =
             (g_driver_cmd.pedal_setting + 1) % 3;
+        g_drive_mode = g_driver_cmd.pedal_setting;
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
+        widgets_set_mode(g_drive_mode);
+#endif
         printf("Pedal mode: %d ",
                g_driver_cmd.pedal_setting);
         switch (g_driver_cmd.pedal_setting)
@@ -394,22 +394,17 @@ static void process_button_press(int button)
 
       case 7:
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-{
-    g_screen_off = !g_screen_off;
-    int fb_fd = open("/dev/fb0", O_RDWR);
+        {
+          int fb_fd;
 
-    if (fb_fd >= 0) 
-    {
-        int mode = g_screen_off ? POWER_OFF : POWER_ON;
-        ioctl(fb_fd, FBIOSET_POWER, mode);
-        close(fb_fd);
-        printf("screen_off: %s\n", g_screen_off ? "True" : "False");
-    }
-    else 
-    {
-       /* goto? */
-    }
-}
+          screen_manager_load(SCREEN_BLACK);
+          fb_fd = open("/dev/fb0", O_RDWR);
+          if (fb_fd >= 0)
+            {
+              ioctl(fb_fd, FBIOSET_POWER, 0);
+              close(fb_fd);
+            }
+        }
 #endif
         break;
 
@@ -454,9 +449,11 @@ static void process_can_frame(struct can_frame *frame)
           int rpm =
               (int)car_can_inverter_speed_info_em_speed_rpm_decode(
                   msg.em_speed_rpm);
-          g_speed = rpm_to_kmh(rpm);
+          g_rpm   = (rpm < 0) ? -rpm : rpm;
+          g_speed = rpm_to_kmh(g_rpm);
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
           widgets_set_speed(g_speed);
+          widgets_set_rpm(g_rpm);
 #endif
         }
     }
@@ -476,20 +473,38 @@ static void process_can_frame(struct can_frame *frame)
 #endif
         }
     }
-  else if (id == CAR_CAN_DRIVER_COMMANDS_FRAME_ID)
-    {
-      struct car_can_driver_commands_t msg;
+else if (id == CAR_CAN_DRIVER_COMMANDS_FRAME_ID)
+  {
+    struct car_can_driver_commands_t msg;
 
-      ret = car_can_driver_commands_unpack(
-              &msg, frame->data, frame->can_dlc);
-      if (ret == 0)
-        {
-          g_direction = msg.demanded_drive_direction;
+    ret = car_can_driver_commands_unpack(
+            &msg, frame->data, frame->can_dlc);
+    if (ret == 0)
+      {
+        /* N = drive disabled regardless of direction */
+        /* D = forward + enabled                      */
+        /* R = backward + enabled                     */
+
+        if (msg.demanded_drive_state ==
+            CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE)
+          {
+            g_direction = WIDGET_DIR_NEUTRAL;
+          }
+        else if (msg.demanded_drive_direction ==
+                 CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_DIRECTION_BACKWARD_CHOICE)
+          {
+            g_direction = WIDGET_DIR_REVERSE;
+          }
+        else
+          {
+            g_direction = WIDGET_DIR_FORWARD;
+          }
+
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-          widgets_set_direction(g_direction);
+        widgets_set_direction(g_direction);
 #endif
-        }
-    }
+      }
+  }
   else if (id == CAR_CAN_INVERTER_INFO_FRAME_ID)
     {
       struct car_can_inverter_info_t msg;
