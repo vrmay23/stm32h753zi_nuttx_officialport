@@ -1,9 +1,10 @@
-# ##############################################################################
+##############################################################################
 # apps/hmi_manager/CMakeLists.txt
-# ##############################################################################
+##############################################################################
 
 if(CONFIG_EXAMPLES_HMI_MANAGER)
-  # Shared sources
+
+  # Shared sources (compiled into both hmi_manager and hmi_ctl via COMMON_SRCS)
   set(COMMON_SRCS
       can/can_handler.c
       can/car_can.c
@@ -22,7 +23,6 @@ if(CONFIG_EXAMPLES_HMI_MANAGER)
       logs/logger.c)
 
   # Splash screen asset (selected via menuconfig)
-
   if(CONFIG_HMI_SPLASH_BIFROSTOX_FLAT)
     list(APPEND COMMON_SRCS uiux/assets/img_bifrostox_flat.c)
   endif()
@@ -31,8 +31,7 @@ if(CONFIG_EXAMPLES_HMI_MANAGER)
     list(APPEND COMMON_SRCS uiux/assets/img_bifrostox_nordic.c)
   endif()
 
-  # Driver screen theme asset (selected via menuconfig)
-
+  # Theme asset (selected via menuconfig)
   if(CONFIG_HMI_THEME_BIFROSTOX_FLAT)
     list(APPEND COMMON_SRCS uiux/assets/img_bifrostox_flat.c)
   endif()
@@ -56,8 +55,8 @@ if(CONFIG_EXAMPLES_HMI_MANAGER)
   if(CONFIG_HMI_THEME_MAIN_RETRO_T3)
     list(APPEND COMMON_SRCS uiux/assets/img_main_retro_t3.c)
   endif()
- 
-  # Include directories
+
+  # Include directories (shared by both targets)
   set(INCDIR
       ${CMAKE_CURRENT_SOURCE_DIR}
       ${CMAKE_CURRENT_SOURCE_DIR}/can
@@ -68,31 +67,33 @@ if(CONFIG_EXAMPLES_HMI_MANAGER)
       ${CMAKE_CURRENT_SOURCE_DIR}/cmd
       ${CMAKE_CURRENT_SOURCE_DIR}/config)
 
-  # HMI Manager daemon
+  # ── HMI Manager daemon ────────────────────────────────────────────────
   nuttx_add_application(
     NAME
-    hmi_manager
+      hmi_manager
     PRIORITY
-    ${CONFIG_EXAMPLES_HMI_MANAGER_PRIORITY}
+      ${CONFIG_EXAMPLES_HMI_MANAGER_PRIORITY}
     STACKSIZE
-    ${CONFIG_EXAMPLES_HMI_MANAGER_STACKSIZE}
+      ${CONFIG_EXAMPLES_HMI_MANAGER_STACKSIZE}
     SRCS
-    app_hmi_manager.c
-    ${COMMON_SRCS}
+      app_hmi_manager.c
+      ${COMMON_SRCS}
     INCLUDE_DIRECTORIES
-    ${INCDIR})
+      ${INCDIR}
+    DEPENDS
+      m)   # -lm for sinf/cosf in widgets.c (needle angle computation)
 
-  # HMI Control client
+  # ── HMI Control client ────────────────────────────────────────────────
   nuttx_add_application(
     NAME
-    hmi_ctl
+      hmi_ctl
     PRIORITY
-    100
+      100
     STACKSIZE
-    2048
+      2048
     SRCS
-    hmi_ctl.c
+      hmi_ctl.c
     INCLUDE_DIRECTORIES
-    ${INCDIR})
+      ${INCDIR})
 
 endif()
