@@ -146,10 +146,15 @@
 #endif
 
 /* Button 6 carousel: cycles through these screens in order.
- * SCREEN_DASHBOARD -> SCREEN_THEME -> SCREEN_SPLASH -> repeat
+ * SCREEN_DASHBOARD -> SCREEN_THEME -> repeat
  */
 
-#define BTN6_CAROUSEL_COUNT  3
+#define BTN6_CAROUSEL_COUNT  2
+
+/* Button 7 screen-off toggle state */
+
+#define SCREEN_OFF_DISABLED  0   /* display is ON  (normal)  */
+#define SCREEN_OFF_ENABLED   1   /* display is OFF (blanked) */
 
 /****************************************************************************
  * Private Data
@@ -182,11 +187,52 @@ static struct car_can_hmi_info_t g_hmi_info;
 static const screen_id_t g_btn6_carousel[BTN6_CAROUSEL_COUNT] =
 {
   SCREEN_DASHBOARD,
-  SCREEN_THEME,
-  SCREEN_SPLASH
+  SCREEN_THEME
 };
 
 static int g_btn6_index = 0;
+
+/* Screen-off toggle: SCREEN_OFF_DISABLED (0) = display ON,
+ *                    SCREEN_OFF_ENABLED  (1) = display OFF.
+ * Written by process_button_press() (main thread).
+ * Screen switch deferred to lvgl_thread via g_screen_request.
+ */
+
+static int g_screen_off = SCREEN_OFF_DISABLED;
+
+/* UI dirty flag + snapshot
+ *
+ * can_rx_thread writes to g_speed/g_rpm/g_voltage/g_direction
+ * and then sets g_ui_dirty = true.
+ * lvgl_thread reads g_ui_dirty, copies the snapshot, resets the
+ * flag, and calls widgets_set_*() — the ONLY place LVGL is touched.
+ *
+ * On Cortex-M7, int/bool reads/writes are single-instruction and
+ * therefore atomic for this producer-consumer pattern. No mutex
+ * needed: the worst case is lvgl_thread reads a value that is one
+ * LVGL tick (10 ms) stale, which is acceptable for a vehicle HMI.
+ */
+
+static volatile bool g_ui_dirty = false;
+
+struct ui_snapshot_t
+{
+  int speed;      /* km/h     */
+  int rpm;        /* raw RPM  */
+  int voltage;    /* dV       */
+  int current;    /* amps     */
+  int direction;  /* WIDGET_DIR_* */
+  int drive_mode; /* WIDGET_MODE_* */
+};
+
+static struct ui_snapshot_t g_ui_snap;
+
+/* Screen switch request from main/button thread to lvgl_thread.
+ * SCREEN_COUNT means "no pending request".
+ * Written by process_button_press(), read by lvgl_thread.
+ */
+
+static volatile screen_id_t g_screen_request = SCREEN_COUNT;
 #endif
 
 /****************************************************************************
@@ -298,7 +344,7 @@ static void process_button_press(int button)
             CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_ENABLE_CHOICE;
         g_direction = WIDGET_DIR_FORWARD;
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-        widgets_set_direction(g_direction);
+        g_ui_dirty = true;
 #endif
         printf("Drive: FORWARD enabled\n");
         break;
@@ -322,7 +368,7 @@ static void process_button_press(int button)
             CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_ENABLE_CHOICE;
         g_direction = WIDGET_DIR_REVERSE;
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-        widgets_set_direction(g_direction);
+        g_ui_dirty = true;
 #endif
         printf("Drive: REVERSE enabled\n");
         break;
@@ -334,7 +380,7 @@ static void process_button_press(int button)
             CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE;
         g_direction = WIDGET_DIR_NEUTRAL;
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-        widgets_set_direction(g_direction);
+        g_ui_dirty = true;
 #endif
         printf("Drive: NEUTRAL (disabled)\n");
         break;
@@ -349,7 +395,7 @@ static void process_button_press(int button)
             (g_driver_cmd.pedal_setting + 1) % 3;
         g_drive_mode = g_driver_cmd.pedal_setting;
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-        widgets_set_mode(g_drive_mode);
+        g_ui_dirty = true;
 #endif
         printf("Pedal mode: %d ",
                g_driver_cmd.pedal_setting);
@@ -370,13 +416,15 @@ static void process_button_press(int button)
       case 6:
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
         {
-          int fb_fd;
-
-          /* Re-enable backlight if leaving black screen */
+          /* Re-enable backlight if leaving black screen.
+           * The actual screen switch is deferred to lvgl_thread
+           * via g_screen_request to avoid calling lv_scr_load()
+           * from the main thread (LVGL is not thread-safe).
+           */
 
           if (screen_manager_current() == SCREEN_BLACK)
             {
-              fb_fd = open("/dev/fb0", O_RDWR);
+              int fb_fd = open("/dev/fb0", O_RDWR);
               if (fb_fd >= 0)
                 {
                   ioctl(fb_fd, FBIOSET_POWER, 1);
@@ -386,8 +434,7 @@ static void process_button_press(int button)
 
           g_btn6_index = (g_btn6_index + 1)
                          % BTN6_CAROUSEL_COUNT;
-          screen_manager_load(
-              g_btn6_carousel[g_btn6_index]);
+          g_screen_request = g_btn6_carousel[g_btn6_index];
         }
 #endif
         break;
@@ -397,12 +444,36 @@ static void process_button_press(int button)
         {
           int fb_fd;
 
-          screen_manager_load(SCREEN_BLACK);
-          fb_fd = open("/dev/fb0", O_RDWR);
-          if (fb_fd >= 0)
+          if (g_screen_off == SCREEN_OFF_DISABLED)
             {
-              ioctl(fb_fd, FBIOSET_POWER, 0);
-              close(fb_fd);
+              /* Screen is ON -> turn it OFF */
+
+              g_screen_off = SCREEN_OFF_ENABLED;
+              g_screen_request = SCREEN_BLACK;
+              fb_fd = open("/dev/fb0", O_RDWR);
+              if (fb_fd >= 0)
+                {
+                  ioctl(fb_fd, FBIOSET_POWER, 0);
+                  close(fb_fd);
+                }
+              printf("Screen: OFF\n");
+            }
+          else
+            {
+              /* Screen is OFF -> turn it back ON */
+
+              g_screen_off = SCREEN_OFF_DISABLED;
+              fb_fd = open("/dev/fb0", O_RDWR);
+              if (fb_fd >= 0)
+                {
+                  ioctl(fb_fd, FBIOSET_POWER, 1);
+                  close(fb_fd);
+                }
+
+              /* Restore last carousel screen */
+
+              g_screen_request = g_btn6_carousel[g_btn6_index];
+              printf("Screen: ON (restored)\n");
             }
         }
 #endif
@@ -451,9 +522,13 @@ static void process_can_frame(struct can_frame *frame)
                   msg.em_speed_rpm);
           g_rpm   = (rpm < 0) ? -rpm : rpm;
           g_speed = rpm_to_kmh(g_rpm);
+
+          /* Signal lvgl_thread to refresh widgets — do NOT call
+           * any LVGL API from this thread (LVGL is not thread-safe).
+           */
+
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-          widgets_set_speed(g_speed);
-          widgets_set_rpm(g_rpm);
+          g_ui_dirty = true;
 #endif
         }
     }
@@ -469,42 +544,42 @@ static void process_can_frame(struct can_frame *frame)
               (int)(car_can_system_voltages_meas_batt_voltage_decode(
                   msg.meas_batt_voltage) * 10.0);
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-          widgets_set_voltage(g_voltage);
+          g_ui_dirty = true;
 #endif
         }
     }
-else if (id == CAR_CAN_DRIVER_COMMANDS_FRAME_ID)
-  {
-    struct car_can_driver_commands_t msg;
+  else if (id == CAR_CAN_DRIVER_COMMANDS_FRAME_ID)
+    {
+      struct car_can_driver_commands_t msg;
 
-    ret = car_can_driver_commands_unpack(
-            &msg, frame->data, frame->can_dlc);
-    if (ret == 0)
-      {
-        /* N = drive disabled regardless of direction */
-        /* D = forward + enabled                      */
-        /* R = backward + enabled                     */
+      ret = car_can_driver_commands_unpack(
+              &msg, frame->data, frame->can_dlc);
+      if (ret == 0)
+        {
+          /* N = drive disabled regardless of direction */
+          /* D = forward + enabled                      */
+          /* R = backward + enabled                     */
 
-        if (msg.demanded_drive_state ==
-            CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE)
-          {
-            g_direction = WIDGET_DIR_NEUTRAL;
-          }
-        else if (msg.demanded_drive_direction ==
-                 CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_DIRECTION_BACKWARD_CHOICE)
-          {
-            g_direction = WIDGET_DIR_REVERSE;
-          }
-        else
-          {
-            g_direction = WIDGET_DIR_FORWARD;
-          }
+          if (msg.demanded_drive_state ==
+              CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE)
+            {
+              g_direction = WIDGET_DIR_NEUTRAL;
+            }
+          else if (msg.demanded_drive_direction ==
+                   CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_DIRECTION_BACKWARD_CHOICE)
+            {
+              g_direction = WIDGET_DIR_REVERSE;
+            }
+          else
+            {
+              g_direction = WIDGET_DIR_FORWARD;
+            }
 
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-        widgets_set_direction(g_direction);
+          g_ui_dirty = true;
 #endif
-      }
-  }
+        }
+    }
   else if (id == CAR_CAN_INVERTER_INFO_FRAME_ID)
     {
       struct car_can_inverter_info_t msg;
@@ -798,6 +873,44 @@ static void *lvgl_thread(void *arg)
 
   while (true)
     {
+      /* --- Flush pending UI data (g_ui_dirty pattern) ---
+       *
+       * can_rx_thread / button handler only write to plain C
+       * globals and set g_ui_dirty = true.  This thread is the
+       * ONLY caller of any LVGL API, so there is no race.
+       */
+
+      if (g_ui_dirty)
+        {
+          /* Snapshot globals before clearing the flag so we
+           * don't miss an update that arrives during the copy.
+           */
+
+          g_ui_snap.speed      = g_speed;
+          g_ui_snap.rpm        = g_rpm;
+          g_ui_snap.voltage    = g_voltage;
+          g_ui_snap.current    = g_current;
+          g_ui_snap.direction  = g_direction;
+          g_ui_snap.drive_mode = g_drive_mode;
+          g_ui_dirty = false;
+
+          widgets_set_speed(g_ui_snap.speed);
+          widgets_set_rpm(g_ui_snap.rpm);
+          widgets_set_voltage(g_ui_snap.voltage);
+          widgets_set_current(g_ui_snap.current);
+          widgets_set_direction(g_ui_snap.direction);
+          widgets_set_mode(g_ui_snap.drive_mode);
+        }
+
+      /* --- Handle deferred screen switch request --- */
+
+      if (g_screen_request != SCREEN_COUNT)
+        {
+          screen_id_t req = g_screen_request;
+          g_screen_request = SCREEN_COUNT;
+          screen_manager_load(req);
+        }
+
       lv_tick_inc(LVGL_TICK_MS);
       lv_timer_handler();
       nxsched_msleep(LVGL_TICK_MS);
