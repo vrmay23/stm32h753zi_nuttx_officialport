@@ -1,0 +1,22 @@
+# Environment variables and secrets
+.env
+.env.*
+*.key
+*.pem
+secrets/
+
+# VSCode personal settings
+.vscode/settings.json
+
+# Build artifacts
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+
+# Python
+__pycache__/
+*.pyc
+
