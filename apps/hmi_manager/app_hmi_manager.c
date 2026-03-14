@@ -609,6 +609,17 @@ static void process_can_frame(struct can_frame *frame)
             }
         }
     }
+  else if (id == CAR_CAN_INVERTER_RMS_CURRENTS_FRAME_ID)
+    {
+      struct car_can_inverter_rms_currents_t msg;
+      ret = car_can_inverter_rms_currents_unpack(
+              &msg, frame->data, frame->can_dlc);
+      if (ret == 0)
+        {
+          g_current = msg.phase_urms_current > msg.phase_vrms_current ? msg.phase_urms_current : msg.phase_vrms_current;
+          g_current = g_current > msg.phase_wrms_current ? g_current : msg.phase_wrms_current;
+        }
+    }
 }
 
 /****************************************************************************
