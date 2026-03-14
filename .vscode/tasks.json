@@ -21,7 +21,7 @@
             },
             "problemMatcher": []
         },
-                {
+        {
             "label": "reconfigure",
             "command": "mv .config.keep .config",
             "type": "shell",
@@ -33,7 +33,7 @@
             ],
             "problemMatcher": []
         },
-         {
+        {
             "label": "Build",
             "type": "shell",
             "command": "make",
@@ -51,12 +51,39 @@
             },
             "group": "build"
         },
-         {
+        {
+            "label": "Flash DualBank1",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "interface/stlink.cfg",
+                "-c",
+                "\"set DUAL_BANK 1\"",
+                "-f",
+                "target/stm32h7x.cfg",
+                "-c",
+                "\"init\"",
+                "-c", 
+                "\"reset halt\"",
+                "-c", 
+                "\"flash write_image erase nuttx.bin 0x08000000\"",
+                "-c",
+                "\"reset\"",
+                "-c",
+                "\"exit\""
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/nuttx"
+            },
+            "dependsOn": "Build",
+            "problemMatcher": []
+        },
+        {
             "label": "Flash and run",
             "type": "shell",
             "command": "openocd -f interface/stlink.cfg -f target/stm32h7x.cfg -c \"init\" -c \"reset halt\" -c \"flash write_image erase nuttx.bin 0x08000000\" -c \"reset run\"",
-            "args": [
-            ],
+            "args": [],
             "options": {
                 "cwd": "${workspaceFolder}/nuttx"
             },
@@ -67,23 +94,6 @@
             },
             "group": "build"
         },
-        // {
-        //     "label": "DistClean",
-        //     "type": "shell",
-        //     "command": "make",
-        //     "args": [
-        //         "distclean"
-        //     ],
-        //     "options": {
-        //         "cwd": "${workspaceFolder}/nuttx"
-        //     },
-        //     "problemMatcher": [],
-        //     "icon": {
-        //         "id": "flame",
-        //         "color": "terminal.ansiRed"
-        //     },
-        //     "group": "build"
-        // },
         {
             "label": "run-ctags",
             "type": "shell",
@@ -107,10 +117,6 @@
             "args": [
                 "-device",
                 "STM32H753ZI",
-                // "stm32f401RC",
-                // "STM32L475VG",
-                // "rp2040",
-                // "STM32H743VI",
                 "-if",
                 "SWD",
                 "-speed",
@@ -148,7 +154,6 @@
                 "clear": true,
                 "panel": "shared"
             },
-
             "icon": {
                 "id": "debug-start",
                 "color": "terminal.ansiGreen"
