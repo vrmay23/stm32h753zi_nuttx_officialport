@@ -105,7 +105,7 @@
 
 /* Thread stack sizes */
 
-#define CAN_RX_STACK_SIZE     2048
+#define CAN_RX_STACK_SIZE     4096
 #define CAN_TX_STACK_SIZE     2048
 #define LVGL_STACK_SIZE       4096
 
