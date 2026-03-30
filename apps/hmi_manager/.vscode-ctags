@@ -1,0 +1,754 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/vinicius/git/nuttxspace/stm32h753zi/apps/hmi_manager/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+ARC_FILL_OPA	uiux/widgets.h	/^#define ARC_FILL_OPA /;"	d
+ARC_W_INNER	uiux/widgets.c	/^#define ARC_W_INNER /;"	d	file:
+ARC_W_OUTER	uiux/widgets.c	/^#define ARC_W_OUTER /;"	d	file:
+BATT_TEMP_H	uiux/widgets.h	/^#define BATT_TEMP_H /;"	d
+BATT_TEMP_W	uiux/widgets.h	/^#define BATT_TEMP_W /;"	d
+BATT_TEMP_X	uiux/widgets.h	/^#define BATT_TEMP_X /;"	d
+BATT_TEMP_Y	uiux/widgets.h	/^#define BATT_TEMP_Y /;"	d
+BAT_CRIT_PCT	uiux/widgets.h	/^#define BAT_CRIT_PCT /;"	d
+BAT_H	uiux/widgets.h	/^#define BAT_H /;"	d
+BAT_VOLTAGE_MAX_DV	uiux/widgets.h	/^#define BAT_VOLTAGE_MAX_DV /;"	d
+BAT_VOLTAGE_MIN_DV	uiux/widgets.h	/^#define BAT_VOLTAGE_MIN_DV /;"	d
+BAT_W	uiux/widgets.h	/^#define BAT_W /;"	d
+BAT_WARN_LOW_PCT	uiux/widgets.h	/^#define BAT_WARN_LOW_PCT /;"	d
+BAT_WARN_PCT	uiux/widgets.h	/^#define BAT_WARN_PCT /;"	d
+BAT_X	uiux/widgets.h	/^#define BAT_X /;"	d
+BAT_Y	uiux/widgets.h	/^#define BAT_Y /;"	d
+BTN6_CAROUSEL_COUNT	app_hmi_manager.c	/^#define BTN6_CAROUSEL_COUNT /;"	d	file:
+BUTTON_DC_LINK_TOGGLE	io_handler/button_irq.h	/^#define BUTTON_DC_LINK_TOGGLE /;"	d
+BUTTON_FORWARD	io_handler/button_irq.h	/^#define BUTTON_FORWARD /;"	d
+BUTTON_INVALID	io_handler/button_irq.h	/^#define BUTTON_INVALID /;"	d
+BUTTON_NEUTRAL	io_handler/button_irq.h	/^#define BUTTON_NEUTRAL /;"	d
+BUTTON_PEDAL_MODE	io_handler/button_irq.h	/^#define BUTTON_PEDAL_MODE /;"	d
+BUTTON_RESET_FAULTS	io_handler/button_irq.h	/^#define BUTTON_RESET_FAULTS /;"	d
+BUTTON_REVERSE	io_handler/button_irq.h	/^#define BUTTON_REVERSE /;"	d
+BUTTON_SIGNAL	io_handler/button_irq.c	/^#define BUTTON_SIGNAL /;"	d	file:
+CAN_MAX_PAYLOAD	app_hmi_manager.c	/^#define CAN_MAX_PAYLOAD /;"	d	file:
+CAN_RX_PRIORITY	app_hmi_manager.c	/^#define CAN_RX_PRIORITY /;"	d	file:
+CAN_RX_STACK_SIZE	app_hmi_manager.c	/^#define CAN_RX_STACK_SIZE /;"	d	file:
+CAN_TX_PRIORITY	app_hmi_manager.c	/^#define CAN_TX_PRIORITY /;"	d	file:
+CAN_TX_STACK_SIZE	app_hmi_manager.c	/^#define CAN_TX_STACK_SIZE /;"	d	file:
+CAR_CAN_DEBUG_DEMANDS_FRAME_ID	can/car_can.h	/^#define CAR_CAN_DEBUG_DEMANDS_FRAME_ID /;"	d
+CAR_CAN_DEBUG_DEMANDS_INVERTER_RESET_DEMAND_ACTIVE_DEMAND_CHOICE	can/car_can.h	/^#define CAR_CAN_DEBUG_DEMANDS_INVERTER_RESET_DEMAND_ACTIVE_DEMAND_CHOICE /;"	d
+CAR_CAN_DEBUG_DEMANDS_INVERTER_RESET_DEMAND_NAME	can/car_can.h	/^#define CAR_CAN_DEBUG_DEMANDS_INVERTER_RESET_DEMAND_NAME /;"	d
+CAR_CAN_DEBUG_DEMANDS_INVERTER_RESET_DEMAND_NO_DEMAND_CHOICE	can/car_can.h	/^#define CAR_CAN_DEBUG_DEMANDS_INVERTER_RESET_DEMAND_NO_DEMAND_CHOICE /;"	d
+CAR_CAN_DEBUG_DEMANDS_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_DEBUG_DEMANDS_IS_EXTENDED /;"	d
+CAR_CAN_DEBUG_DEMANDS_LENGTH	can/car_can.h	/^#define CAR_CAN_DEBUG_DEMANDS_LENGTH /;"	d
+CAR_CAN_DEBUG_DEMANDS_NAME	can/car_can.h	/^#define CAR_CAN_DEBUG_DEMANDS_NAME /;"	d
+CAR_CAN_DRIVER_COMMANDS_CYCLE_TIME_MS	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_CYCLE_TIME_MS /;"	d
+CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_ACTIVE_DEMAND_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_ACTIVE_DEMAND_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_NAME	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_NAME /;"	d
+CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_NO_DEMAND_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_DC_LINK_ACTIVE_DEMAND_NO_DEMAND_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_DIRECTION_BACKWARD_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_DIRECTION_BACKWARD_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_DIRECTION_FORWARD_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_DIRECTION_FORWARD_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_DIRECTION_NAME	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_DIRECTION_NAME /;"	d
+CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_DISABLE_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_ENABLE_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_ENABLE_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_NAME	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_DEMANDED_DRIVE_STATE_NAME /;"	d
+CAR_CAN_DRIVER_COMMANDS_FRAME_ID	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_FRAME_ID /;"	d
+CAR_CAN_DRIVER_COMMANDS_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_IS_EXTENDED /;"	d
+CAR_CAN_DRIVER_COMMANDS_LENGTH	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_LENGTH /;"	d
+CAR_CAN_DRIVER_COMMANDS_NAME	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_NAME /;"	d
+CAR_CAN_DRIVER_COMMANDS_PEDAL_SETTING_2_CHANNEL_PEDAL_AND_CAN_DIR_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_PEDAL_SETTING_2_CHANNEL_PEDAL_AND_CAN_DIR_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_PEDAL_SETTING_CANDELA_THOTTLE_AND_DIR_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_PEDAL_SETTING_CANDELA_THOTTLE_AND_DIR_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_PEDAL_SETTING_NAME	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_PEDAL_SETTING_NAME /;"	d
+CAR_CAN_DRIVER_COMMANDS_PEDAL_SETTING_PEDAL_FROM_CANHMI_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_PEDAL_SETTING_PEDAL_FROM_CANHMI_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_PEDAL_SETTING_POT_AND_CAN_DIR_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_PEDAL_SETTING_POT_AND_CAN_DIR_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_RESET_INVERTER_ERRRORS_ACTIVE_DEMAND_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_RESET_INVERTER_ERRRORS_ACTIVE_DEMAND_CHOICE /;"	d
+CAR_CAN_DRIVER_COMMANDS_RESET_INVERTER_ERRRORS_NAME	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_RESET_INVERTER_ERRRORS_NAME /;"	d
+CAR_CAN_DRIVER_COMMANDS_RESET_INVERTER_ERRRORS_NO_DEMAND_CHOICE	can/car_can.h	/^#define CAR_CAN_DRIVER_COMMANDS_RESET_INVERTER_ERRRORS_NO_DEMAND_CHOICE /;"	d
+CAR_CAN_FOC_VARS_CYCLE_TIME_MS	can/car_can.h	/^#define CAR_CAN_FOC_VARS_CYCLE_TIME_MS /;"	d
+CAR_CAN_FOC_VARS_FOC_CURRENT_ID_NAME	can/car_can.h	/^#define CAR_CAN_FOC_VARS_FOC_CURRENT_ID_NAME /;"	d
+CAR_CAN_FOC_VARS_FOC_CURRENT_IQ_NAME	can/car_can.h	/^#define CAR_CAN_FOC_VARS_FOC_CURRENT_IQ_NAME /;"	d
+CAR_CAN_FOC_VARS_FRAME_ID	can/car_can.h	/^#define CAR_CAN_FOC_VARS_FRAME_ID /;"	d
+CAR_CAN_FOC_VARS_ID_REF_NAME	can/car_can.h	/^#define CAR_CAN_FOC_VARS_ID_REF_NAME /;"	d
+CAR_CAN_FOC_VARS_IQ_REF_NAME	can/car_can.h	/^#define CAR_CAN_FOC_VARS_IQ_REF_NAME /;"	d
+CAR_CAN_FOC_VARS_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_FOC_VARS_IS_EXTENDED /;"	d
+CAR_CAN_FOC_VARS_LENGTH	can/car_can.h	/^#define CAR_CAN_FOC_VARS_LENGTH /;"	d
+CAR_CAN_FOC_VARS_NAME	can/car_can.h	/^#define CAR_CAN_FOC_VARS_NAME /;"	d
+CAR_CAN_H	can/car_can.h	/^#define CAR_CAN_H$/;"	d
+CAR_CAN_HMI_INFO_FRAME_ID	can/car_can.h	/^#define CAR_CAN_HMI_INFO_FRAME_ID /;"	d
+CAR_CAN_HMI_INFO_HMI1MS_TICKS_NAME	can/car_can.h	/^#define CAR_CAN_HMI_INFO_HMI1MS_TICKS_NAME /;"	d
+CAR_CAN_HMI_INFO_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_HMI_INFO_IS_EXTENDED /;"	d
+CAR_CAN_HMI_INFO_LENGTH	can/car_can.h	/^#define CAR_CAN_HMI_INFO_LENGTH /;"	d
+CAR_CAN_HMI_INFO_NAME	can/car_can.h	/^#define CAR_CAN_HMI_INFO_NAME /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_BEMF_LIM_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_BEMF_LIM_CHOICE /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_IQ_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_IQ_CHOICE /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_LOWVOLT_LIM_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_LOWVOLT_LIM_CHOICE /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_MTEMP_LIM_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_MTEMP_LIM_CHOICE /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_NONE_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_NONE_CHOICE /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_SPEED_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_SPEED_CHOICE /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_SPEED_RAMP_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_SPEED_RAMP_CHOICE /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_TQ_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_TQ_CHOICE /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_TQ_PEDAL_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_TQ_PEDAL_CHOICE /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_TQ_RAMP_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_DEI_TQ_RAMP_CHOICE /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ACTIVE_DEMANDER_NAME /;"	d
+CAR_CAN_INVERTER_DEMANDERS_FRAME_ID	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_FRAME_ID /;"	d
+CAR_CAN_INVERTER_DEMANDERS_ID_DEMAND_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_ID_DEMAND_NAME /;"	d
+CAR_CAN_INVERTER_DEMANDERS_IQ_DEMAND_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_IQ_DEMAND_NAME /;"	d
+CAR_CAN_INVERTER_DEMANDERS_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_IS_EXTENDED /;"	d
+CAR_CAN_INVERTER_DEMANDERS_LENGTH	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_LENGTH /;"	d
+CAR_CAN_INVERTER_DEMANDERS_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_NAME /;"	d
+CAR_CAN_INVERTER_DEMANDERS_PEDAL_REQUEST_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_DEMANDERS_PEDAL_REQUEST_NAME /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_FLH_OVER_CURR_SA_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_FLH_OVER_CURR_SA_CHOICE /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_FLH_OVER_CURR_SB_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_FLH_OVER_CURR_SB_CHOICE /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_FLH_OVER_VOLT_DCM_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_FLH_OVER_VOLT_DCM_CHOICE /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_FLH_UNDER_VOLT_MON_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_FLH_UNDER_VOLT_MON_CHOICE /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_NAME /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_NO_FAULT_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_ACTIVE_FAULTS_NO_FAULT_CHOICE /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_FLH_OVER_CURR_SA_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_FLH_OVER_CURR_SA_CHOICE /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_FLH_OVER_CURR_SB_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_FLH_OVER_CURR_SB_CHOICE /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_FLH_OVER_VOLT_DCM_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_FLH_OVER_VOLT_DCM_CHOICE /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_FLH_UNDER_VOLT_MON_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_FLH_UNDER_VOLT_MON_CHOICE /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_NAME /;"	d
+CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_NO_FAULT_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FLH_PASSIVE_FAULTS_NO_FAULT_CHOICE /;"	d
+CAR_CAN_INVERTER_FAULTS_FRAME_ID	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_FRAME_ID /;"	d
+CAR_CAN_INVERTER_FAULTS_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_IS_EXTENDED /;"	d
+CAR_CAN_INVERTER_FAULTS_LENGTH	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_LENGTH /;"	d
+CAR_CAN_INVERTER_FAULTS_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_FAULTS_NAME /;"	d
+CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_DISCHARGING_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_DISCHARGING_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_OFF_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_OFF_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_ON_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_DC_LINK_STATE_DC_LINK_ON_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_DC_LINK_STATE_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_DC_LINK_STATE_NAME /;"	d
+CAR_CAN_INVERTER_INFO_DC_LINK_STATE_PRE_CHARGING_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_DC_LINK_STATE_PRE_CHARGING_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_DC_LINK_STATE_PRE_CHARG_DONE_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_DC_LINK_STATE_PRE_CHARG_DONE_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_FRAME_ID	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_FRAME_ID /;"	d
+CAR_CAN_INVERTER_INFO_INVERTER1MS_TICKS_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_INVERTER1MS_TICKS_NAME /;"	d
+CAR_CAN_INVERTER_INFO_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_IS_EXTENDED /;"	d
+CAR_CAN_INVERTER_INFO_LENGTH	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_LENGTH /;"	d
+CAR_CAN_INVERTER_INFO_MFT_STATE_ANY_STOP_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_MFT_STATE_ANY_STOP_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_MFT_STATE_FAULT_NOW_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_MFT_STATE_FAULT_NOW_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_MFT_STATE_FAULT_OVER_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_MFT_STATE_FAULT_OVER_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_MFT_STATE_IDLE_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_MFT_STATE_IDLE_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_MFT_STATE_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_MFT_STATE_NAME /;"	d
+CAR_CAN_INVERTER_INFO_MFT_STATE_RUN_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_MFT_STATE_RUN_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_MFT_STATE_STOP_CHOICE	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_MFT_STATE_STOP_CHOICE /;"	d
+CAR_CAN_INVERTER_INFO_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_INFO_NAME /;"	d
+CAR_CAN_INVERTER_QD_CURRENTS_CURRENT_ID_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_QD_CURRENTS_CURRENT_ID_NAME /;"	d
+CAR_CAN_INVERTER_QD_CURRENTS_CURRENT_IQ_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_QD_CURRENTS_CURRENT_IQ_NAME /;"	d
+CAR_CAN_INVERTER_QD_CURRENTS_FRAME_ID	can/car_can.h	/^#define CAR_CAN_INVERTER_QD_CURRENTS_FRAME_ID /;"	d
+CAR_CAN_INVERTER_QD_CURRENTS_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_INVERTER_QD_CURRENTS_IS_EXTENDED /;"	d
+CAR_CAN_INVERTER_QD_CURRENTS_LENGTH	can/car_can.h	/^#define CAR_CAN_INVERTER_QD_CURRENTS_LENGTH /;"	d
+CAR_CAN_INVERTER_QD_CURRENTS_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_QD_CURRENTS_NAME /;"	d
+CAR_CAN_INVERTER_RMS_CURRENTS_FRAME_ID	can/car_can.h	/^#define CAR_CAN_INVERTER_RMS_CURRENTS_FRAME_ID /;"	d
+CAR_CAN_INVERTER_RMS_CURRENTS_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_INVERTER_RMS_CURRENTS_IS_EXTENDED /;"	d
+CAR_CAN_INVERTER_RMS_CURRENTS_LENGTH	can/car_can.h	/^#define CAR_CAN_INVERTER_RMS_CURRENTS_LENGTH /;"	d
+CAR_CAN_INVERTER_RMS_CURRENTS_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_RMS_CURRENTS_NAME /;"	d
+CAR_CAN_INVERTER_RMS_CURRENTS_PHASE_URMS_CURRENT_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_RMS_CURRENTS_PHASE_URMS_CURRENT_NAME /;"	d
+CAR_CAN_INVERTER_RMS_CURRENTS_PHASE_VRMS_CURRENT_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_RMS_CURRENTS_PHASE_VRMS_CURRENT_NAME /;"	d
+CAR_CAN_INVERTER_RMS_CURRENTS_PHASE_WRMS_CURRENT_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_RMS_CURRENTS_PHASE_WRMS_CURRENT_NAME /;"	d
+CAR_CAN_INVERTER_SPEED_INFO_EM_SPEED01_HZ_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_SPEED_INFO_EM_SPEED01_HZ_NAME /;"	d
+CAR_CAN_INVERTER_SPEED_INFO_EM_SPEED_RPM_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_SPEED_INFO_EM_SPEED_RPM_NAME /;"	d
+CAR_CAN_INVERTER_SPEED_INFO_FRAME_ID	can/car_can.h	/^#define CAR_CAN_INVERTER_SPEED_INFO_FRAME_ID /;"	d
+CAR_CAN_INVERTER_SPEED_INFO_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_INVERTER_SPEED_INFO_IS_EXTENDED /;"	d
+CAR_CAN_INVERTER_SPEED_INFO_LENGTH	can/car_can.h	/^#define CAR_CAN_INVERTER_SPEED_INFO_LENGTH /;"	d
+CAR_CAN_INVERTER_SPEED_INFO_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_SPEED_INFO_NAME /;"	d
+CAR_CAN_INVERTER_TEMP_FRAME_ID	can/car_can.h	/^#define CAR_CAN_INVERTER_TEMP_FRAME_ID /;"	d
+CAR_CAN_INVERTER_TEMP_INVERTER_TEMP_U_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_TEMP_INVERTER_TEMP_U_NAME /;"	d
+CAR_CAN_INVERTER_TEMP_INVERTER_TEMP_V_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_TEMP_INVERTER_TEMP_V_NAME /;"	d
+CAR_CAN_INVERTER_TEMP_INVERTER_TEMP_W_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_TEMP_INVERTER_TEMP_W_NAME /;"	d
+CAR_CAN_INVERTER_TEMP_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_INVERTER_TEMP_IS_EXTENDED /;"	d
+CAR_CAN_INVERTER_TEMP_LENGTH	can/car_can.h	/^#define CAR_CAN_INVERTER_TEMP_LENGTH /;"	d
+CAR_CAN_INVERTER_TEMP_NAME	can/car_can.h	/^#define CAR_CAN_INVERTER_TEMP_NAME /;"	d
+CAR_CAN_SYSTEM_VOLTAGES_FRAME_ID	can/car_can.h	/^#define CAR_CAN_SYSTEM_VOLTAGES_FRAME_ID /;"	d
+CAR_CAN_SYSTEM_VOLTAGES_IS_EXTENDED	can/car_can.h	/^#define CAR_CAN_SYSTEM_VOLTAGES_IS_EXTENDED /;"	d
+CAR_CAN_SYSTEM_VOLTAGES_LENGTH	can/car_can.h	/^#define CAR_CAN_SYSTEM_VOLTAGES_LENGTH /;"	d
+CAR_CAN_SYSTEM_VOLTAGES_MEAS12_V_NAME	can/car_can.h	/^#define CAR_CAN_SYSTEM_VOLTAGES_MEAS12_V_NAME /;"	d
+CAR_CAN_SYSTEM_VOLTAGES_MEAS5_V_NAME	can/car_can.h	/^#define CAR_CAN_SYSTEM_VOLTAGES_MEAS5_V_NAME /;"	d
+CAR_CAN_SYSTEM_VOLTAGES_MEAS_BATT_VOLTAGE_NAME	can/car_can.h	/^#define CAR_CAN_SYSTEM_VOLTAGES_MEAS_BATT_VOLTAGE_NAME /;"	d
+CAR_CAN_SYSTEM_VOLTAGES_MEAS_DC_LINK_NAME	can/car_can.h	/^#define CAR_CAN_SYSTEM_VOLTAGES_MEAS_DC_LINK_NAME /;"	d
+CAR_CAN_SYSTEM_VOLTAGES_NAME	can/car_can.h	/^#define CAR_CAN_SYSTEM_VOLTAGES_NAME /;"	d
+CLK_H	uiux/widgets.h	/^#define CLK_H /;"	d
+CLK_W	uiux/widgets.h	/^#define CLK_W /;"	d
+CLK_X	uiux/widgets.h	/^#define CLK_X /;"	d
+CLK_Y	uiux/widgets.h	/^#define CLK_Y /;"	d
+CLR_AMBER	uiux/widgets.h	/^#define CLR_AMBER /;"	d
+CLR_AMBER_HOT	uiux/widgets.h	/^#define CLR_AMBER_HOT /;"	d
+CLR_CYAN	uiux/widgets.h	/^#define CLR_CYAN /;"	d
+CLR_DARK_BG	uiux/widgets.h	/^#define CLR_DARK_BG /;"	d
+CLR_GREEN	uiux/widgets.h	/^#define CLR_GREEN /;"	d
+CLR_GREEN_MODE	uiux/widgets.h	/^#define CLR_GREEN_MODE /;"	d
+CLR_GREEN_TURN	uiux/widgets.h	/^#define CLR_GREEN_TURN /;"	d
+CLR_MAGENTA	uiux/widgets.h	/^#define CLR_MAGENTA /;"	d
+CLR_RED	uiux/widgets.h	/^#define CLR_RED /;"	d
+CLR_RED_ARC	uiux/widgets.h	/^#define CLR_RED_ARC /;"	d
+CLR_WHITE	uiux/widgets.h	/^#define CLR_WHITE /;"	d
+CMD_BUFFER_SIZE	app_hmi_manager.c	/^#define CMD_BUFFER_SIZE /;"	d	file:
+CMD_BUFFER_SIZE	hmi_ctl.c	/^#define CMD_BUFFER_SIZE /;"	d	file:
+CMD_POLL_TIMEOUT_MS	app_hmi_manager.c	/^#define CMD_POLL_TIMEOUT_MS /;"	d	file:
+CONFIG_EXAMPLES_HMI_MANAGER	Kconfig	/^config EXAMPLES_HMI_MANAGER$/;"	c
+CONFIG_EXAMPLES_HMI_MANAGER_LOG_LEVEL	Kconfig	/^config EXAMPLES_HMI_MANAGER_LOG_LEVEL$/;"	c
+CONFIG_EXAMPLES_HMI_MANAGER_PRIORITY	Kconfig	/^config EXAMPLES_HMI_MANAGER_PRIORITY$/;"	c
+CONFIG_EXAMPLES_HMI_MANAGER_PROGNAME	Kconfig	/^config EXAMPLES_HMI_MANAGER_PROGNAME$/;"	c
+CONFIG_EXAMPLES_HMI_MANAGER_STACKSIZE	Kconfig	/^config EXAMPLES_HMI_MANAGER_STACKSIZE$/;"	c
+CONFIG_HMI_MANAGER_GEAR_RATIO	Kconfig	/^config HMI_MANAGER_GEAR_RATIO$/;"	c
+CONFIG_HMI_MANAGER_SCREEN_ENABLE	Kconfig	/^config HMI_MANAGER_SCREEN_ENABLE$/;"	c
+CONFIG_HMI_MANAGER_WHEEL_DIAMETER_MM	Kconfig	/^config HMI_MANAGER_WHEEL_DIAMETER_MM$/;"	c
+CONFIG_HMI_SOUND_ENABLE	Kconfig	/^config HMI_SOUND_ENABLE$/;"	c	menu:Sound Design
+CONFIG_HMI_SPLASH_BIFROSTOX_FLAT	Kconfig	/^config HMI_SPLASH_BIFROSTOX_FLAT$/;"	c	choice:Splash Screen""choice8014d1a60104
+CONFIG_HMI_SPLASH_BIFROSTOX_NORDIC	Kconfig	/^config HMI_SPLASH_BIFROSTOX_NORDIC$/;"	c	choice:Splash Screen""choice8014d1a60104
+CONFIG_HMI_SPLASH_NONE	Kconfig	/^config HMI_SPLASH_NONE$/;"	c	choice:Splash Screen""choice8014d1a60104
+CONFIG_HMI_SPLASH_TIME_0	Kconfig	/^config HMI_SPLASH_TIME_0$/;"	c	choice:Splash Screen""choice8014d1a60204
+CONFIG_HMI_SPLASH_TIME_1	Kconfig	/^config HMI_SPLASH_TIME_1$/;"	c	choice:Splash Screen""choice8014d1a60204
+CONFIG_HMI_SPLASH_TIME_2	Kconfig	/^config HMI_SPLASH_TIME_2$/;"	c	choice:Splash Screen""choice8014d1a60204
+CONFIG_HMI_THEME_BIFROSTOX_FLAT	Kconfig	/^config HMI_THEME_BIFROSTOX_FLAT$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+CONFIG_HMI_THEME_BIFROSTOX_NORDIC	Kconfig	/^config HMI_THEME_BIFROSTOX_NORDIC$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+CONFIG_HMI_THEME_MAIN_CYBERPUNK	Kconfig	/^config HMI_THEME_MAIN_CYBERPUNK$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+CONFIG_HMI_THEME_MAIN_MODERN	Kconfig	/^config HMI_THEME_MAIN_MODERN$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+CONFIG_HMI_THEME_MAIN_RETRO	Kconfig	/^config HMI_THEME_MAIN_RETRO$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+CONFIG_HMI_THEME_MAIN_RETRO_T3	Kconfig	/^config HMI_THEME_MAIN_RETRO_T3$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+CONFIG_HMI_THEME_NONE	Kconfig	/^config HMI_THEME_NONE$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+Driver Screen Theme	Kconfig	/^menu "Driver Screen Theme"$/;"	m
+EINVAL	can/car_can.h	/^#    define EINVAL /;"	d
+EXAMPLES_HMI_MANAGER	Kconfig	/^config EXAMPLES_HMI_MANAGER$/;"	c
+EXAMPLES_HMI_MANAGER_LOG_LEVEL	Kconfig	/^config EXAMPLES_HMI_MANAGER_LOG_LEVEL$/;"	c
+EXAMPLES_HMI_MANAGER_PRIORITY	Kconfig	/^config EXAMPLES_HMI_MANAGER_PRIORITY$/;"	c
+EXAMPLES_HMI_MANAGER_PROGNAME	Kconfig	/^config EXAMPLES_HMI_MANAGER_PROGNAME$/;"	c
+EXAMPLES_HMI_MANAGER_STACKSIZE	Kconfig	/^config EXAMPLES_HMI_MANAGER_STACKSIZE$/;"	c
+EXT_TEMP_H	uiux/widgets.h	/^#define EXT_TEMP_H /;"	d
+EXT_TEMP_W	uiux/widgets.h	/^#define EXT_TEMP_W /;"	d
+EXT_TEMP_X	uiux/widgets.h	/^#define EXT_TEMP_X /;"	d
+EXT_TEMP_Y	uiux/widgets.h	/^#define EXT_TEMP_Y /;"	d
+FONT_CLK	uiux/widgets.c	/^#define FONT_CLK /;"	d	file:
+FONT_GEAR	uiux/widgets.c	/^#define FONT_GEAR /;"	d	file:
+FONT_SMALL	uiux/widgets.c	/^#define FONT_SMALL /;"	d	file:
+FONT_STD	uiux/widgets.c	/^#define FONT_STD /;"	d	file:
+GEAR_CX	uiux/widgets.h	/^#define GEAR_CX /;"	d
+GEAR_CY	uiux/widgets.h	/^#define GEAR_CY /;"	d
+GEAR_H	uiux/widgets.h	/^#define GEAR_H /;"	d
+GEAR_RATIO	app_hmi_manager.c	/^#define GEAR_RATIO /;"	d	file:
+GEAR_W	uiux/widgets.h	/^#define GEAR_W /;"	d
+HMI_MANAGER_GEAR_RATIO	Kconfig	/^config HMI_MANAGER_GEAR_RATIO$/;"	c
+HMI_MANAGER_SCREEN_ENABLE	Kconfig	/^config HMI_MANAGER_SCREEN_ENABLE$/;"	c
+HMI_MANAGER_WHEEL_DIAMETER_MM	Kconfig	/^config HMI_MANAGER_WHEEL_DIAMETER_MM$/;"	c
+HMI_SOCKET_PATH	app_hmi_manager.c	/^#define HMI_SOCKET_PATH /;"	d	file:
+HMI_SOCKET_PATH	hmi_ctl.c	/^#define HMI_SOCKET_PATH /;"	d	file:
+HMI_SOUND_ENABLE	Kconfig	/^config HMI_SOUND_ENABLE$/;"	c	menu:Sound Design
+HMI_SPLASH_BIFROSTOX_FLAT	Kconfig	/^config HMI_SPLASH_BIFROSTOX_FLAT$/;"	c	choice:Splash Screen""choice8014d1a60104
+HMI_SPLASH_BIFROSTOX_NORDIC	Kconfig	/^config HMI_SPLASH_BIFROSTOX_NORDIC$/;"	c	choice:Splash Screen""choice8014d1a60104
+HMI_SPLASH_NONE	Kconfig	/^config HMI_SPLASH_NONE$/;"	c	choice:Splash Screen""choice8014d1a60104
+HMI_SPLASH_TIME_0	Kconfig	/^config HMI_SPLASH_TIME_0$/;"	c	choice:Splash Screen""choice8014d1a60204
+HMI_SPLASH_TIME_1	Kconfig	/^config HMI_SPLASH_TIME_1$/;"	c	choice:Splash Screen""choice8014d1a60204
+HMI_SPLASH_TIME_2	Kconfig	/^config HMI_SPLASH_TIME_2$/;"	c	choice:Splash Screen""choice8014d1a60204
+HMI_THEME_BIFROSTOX_FLAT	Kconfig	/^config HMI_THEME_BIFROSTOX_FLAT$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+HMI_THEME_BIFROSTOX_NORDIC	Kconfig	/^config HMI_THEME_BIFROSTOX_NORDIC$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+HMI_THEME_MAIN_CYBERPUNK	Kconfig	/^config HMI_THEME_MAIN_CYBERPUNK$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+HMI_THEME_MAIN_MODERN	Kconfig	/^config HMI_THEME_MAIN_MODERN$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+HMI_THEME_MAIN_RETRO	Kconfig	/^config HMI_THEME_MAIN_RETRO$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+HMI_THEME_MAIN_RETRO_T3	Kconfig	/^config HMI_THEME_MAIN_RETRO_T3$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+HMI_THEME_NONE	Kconfig	/^config HMI_THEME_NONE$/;"	c	choice:Driver Screen Theme""choice8014d1a60304
+LED_DC_LINK_ON	io_handler/led_control.h	/^#define LED_DC_LINK_ON /;"	d
+LED_DC_LINK_PRECHARGE	io_handler/led_control.h	/^#define LED_DC_LINK_PRECHARGE /;"	d
+LED_GREEN	io_handler/led_control.h	/^#define LED_GREEN /;"	d
+LED_ORANGE	io_handler/led_control.h	/^#define LED_ORANGE /;"	d
+LED_RED	io_handler/led_control.h	/^#define LED_RED /;"	d
+LOG_LEVEL_DEBUG	logs/logger.h	/^#define LOG_LEVEL_DEBUG /;"	d
+LOG_LEVEL_ERROR	logs/logger.h	/^#define LOG_LEVEL_ERROR /;"	d
+LOG_LEVEL_INFO	logs/logger.h	/^#define LOG_LEVEL_INFO /;"	d
+LOG_LEVEL_WARN	logs/logger.h	/^#define LOG_LEVEL_WARN /;"	d
+LVGL_PRIORITY	app_hmi_manager.c	/^#define LVGL_PRIORITY /;"	d	file:
+LVGL_STACK_SIZE	app_hmi_manager.c	/^#define LVGL_STACK_SIZE /;"	d	file:
+LVGL_TICK_MS	app_hmi_manager.c	/^#define LVGL_TICK_MS /;"	d	file:
+LV_PI_F	uiux/widgets.c	/^#define LV_PI_F /;"	d	file:
+MAINSRC	Makefile	/^MAINSRC   = app_hmi_manager.c$/;"	m
+MODE_H	uiux/widgets.h	/^#define MODE_H /;"	d
+MODE_W	uiux/widgets.h	/^#define MODE_W /;"	d
+MODE_X	uiux/widgets.h	/^#define MODE_X /;"	d
+MODE_Y	uiux/widgets.h	/^#define MODE_Y /;"	d
+MODULE	Makefile	/^MODULE    = $(CONFIG_EXAMPLES_HMI_MANAGER)$/;"	m
+NEEDLE_START_DEG	uiux/widgets.h	/^#define NEEDLE_START_DEG /;"	d
+NEEDLE_SWEEP_DEG	uiux/widgets.h	/^#define NEEDLE_SWEEP_DEG /;"	d
+NEEDLE_W	uiux/widgets.c	/^#define NEEDLE_W /;"	d	file:
+NOTIF_TYPE_ERROR	uiux/notifications.h	/^#define NOTIF_TYPE_ERROR /;"	d
+NOTIF_TYPE_INFO	uiux/notifications.h	/^#define NOTIF_TYPE_INFO /;"	d
+NOTIF_TYPE_WARNING	uiux/notifications.h	/^#define NOTIF_TYPE_WARNING /;"	d
+ODO_H	uiux/widgets.h	/^#define ODO_H /;"	d
+ODO_W	uiux/widgets.h	/^#define ODO_W /;"	d
+ODO_X	uiux/widgets.h	/^#define ODO_X /;"	d
+ODO_Y	uiux/widgets.h	/^#define ODO_Y /;"	d
+PIVOT_R	uiux/widgets.c	/^#define PIVOT_R /;"	d	file:
+PRIORITY	Makefile	/^PRIORITY  = $(CONFIG_EXAMPLES_HMI_MANAGER_PRIORITY)$/;"	m
+PROGNAME	Makefile	/^PROGNAME  = hmi_manager$/;"	m
+REG_ARC_CX	uiux/widgets.h	/^#define REG_ARC_CX /;"	d
+REG_ARC_CY	uiux/widgets.h	/^#define REG_ARC_CY /;"	d
+REG_ARC_END	uiux/widgets.h	/^#define REG_ARC_END /;"	d
+REG_ARC_START	uiux/widgets.h	/^#define REG_ARC_START /;"	d
+REG_HUB_CX	uiux/widgets.h	/^#define REG_HUB_CX /;"	d
+REG_HUB_CY	uiux/widgets.h	/^#define REG_HUB_CY /;"	d
+REG_MAX_AMPS	uiux/widgets.h	/^#define REG_MAX_AMPS /;"	d
+REG_MAX_VOLTS	uiux/widgets.h	/^#define REG_MAX_VOLTS /;"	d
+REG_NEEDLE_LEN	uiux/widgets.h	/^#define REG_NEEDLE_LEN /;"	d
+REG_R_INNER	uiux/widgets.h	/^#define REG_R_INNER /;"	d
+REG_R_OUTER	uiux/widgets.h	/^#define REG_R_OUTER /;"	d
+REM_TIME_H	uiux/widgets.h	/^#define REM_TIME_H /;"	d
+REM_TIME_W	uiux/widgets.h	/^#define REM_TIME_W /;"	d
+REM_TIME_X	uiux/widgets.h	/^#define REM_TIME_X /;"	d
+REM_TIME_Y	uiux/widgets.h	/^#define REM_TIME_Y /;"	d
+RFID_MODE_BYPASS	modules/rfid.h	/^#define RFID_MODE_BYPASS /;"	d
+RFID_MODE_REQUEST_CARD	modules/rfid.h	/^#define RFID_MODE_REQUEST_CARD /;"	d
+RPM_MAX	uiux/widgets.h	/^#define RPM_MAX /;"	d
+RPM_NEEDLE_LEN	uiux/widgets.h	/^#define RPM_NEEDLE_LEN /;"	d
+SCHED_PRIORITY_HIGH	app_hmi_manager.c	/^#define SCHED_PRIORITY_HIGH /;"	d	file:
+SCHED_PRIORITY_LOW	app_hmi_manager.c	/^#define SCHED_PRIORITY_LOW /;"	d	file:
+SCHED_PRIORITY_STD	app_hmi_manager.c	/^#define SCHED_PRIORITY_STD /;"	d	file:
+SCHED_PRIORITY_VERRY_HIGH	app_hmi_manager.c	/^#define SCHED_PRIORITY_VERRY_HIGH /;"	d	file:
+SCHED_PRIORITY_VERRY_LOW	app_hmi_manager.c	/^#define SCHED_PRIORITY_VERRY_LOW /;"	d	file:
+SCREEN_ANIM_MS	uiux/screen/screen_manager.h	/^#define SCREEN_ANIM_MS /;"	d
+SCREEN_BLACK	uiux/screen/screen_manager.h	/^  SCREEN_BLACK      = 3,  \/* Blank black screen                *\/$/;"	e	enum:__anondc2b73de0103
+SCREEN_COUNT	uiux/screen/screen_manager.h	/^  SCREEN_COUNT            \/* Sentinel - do not use directly    *\/$/;"	e	enum:__anondc2b73de0103
+SCREEN_DASHBOARD	uiux/screen/screen_manager.h	/^  SCREEN_DASHBOARD  = 1,  \/* Theme background + LVGL widgets   *\/$/;"	e	enum:__anondc2b73de0103
+SCREEN_OFF_DISABLED	app_hmi_manager.c	/^#define SCREEN_OFF_DISABLED /;"	d	file:
+SCREEN_OFF_ENABLED	app_hmi_manager.c	/^#define SCREEN_OFF_ENABLED /;"	d	file:
+SCREEN_SPLASH	uiux/screen/screen_manager.h	/^  SCREEN_SPLASH     = 0,  \/* Splash image (startup animation)  *\/$/;"	e	enum:__anondc2b73de0103
+SCREEN_THEME	uiux/screen/screen_manager.h	/^  SCREEN_THEME      = 2,  \/* Theme background only (no widgets)*\/$/;"	e	enum:__anondc2b73de0103
+SOC_H	uiux/widgets.h	/^#define SOC_H /;"	d
+SOC_W	uiux/widgets.h	/^#define SOC_W /;"	d
+SOC_X	uiux/widgets.h	/^#define SOC_X /;"	d
+SOC_Y	uiux/widgets.h	/^#define SOC_Y /;"	d
+SPD_ARC_CX	uiux/widgets.h	/^#define SPD_ARC_CX /;"	d
+SPD_ARC_CY	uiux/widgets.h	/^#define SPD_ARC_CY /;"	d
+SPD_ARC_END	uiux/widgets.h	/^#define SPD_ARC_END /;"	d
+SPD_ARC_START	uiux/widgets.h	/^#define SPD_ARC_START /;"	d
+SPD_HUB_CX	uiux/widgets.h	/^#define SPD_HUB_CX /;"	d
+SPD_HUB_CY	uiux/widgets.h	/^#define SPD_HUB_CY /;"	d
+SPD_MAX_KMH	uiux/widgets.h	/^#define SPD_MAX_KMH /;"	d
+SPD_NEEDLE_LEN	uiux/widgets.h	/^#define SPD_NEEDLE_LEN /;"	d
+SPD_R_INNER	uiux/widgets.h	/^#define SPD_R_INNER /;"	d
+SPD_R_OUTER	uiux/widgets.h	/^#define SPD_R_OUTER /;"	d
+SPLASH_ASSET	uiux/screen/screen_manager.c	/^#  define SPLASH_ASSET /;"	d	file:
+SPLASH_TIME_MS	app_hmi_manager.c	/^#  define SPLASH_TIME_MS /;"	d	file:
+STACKSIZE	Makefile	/^STACKSIZE = $(CONFIG_EXAMPLES_HMI_MANAGER_STACKSIZE)$/;"	m
+Sound Design	Kconfig	/^menu "Sound Design"$/;"	m
+Splash Screen	Kconfig	/^menu "Splash Screen"$/;"	m
+THEME_ASSET	uiux/screen/screen_manager.c	/^#  define THEME_ASSET /;"	d	file:
+TURN_BLINK_MS	uiux/widgets.h	/^#define TURN_BLINK_MS /;"	d
+TURN_L_H	uiux/widgets.h	/^#define TURN_L_H /;"	d
+TURN_L_W	uiux/widgets.h	/^#define TURN_L_W /;"	d
+TURN_L_X	uiux/widgets.h	/^#define TURN_L_X /;"	d
+TURN_L_Y	uiux/widgets.h	/^#define TURN_L_Y /;"	d
+TURN_R_H	uiux/widgets.h	/^#define TURN_R_H /;"	d
+TURN_R_W	uiux/widgets.h	/^#define TURN_R_W /;"	d
+TURN_R_X	uiux/widgets.h	/^#define TURN_R_X /;"	d
+TURN_R_Y	uiux/widgets.h	/^#define TURN_R_Y /;"	d
+WHEEL_DIAM_M	app_hmi_manager.c	/^#define WHEEL_DIAM_M /;"	d	file:
+WIDGET_DIR_FORWARD	uiux/widgets.h	/^#define WIDGET_DIR_FORWARD /;"	d
+WIDGET_DIR_NEUTRAL	uiux/widgets.h	/^#define WIDGET_DIR_NEUTRAL /;"	d
+WIDGET_DIR_REVERSE	uiux/widgets.h	/^#define WIDGET_DIR_REVERSE /;"	d
+WIDGET_MODE_ECO	uiux/widgets.h	/^#define WIDGET_MODE_ECO /;"	d
+WIDGET_MODE_SPORT	uiux/widgets.h	/^#define WIDGET_MODE_SPORT /;"	d
+WIDGET_MODE_STANDARD	uiux/widgets.h	/^#define WIDGET_MODE_STANDARD /;"	d
+__APPS_HMI_MANAGER_CAN_CAN_HANDLER_H	can/can_handler.h	/^#define __APPS_HMI_MANAGER_CAN_CAN_HANDLER_H$/;"	d
+__APPS_HMI_MANAGER_CAN_CAN_TRACE_H	can/can_trace.h	/^#define __APPS_HMI_MANAGER_CAN_CAN_TRACE_H$/;"	d
+__APPS_HMI_MANAGER_CMD_COMMANDS_H	cmd/commands.h	/^#define __APPS_HMI_MANAGER_CMD_COMMANDS_H$/;"	d
+__APPS_HMI_MANAGER_CONFIG_CONFIG_MANAGER_H	config/config_manager.h	/^#define __APPS_HMI_MANAGER_CONFIG_CONFIG_MANAGER_H$/;"	d
+__APPS_HMI_MANAGER_IO_HANDLER_BUTTON_IRQ_H	io_handler/button_irq.h	/^#define __APPS_HMI_MANAGER_IO_HANDLER_BUTTON_IRQ_H$/;"	d
+__APPS_HMI_MANAGER_IO_HANDLER_LED_CONTROL_H	io_handler/led_control.h	/^#define __APPS_HMI_MANAGER_IO_HANDLER_LED_CONTROL_H$/;"	d
+__APPS_HMI_MANAGER_LOGS_LOGGER_H	logs/logger.h	/^#define __APPS_HMI_MANAGER_LOGS_LOGGER_H$/;"	d
+__APPS_HMI_MANAGER_MODULES_ACCEL_H	modules/accel.h	/^#define __APPS_HMI_MANAGER_MODULES_ACCEL_H$/;"	d
+__APPS_HMI_MANAGER_MODULES_RFID_H	modules/rfid.h	/^#define __APPS_HMI_MANAGER_MODULES_RFID_H$/;"	d
+__APPS_HMI_MANAGER_UIUX_AUX_DISP_H	uiux/aux_disp.h	/^#define __APPS_HMI_MANAGER_UIUX_AUX_DISP_H$/;"	d
+__APPS_HMI_MANAGER_UIUX_FB_HANDLER_H	uiux/fb_handler.h	/^#define __APPS_HMI_MANAGER_UIUX_FB_HANDLER_H$/;"	d
+__APPS_HMI_MANAGER_UIUX_NOTIFICATIONS_H	uiux/notifications.h	/^#define __APPS_HMI_MANAGER_UIUX_NOTIFICATIONS_H$/;"	d
+__APPS_HMI_MANAGER_UIUX_SCREEN_SCREEN_MANAGER_H	uiux/screen/screen_manager.h	/^#define __APPS_HMI_MANAGER_UIUX_SCREEN_SCREEN_MANAGER_H$/;"	d
+__APPS_HMI_MANAGER_UIUX_WIDGETS_H	uiux/widgets.h	/^#define __APPS_HMI_MANAGER_UIUX_WIDGETS_H$/;"	d
+__anondc2b73de0103	uiux/screen/screen_manager.h	/^{$/;"	g
+accel_close	modules/accel.c	/^void accel_close(void)$/;"	f	typeref:typename:void
+accel_data_s	modules/accel.h	/^struct accel_data_s$/;"	s
+accel_init	modules/accel.c	/^int accel_init(const char *devpath)$/;"	f	typeref:typename:int
+accel_read	modules/accel.c	/^int accel_read(struct accel_data_s *data)$/;"	f	typeref:typename:int
+active_demander	can/car_can.h	/^    uint8_t active_demander;$/;"	m	struct:car_can_inverter_demanders_t	typeref:typename:uint8_t
+attach_fullscreen_image	uiux/screen/screen_manager.c	/^static int attach_fullscreen_image(lv_obj_t *parent,$/;"	f	typeref:typename:int	file:
+aux_disp_clear	uiux/aux_disp.c	/^int aux_disp_clear(void)$/;"	f	typeref:typename:int
+aux_disp_close	uiux/aux_disp.c	/^void aux_disp_close(void)$/;"	f	typeref:typename:void
+aux_disp_init	uiux/aux_disp.c	/^int aux_disp_init(const char *devpath)$/;"	f	typeref:typename:int
+aux_disp_print	uiux/aux_disp.c	/^int aux_disp_print(const char *line1, const char *line2)$/;"	f	typeref:typename:int
+blink_cb	uiux/widgets.c	/^static void blink_cb(lv_timer_t *t)$/;"	f	typeref:typename:void	file:
+build_screen_skeleton	uiux/screen/screen_manager.c	/^static lv_obj_t *build_screen_skeleton(void)$/;"	f	typeref:typename:lv_obj_t *	file:
+button_irq_clear	io_handler/button_irq.c	/^void button_irq_clear(void)$/;"	f	typeref:typename:void
+button_irq_close	io_handler/button_irq.c	/^void button_irq_close(void)$/;"	f	typeref:typename:void
+button_irq_get_pressed	io_handler/button_irq.c	/^int button_irq_get_pressed(void)$/;"	f	typeref:typename:int
+button_irq_init	io_handler/button_irq.c	/^int button_irq_init(const char *devpath)$/;"	f	typeref:typename:int
+button_signal_handler	io_handler/button_irq.c	/^static void button_signal_handler(int signo, siginfo_t *info,$/;"	f	typeref:typename:void	file:
+can_handler_close	can/can_handler.c	/^void can_handler_close(void)$/;"	f	typeref:typename:void
+can_handler_get_fd	can/can_handler.c	/^int can_handler_get_fd(void)$/;"	f	typeref:typename:int
+can_handler_init	can/can_handler.c	/^int can_handler_init(const char *ifname)$/;"	f	typeref:typename:int
+can_handler_read	can/can_handler.c	/^int can_handler_read(struct can_frame *frame)$/;"	f	typeref:typename:int
+can_handler_send	can/can_handler.c	/^int can_handler_send(uint32_t id, bool extended, const uint8_t *data,$/;"	f	typeref:typename:int
+can_rx_thread	app_hmi_manager.c	/^static void *can_rx_thread(void *arg)$/;"	f	typeref:typename:void *	file:
+can_trace_enable	can/can_trace.c	/^void can_trace_enable(bool enable)$/;"	f	typeref:typename:void
+can_trace_init	can/can_trace.c	/^void can_trace_init(void)$/;"	f	typeref:typename:void
+can_trace_is_enabled	can/can_trace.c	/^bool can_trace_is_enabled(void)$/;"	f	typeref:typename:bool
+can_trace_rx	can/can_trace.c	/^void can_trace_rx(const struct can_frame *frame)$/;"	f	typeref:typename:void
+can_trace_set_filter	can/can_trace.c	/^void can_trace_set_filter(uint32_t id_mask)$/;"	f	typeref:typename:void
+can_trace_tx	can/can_trace.c	/^void can_trace_tx(const struct can_frame *frame)$/;"	f	typeref:typename:void
+can_tx_loop_1000ms	app_hmi_manager.c	/^static void *can_tx_loop_1000ms(void *arg)$/;"	f	typeref:typename:void *	file:
+can_tx_loop_100ms	app_hmi_manager.c	/^static void *can_tx_loop_100ms(void *arg)$/;"	f	typeref:typename:void *	file:
+car_can_debug_demands_init	can/car_can.c	/^int car_can_debug_demands_init(struct car_can_debug_demands_t *msg_p)$/;"	f	typeref:typename:int
+car_can_debug_demands_inverter_reset_demand_decode	can/car_can.c	/^double car_can_debug_demands_inverter_reset_demand_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_debug_demands_inverter_reset_demand_encode	can/car_can.c	/^uint8_t car_can_debug_demands_inverter_reset_demand_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_debug_demands_inverter_reset_demand_is_in_range	can/car_can.c	/^bool car_can_debug_demands_inverter_reset_demand_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_debug_demands_pack	can/car_can.c	/^int car_can_debug_demands_pack($/;"	f	typeref:typename:int
+car_can_debug_demands_t	can/car_can.h	/^struct car_can_debug_demands_t {$/;"	s
+car_can_debug_demands_unpack	can/car_can.c	/^int car_can_debug_demands_unpack($/;"	f	typeref:typename:int
+car_can_driver_commands_dc_link_active_demand_decode	can/car_can.c	/^double car_can_driver_commands_dc_link_active_demand_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_driver_commands_dc_link_active_demand_encode	can/car_can.c	/^uint8_t car_can_driver_commands_dc_link_active_demand_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_driver_commands_dc_link_active_demand_is_in_range	can/car_can.c	/^bool car_can_driver_commands_dc_link_active_demand_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_driver_commands_demanded_drive_direction_decode	can/car_can.c	/^double car_can_driver_commands_demanded_drive_direction_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_driver_commands_demanded_drive_direction_encode	can/car_can.c	/^uint8_t car_can_driver_commands_demanded_drive_direction_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_driver_commands_demanded_drive_direction_is_in_range	can/car_can.c	/^bool car_can_driver_commands_demanded_drive_direction_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_driver_commands_demanded_drive_state_decode	can/car_can.c	/^double car_can_driver_commands_demanded_drive_state_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_driver_commands_demanded_drive_state_encode	can/car_can.c	/^uint8_t car_can_driver_commands_demanded_drive_state_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_driver_commands_demanded_drive_state_is_in_range	can/car_can.c	/^bool car_can_driver_commands_demanded_drive_state_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_driver_commands_init	can/car_can.c	/^int car_can_driver_commands_init(struct car_can_driver_commands_t *msg_p)$/;"	f	typeref:typename:int
+car_can_driver_commands_pack	can/car_can.c	/^int car_can_driver_commands_pack($/;"	f	typeref:typename:int
+car_can_driver_commands_pedal_setting_decode	can/car_can.c	/^double car_can_driver_commands_pedal_setting_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_driver_commands_pedal_setting_encode	can/car_can.c	/^uint8_t car_can_driver_commands_pedal_setting_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_driver_commands_pedal_setting_is_in_range	can/car_can.c	/^bool car_can_driver_commands_pedal_setting_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_driver_commands_reset_inverter_errrors_decode	can/car_can.c	/^double car_can_driver_commands_reset_inverter_errrors_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_driver_commands_reset_inverter_errrors_encode	can/car_can.c	/^uint8_t car_can_driver_commands_reset_inverter_errrors_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_driver_commands_reset_inverter_errrors_is_in_range	can/car_can.c	/^bool car_can_driver_commands_reset_inverter_errrors_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_driver_commands_t	can/car_can.h	/^struct car_can_driver_commands_t {$/;"	s
+car_can_driver_commands_unpack	can/car_can.c	/^int car_can_driver_commands_unpack($/;"	f	typeref:typename:int
+car_can_foc_vars_foc_current_id_decode	can/car_can.c	/^double car_can_foc_vars_foc_current_id_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_foc_vars_foc_current_id_encode	can/car_can.c	/^int16_t car_can_foc_vars_foc_current_id_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_foc_vars_foc_current_id_is_in_range	can/car_can.c	/^bool car_can_foc_vars_foc_current_id_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_foc_vars_foc_current_iq_decode	can/car_can.c	/^double car_can_foc_vars_foc_current_iq_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_foc_vars_foc_current_iq_encode	can/car_can.c	/^int16_t car_can_foc_vars_foc_current_iq_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_foc_vars_foc_current_iq_is_in_range	can/car_can.c	/^bool car_can_foc_vars_foc_current_iq_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_foc_vars_id_ref_decode	can/car_can.c	/^double car_can_foc_vars_id_ref_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_foc_vars_id_ref_encode	can/car_can.c	/^int16_t car_can_foc_vars_id_ref_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_foc_vars_id_ref_is_in_range	can/car_can.c	/^bool car_can_foc_vars_id_ref_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_foc_vars_init	can/car_can.c	/^int car_can_foc_vars_init(struct car_can_foc_vars_t *msg_p)$/;"	f	typeref:typename:int
+car_can_foc_vars_iq_ref_decode	can/car_can.c	/^double car_can_foc_vars_iq_ref_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_foc_vars_iq_ref_encode	can/car_can.c	/^int16_t car_can_foc_vars_iq_ref_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_foc_vars_iq_ref_is_in_range	can/car_can.c	/^bool car_can_foc_vars_iq_ref_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_foc_vars_pack	can/car_can.c	/^int car_can_foc_vars_pack($/;"	f	typeref:typename:int
+car_can_foc_vars_t	can/car_can.h	/^struct car_can_foc_vars_t {$/;"	s
+car_can_foc_vars_unpack	can/car_can.c	/^int car_can_foc_vars_unpack($/;"	f	typeref:typename:int
+car_can_hmi_info_hmi1ms_ticks_decode	can/car_can.c	/^double car_can_hmi_info_hmi1ms_ticks_decode(uint32_t value)$/;"	f	typeref:typename:double
+car_can_hmi_info_hmi1ms_ticks_encode	can/car_can.c	/^uint32_t car_can_hmi_info_hmi1ms_ticks_encode(double value)$/;"	f	typeref:typename:uint32_t
+car_can_hmi_info_hmi1ms_ticks_is_in_range	can/car_can.c	/^bool car_can_hmi_info_hmi1ms_ticks_is_in_range(uint32_t value)$/;"	f	typeref:typename:bool
+car_can_hmi_info_init	can/car_can.c	/^int car_can_hmi_info_init(struct car_can_hmi_info_t *msg_p)$/;"	f	typeref:typename:int
+car_can_hmi_info_pack	can/car_can.c	/^int car_can_hmi_info_pack($/;"	f	typeref:typename:int
+car_can_hmi_info_t	can/car_can.h	/^struct car_can_hmi_info_t {$/;"	s
+car_can_hmi_info_unpack	can/car_can.c	/^int car_can_hmi_info_unpack($/;"	f	typeref:typename:int
+car_can_inverter_demanders_active_demander_decode	can/car_can.c	/^double car_can_inverter_demanders_active_demander_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_inverter_demanders_active_demander_encode	can/car_can.c	/^uint8_t car_can_inverter_demanders_active_demander_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_inverter_demanders_active_demander_is_in_range	can/car_can.c	/^bool car_can_inverter_demanders_active_demander_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_demanders_id_demand_decode	can/car_can.c	/^double car_can_inverter_demanders_id_demand_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_inverter_demanders_id_demand_encode	can/car_can.c	/^int16_t car_can_inverter_demanders_id_demand_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_inverter_demanders_id_demand_is_in_range	can/car_can.c	/^bool car_can_inverter_demanders_id_demand_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_demanders_init	can/car_can.c	/^int car_can_inverter_demanders_init(struct car_can_inverter_demanders_t *msg_p)$/;"	f	typeref:typename:int
+car_can_inverter_demanders_iq_demand_decode	can/car_can.c	/^double car_can_inverter_demanders_iq_demand_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_inverter_demanders_iq_demand_encode	can/car_can.c	/^int16_t car_can_inverter_demanders_iq_demand_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_inverter_demanders_iq_demand_is_in_range	can/car_can.c	/^bool car_can_inverter_demanders_iq_demand_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_demanders_pack	can/car_can.c	/^int car_can_inverter_demanders_pack($/;"	f	typeref:typename:int
+car_can_inverter_demanders_pedal_request_decode	can/car_can.c	/^double car_can_inverter_demanders_pedal_request_decode(uint16_t value)$/;"	f	typeref:typename:double
+car_can_inverter_demanders_pedal_request_encode	can/car_can.c	/^uint16_t car_can_inverter_demanders_pedal_request_encode(double value)$/;"	f	typeref:typename:uint16_t
+car_can_inverter_demanders_pedal_request_is_in_range	can/car_can.c	/^bool car_can_inverter_demanders_pedal_request_is_in_range(uint16_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_demanders_t	can/car_can.h	/^struct car_can_inverter_demanders_t {$/;"	s
+car_can_inverter_demanders_unpack	can/car_can.c	/^int car_can_inverter_demanders_unpack($/;"	f	typeref:typename:int
+car_can_inverter_faults_flh_active_faults_decode	can/car_can.c	/^double car_can_inverter_faults_flh_active_faults_decode(uint32_t value)$/;"	f	typeref:typename:double
+car_can_inverter_faults_flh_active_faults_encode	can/car_can.c	/^uint32_t car_can_inverter_faults_flh_active_faults_encode(double value)$/;"	f	typeref:typename:uint32_t
+car_can_inverter_faults_flh_active_faults_is_in_range	can/car_can.c	/^bool car_can_inverter_faults_flh_active_faults_is_in_range(uint32_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_faults_flh_passive_faults_decode	can/car_can.c	/^double car_can_inverter_faults_flh_passive_faults_decode(uint32_t value)$/;"	f	typeref:typename:double
+car_can_inverter_faults_flh_passive_faults_encode	can/car_can.c	/^uint32_t car_can_inverter_faults_flh_passive_faults_encode(double value)$/;"	f	typeref:typename:uint32_t
+car_can_inverter_faults_flh_passive_faults_is_in_range	can/car_can.c	/^bool car_can_inverter_faults_flh_passive_faults_is_in_range(uint32_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_faults_init	can/car_can.c	/^int car_can_inverter_faults_init(struct car_can_inverter_faults_t *msg_p)$/;"	f	typeref:typename:int
+car_can_inverter_faults_pack	can/car_can.c	/^int car_can_inverter_faults_pack($/;"	f	typeref:typename:int
+car_can_inverter_faults_t	can/car_can.h	/^struct car_can_inverter_faults_t {$/;"	s
+car_can_inverter_faults_unpack	can/car_can.c	/^int car_can_inverter_faults_unpack($/;"	f	typeref:typename:int
+car_can_inverter_info_dc_link_state_decode	can/car_can.c	/^double car_can_inverter_info_dc_link_state_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_inverter_info_dc_link_state_encode	can/car_can.c	/^uint8_t car_can_inverter_info_dc_link_state_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_inverter_info_dc_link_state_is_in_range	can/car_can.c	/^bool car_can_inverter_info_dc_link_state_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_info_init	can/car_can.c	/^int car_can_inverter_info_init(struct car_can_inverter_info_t *msg_p)$/;"	f	typeref:typename:int
+car_can_inverter_info_inverter1ms_ticks_decode	can/car_can.c	/^double car_can_inverter_info_inverter1ms_ticks_decode(uint32_t value)$/;"	f	typeref:typename:double
+car_can_inverter_info_inverter1ms_ticks_encode	can/car_can.c	/^uint32_t car_can_inverter_info_inverter1ms_ticks_encode(double value)$/;"	f	typeref:typename:uint32_t
+car_can_inverter_info_inverter1ms_ticks_is_in_range	can/car_can.c	/^bool car_can_inverter_info_inverter1ms_ticks_is_in_range(uint32_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_info_mft_state_decode	can/car_can.c	/^double car_can_inverter_info_mft_state_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_inverter_info_mft_state_encode	can/car_can.c	/^uint8_t car_can_inverter_info_mft_state_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_inverter_info_mft_state_is_in_range	can/car_can.c	/^bool car_can_inverter_info_mft_state_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_info_pack	can/car_can.c	/^int car_can_inverter_info_pack($/;"	f	typeref:typename:int
+car_can_inverter_info_t	can/car_can.h	/^struct car_can_inverter_info_t {$/;"	s
+car_can_inverter_info_unpack	can/car_can.c	/^int car_can_inverter_info_unpack($/;"	f	typeref:typename:int
+car_can_inverter_qd_currents_current_id_decode	can/car_can.c	/^double car_can_inverter_qd_currents_current_id_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_inverter_qd_currents_current_id_encode	can/car_can.c	/^int16_t car_can_inverter_qd_currents_current_id_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_inverter_qd_currents_current_id_is_in_range	can/car_can.c	/^bool car_can_inverter_qd_currents_current_id_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_qd_currents_current_iq_decode	can/car_can.c	/^double car_can_inverter_qd_currents_current_iq_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_inverter_qd_currents_current_iq_encode	can/car_can.c	/^int16_t car_can_inverter_qd_currents_current_iq_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_inverter_qd_currents_current_iq_is_in_range	can/car_can.c	/^bool car_can_inverter_qd_currents_current_iq_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_qd_currents_init	can/car_can.c	/^int car_can_inverter_qd_currents_init(struct car_can_inverter_qd_currents_t *msg_p)$/;"	f	typeref:typename:int
+car_can_inverter_qd_currents_pack	can/car_can.c	/^int car_can_inverter_qd_currents_pack($/;"	f	typeref:typename:int
+car_can_inverter_qd_currents_t	can/car_can.h	/^struct car_can_inverter_qd_currents_t {$/;"	s
+car_can_inverter_qd_currents_unpack	can/car_can.c	/^int car_can_inverter_qd_currents_unpack($/;"	f	typeref:typename:int
+car_can_inverter_rms_currents_init	can/car_can.c	/^int car_can_inverter_rms_currents_init(struct car_can_inverter_rms_currents_t *msg_p)$/;"	f	typeref:typename:int
+car_can_inverter_rms_currents_pack	can/car_can.c	/^int car_can_inverter_rms_currents_pack($/;"	f	typeref:typename:int
+car_can_inverter_rms_currents_phase_urms_current_decode	can/car_can.c	/^double car_can_inverter_rms_currents_phase_urms_current_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_inverter_rms_currents_phase_urms_current_encode	can/car_can.c	/^int16_t car_can_inverter_rms_currents_phase_urms_current_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_inverter_rms_currents_phase_urms_current_is_in_range	can/car_can.c	/^bool car_can_inverter_rms_currents_phase_urms_current_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_rms_currents_phase_vrms_current_decode	can/car_can.c	/^double car_can_inverter_rms_currents_phase_vrms_current_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_inverter_rms_currents_phase_vrms_current_encode	can/car_can.c	/^int16_t car_can_inverter_rms_currents_phase_vrms_current_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_inverter_rms_currents_phase_vrms_current_is_in_range	can/car_can.c	/^bool car_can_inverter_rms_currents_phase_vrms_current_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_rms_currents_phase_wrms_current_decode	can/car_can.c	/^double car_can_inverter_rms_currents_phase_wrms_current_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_inverter_rms_currents_phase_wrms_current_encode	can/car_can.c	/^int16_t car_can_inverter_rms_currents_phase_wrms_current_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_inverter_rms_currents_phase_wrms_current_is_in_range	can/car_can.c	/^bool car_can_inverter_rms_currents_phase_wrms_current_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_rms_currents_t	can/car_can.h	/^struct car_can_inverter_rms_currents_t {$/;"	s
+car_can_inverter_rms_currents_unpack	can/car_can.c	/^int car_can_inverter_rms_currents_unpack($/;"	f	typeref:typename:int
+car_can_inverter_speed_info_em_speed01_hz_decode	can/car_can.c	/^double car_can_inverter_speed_info_em_speed01_hz_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_inverter_speed_info_em_speed01_hz_encode	can/car_can.c	/^int16_t car_can_inverter_speed_info_em_speed01_hz_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_inverter_speed_info_em_speed01_hz_is_in_range	can/car_can.c	/^bool car_can_inverter_speed_info_em_speed01_hz_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_speed_info_em_speed_rpm_decode	can/car_can.c	/^double car_can_inverter_speed_info_em_speed_rpm_decode(int16_t value)$/;"	f	typeref:typename:double
+car_can_inverter_speed_info_em_speed_rpm_encode	can/car_can.c	/^int16_t car_can_inverter_speed_info_em_speed_rpm_encode(double value)$/;"	f	typeref:typename:int16_t
+car_can_inverter_speed_info_em_speed_rpm_is_in_range	can/car_can.c	/^bool car_can_inverter_speed_info_em_speed_rpm_is_in_range(int16_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_speed_info_init	can/car_can.c	/^int car_can_inverter_speed_info_init(struct car_can_inverter_speed_info_t *msg_p)$/;"	f	typeref:typename:int
+car_can_inverter_speed_info_pack	can/car_can.c	/^int car_can_inverter_speed_info_pack($/;"	f	typeref:typename:int
+car_can_inverter_speed_info_t	can/car_can.h	/^struct car_can_inverter_speed_info_t {$/;"	s
+car_can_inverter_speed_info_unpack	can/car_can.c	/^int car_can_inverter_speed_info_unpack($/;"	f	typeref:typename:int
+car_can_inverter_temp_init	can/car_can.c	/^int car_can_inverter_temp_init(struct car_can_inverter_temp_t *msg_p)$/;"	f	typeref:typename:int
+car_can_inverter_temp_inverter_temp_u_decode	can/car_can.c	/^double car_can_inverter_temp_inverter_temp_u_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_inverter_temp_inverter_temp_u_encode	can/car_can.c	/^uint8_t car_can_inverter_temp_inverter_temp_u_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_inverter_temp_inverter_temp_u_is_in_range	can/car_can.c	/^bool car_can_inverter_temp_inverter_temp_u_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_temp_inverter_temp_v_decode	can/car_can.c	/^double car_can_inverter_temp_inverter_temp_v_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_inverter_temp_inverter_temp_v_encode	can/car_can.c	/^uint8_t car_can_inverter_temp_inverter_temp_v_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_inverter_temp_inverter_temp_v_is_in_range	can/car_can.c	/^bool car_can_inverter_temp_inverter_temp_v_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_temp_inverter_temp_w_decode	can/car_can.c	/^double car_can_inverter_temp_inverter_temp_w_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_inverter_temp_inverter_temp_w_encode	can/car_can.c	/^uint8_t car_can_inverter_temp_inverter_temp_w_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_inverter_temp_inverter_temp_w_is_in_range	can/car_can.c	/^bool car_can_inverter_temp_inverter_temp_w_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_inverter_temp_pack	can/car_can.c	/^int car_can_inverter_temp_pack($/;"	f	typeref:typename:int
+car_can_inverter_temp_t	can/car_can.h	/^struct car_can_inverter_temp_t {$/;"	s
+car_can_inverter_temp_unpack	can/car_can.c	/^int car_can_inverter_temp_unpack($/;"	f	typeref:typename:int
+car_can_system_voltages_init	can/car_can.c	/^int car_can_system_voltages_init(struct car_can_system_voltages_t *msg_p)$/;"	f	typeref:typename:int
+car_can_system_voltages_meas12_v_decode	can/car_can.c	/^double car_can_system_voltages_meas12_v_decode(uint16_t value)$/;"	f	typeref:typename:double
+car_can_system_voltages_meas12_v_encode	can/car_can.c	/^uint16_t car_can_system_voltages_meas12_v_encode(double value)$/;"	f	typeref:typename:uint16_t
+car_can_system_voltages_meas12_v_is_in_range	can/car_can.c	/^bool car_can_system_voltages_meas12_v_is_in_range(uint16_t value)$/;"	f	typeref:typename:bool
+car_can_system_voltages_meas5_v_decode	can/car_can.c	/^double car_can_system_voltages_meas5_v_decode(uint8_t value)$/;"	f	typeref:typename:double
+car_can_system_voltages_meas5_v_encode	can/car_can.c	/^uint8_t car_can_system_voltages_meas5_v_encode(double value)$/;"	f	typeref:typename:uint8_t
+car_can_system_voltages_meas5_v_is_in_range	can/car_can.c	/^bool car_can_system_voltages_meas5_v_is_in_range(uint8_t value)$/;"	f	typeref:typename:bool
+car_can_system_voltages_meas_batt_voltage_decode	can/car_can.c	/^double car_can_system_voltages_meas_batt_voltage_decode(uint16_t value)$/;"	f	typeref:typename:double
+car_can_system_voltages_meas_batt_voltage_encode	can/car_can.c	/^uint16_t car_can_system_voltages_meas_batt_voltage_encode(double value)$/;"	f	typeref:typename:uint16_t
+car_can_system_voltages_meas_batt_voltage_is_in_range	can/car_can.c	/^bool car_can_system_voltages_meas_batt_voltage_is_in_range(uint16_t value)$/;"	f	typeref:typename:bool
+car_can_system_voltages_meas_dc_link_decode	can/car_can.c	/^double car_can_system_voltages_meas_dc_link_decode(uint16_t value)$/;"	f	typeref:typename:double
+car_can_system_voltages_meas_dc_link_encode	can/car_can.c	/^uint16_t car_can_system_voltages_meas_dc_link_encode(double value)$/;"	f	typeref:typename:uint16_t
+car_can_system_voltages_meas_dc_link_is_in_range	can/car_can.c	/^bool car_can_system_voltages_meas_dc_link_is_in_range(uint16_t value)$/;"	f	typeref:typename:bool
+car_can_system_voltages_pack	can/car_can.c	/^int car_can_system_voltages_pack($/;"	f	typeref:typename:int
+car_can_system_voltages_t	can/car_can.h	/^struct car_can_system_voltages_t {$/;"	s
+car_can_system_voltages_unpack	can/car_can.c	/^int car_can_system_voltages_unpack($/;"	f	typeref:typename:int
+choice8014d1a60104	Kconfig	/^choice$/;"	C	menu:Splash Screen
+choice8014d1a60204	Kconfig	/^choice$/;"	C	menu:Splash Screen
+choice8014d1a60304	Kconfig	/^choice$/;"	C	menu:Driver Screen Theme
+cmd_app	cmd/commands.c	/^static int cmd_app(int argc, char *argv[])$/;"	f	typeref:typename:int	file:
+cmd_can	cmd/commands.c	/^static int cmd_can(int argc, char *argv[])$/;"	f	typeref:typename:int	file:
+cmd_log	cmd/commands.c	/^static int cmd_log(int argc, char *argv[])$/;"	f	typeref:typename:int	file:
+cmd_rfid	cmd/commands.c	/^static int cmd_rfid(int argc, char *argv[])$/;"	f	typeref:typename:int	file:
+commands_parse	cmd/commands.c	/^int commands_parse(int argc, char *argv[])$/;"	f	typeref:typename:int
+commands_print_usage	cmd/commands.c	/^void commands_print_usage(void)$/;"	f	typeref:typename:void
+config_load	config/config_manager.c	/^int config_load(void)$/;"	f	typeref:typename:int
+config_reset_defaults	config/config_manager.c	/^int config_reset_defaults(void)$/;"	f	typeref:typename:int
+config_save	config/config_manager.c	/^int config_save(void)$/;"	f	typeref:typename:int
+create_thread	app_hmi_manager.c	/^static int create_thread(pthread_t *tid,$/;"	f	typeref:typename:int	file:
+current	app_hmi_manager.c	/^  int current;    \/* amps     *\/$/;"	m	struct:ui_snapshot_t	typeref:typename:int	file:
+current_id	can/car_can.h	/^    int16_t current_id;$/;"	m	struct:car_can_inverter_qd_currents_t	typeref:typename:int16_t
+current_iq	can/car_can.h	/^    int16_t current_iq;$/;"	m	struct:car_can_inverter_qd_currents_t	typeref:typename:int16_t
+dc_link_active_demand	can/car_can.h	/^    uint8_t dc_link_active_demand;$/;"	m	struct:car_can_driver_commands_t	typeref:typename:uint8_t
+dc_link_state	can/car_can.h	/^    uint8_t dc_link_state;$/;"	m	struct:car_can_inverter_info_t	typeref:typename:uint8_t
+demanded_drive_direction	can/car_can.h	/^    uint8_t demanded_drive_direction;$/;"	m	struct:car_can_driver_commands_t	typeref:typename:uint8_t
+demanded_drive_state	can/car_can.h	/^    uint8_t demanded_drive_state;$/;"	m	struct:car_can_driver_commands_t	typeref:typename:uint8_t
+direction	app_hmi_manager.c	/^  int direction;  \/* WIDGET_DIR_* *\/$/;"	m	struct:ui_snapshot_t	typeref:typename:int	file:
+drive_mode	app_hmi_manager.c	/^  int drive_mode; \/* WIDGET_MODE_* *\/$/;"	m	struct:ui_snapshot_t	typeref:typename:int	file:
+em_speed01_hz	can/car_can.h	/^    int16_t em_speed01_hz;$/;"	m	struct:car_can_inverter_speed_info_t	typeref:typename:int16_t
+em_speed_rpm	can/car_can.h	/^    int16_t em_speed_rpm;$/;"	m	struct:car_can_inverter_speed_info_t	typeref:typename:int16_t
+fb_flush_cb	uiux/fb_handler.c	/^static void fb_flush_cb(lv_display_t *disp, const lv_area_t *area,$/;"	f	typeref:typename:void	file:
+fb_handler_close	uiux/fb_handler.c	/^void fb_handler_close(void)$/;"	f	typeref:typename:void
+fb_handler_init	uiux/fb_handler.c	/^int fb_handler_init(const char *devpath)$/;"	f	typeref:typename:int
+flh_active_faults	can/car_can.h	/^    uint32_t flh_active_faults;$/;"	m	struct:car_can_inverter_faults_t	typeref:typename:uint32_t
+flh_passive_faults	can/car_can.h	/^    uint32_t flh_passive_faults;$/;"	m	struct:car_can_inverter_faults_t	typeref:typename:uint32_t
+foc_current_id	can/car_can.h	/^    int16_t foc_current_id;$/;"	m	struct:car_can_foc_vars_t	typeref:typename:int16_t
+foc_current_iq	can/car_can.h	/^    int16_t foc_current_iq;$/;"	m	struct:car_can_foc_vars_t	typeref:typename:int16_t
+g_amp_arc	uiux/widgets.c	/^static lv_obj_t *g_amp_arc  = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_assets_ready	uiux/screen/screen_manager.c	/^static bool g_assets_ready   = false;$/;"	v	typeref:typename:bool	file:
+g_aux_lbl	uiux/widgets.c	/^static lv_obj_t *g_aux_lbl  = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_bat_bar	uiux/widgets.c	/^static lv_obj_t *g_bat_bar  = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_blink_state	uiux/widgets.c	/^static bool        g_blink_state = false;$/;"	v	typeref:typename:bool	file:
+g_blink_tm	uiux/widgets.c	/^static lv_timer_t *g_blink_tm    = NULL;$/;"	v	typeref:typename:lv_timer_t *	file:
+g_btmp_lbl	uiux/widgets.c	/^static lv_obj_t *g_btmp_lbl = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_btn6_carousel	app_hmi_manager.c	/^static const screen_id_t g_btn6_carousel[BTN6_CAROUSEL_COUNT] =$/;"	v	typeref:typename:const screen_id_t[]	file:
+g_btn6_index	app_hmi_manager.c	/^static int g_btn6_index = 0;$/;"	v	typeref:typename:int	file:
+g_btn_fd	io_handler/button_irq.c	/^static int g_btn_fd = -1;$/;"	v	typeref:typename:int	file:
+g_button_pressed	io_handler/button_irq.c	/^static volatile int g_button_pressed = BUTTON_INVALID;$/;"	v	typeref:typename:volatile int	file:
+g_cached_voltage_dv	uiux/widgets.c	/^static int g_cached_voltage_dv = 0;$/;"	v	typeref:typename:int	file:
+g_can_fd	can/can_handler.c	/^static int g_can_fd = -1;$/;"	v	typeref:typename:int	file:
+g_clk_lbl	uiux/widgets.c	/^static lv_obj_t *g_clk_lbl  = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_current	app_hmi_manager.c	/^static int g_current    = 0;   \/* motor current amps                *\/$/;"	v	typeref:typename:int	file:
+g_current	uiux/screen/screen_manager.c	/^static screen_id_t g_current = SCREEN_COUNT; \/* invalid sentinel *\/$/;"	v	typeref:typename:screen_id_t	file:
+g_dc_link_state	app_hmi_manager.c	/^static uint8_t g_dc_link_state =$/;"	v	typeref:typename:uint8_t	file:
+g_direction	app_hmi_manager.c	/^static int g_direction  = WIDGET_DIR_NEUTRAL;$/;"	v	typeref:typename:int	file:
+g_drive_mode	app_hmi_manager.c	/^static int g_drive_mode = WIDGET_MODE_STANDARD;$/;"	v	typeref:typename:int	file:
+g_driver_cmd	app_hmi_manager.c	/^static struct car_can_driver_commands_t g_driver_cmd;$/;"	v	typeref:struct:car_can_driver_commands_t	file:
+g_fb_fd	uiux/fb_handler.c	/^static int g_fb_fd = -1;$/;"	v	typeref:typename:int	file:
+g_fb_mem	uiux/fb_handler.c	/^static void *g_fb_mem = NULL;$/;"	v	typeref:typename:void *	file:
+g_gear_lbl	uiux/widgets.c	/^static lv_obj_t *g_gear_lbl = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_hmi_info	app_hmi_manager.c	/^static struct car_can_hmi_info_t g_hmi_info;$/;"	v	typeref:struct:car_can_hmi_info_t	file:
+g_id_filter	can/can_trace.c	/^static uint32_t g_id_filter = 0;$/;"	v	typeref:typename:uint32_t	file:
+g_kw_line	uiux/widgets.c	/^static lv_obj_t           *g_kw_line  = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_kw_pts	uiux/widgets.c	/^static lv_point_precise_t  g_kw_pts[2];$/;"	v	typeref:typename:lv_point_precise_t[2]	file:
+g_led_fd	io_handler/led_control.c	/^static int g_led_fd = -1;$/;"	v	typeref:typename:int	file:
+g_log_enabled	logs/logger.c	/^static bool g_log_enabled = true;$/;"	v	typeref:typename:bool	file:
+g_log_level	logs/logger.c	/^static int g_log_level = LOG_LEVEL_INFO;$/;"	v	typeref:typename:int	file:
+g_mode_lbl	uiux/widgets.c	/^static lv_obj_t *g_mode_lbl = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_odo_lbl	uiux/widgets.c	/^static lv_obj_t *g_odo_lbl  = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_reg_line	uiux/widgets.c	/^static lv_obj_t           *g_reg_line = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_reg_pivot	uiux/widgets.c	/^static lv_obj_t *g_reg_pivot = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_reg_pts	uiux/widgets.c	/^static lv_point_precise_t  g_reg_pts[2];$/;"	v	typeref:typename:lv_point_precise_t[2]	file:
+g_rem_lbl	uiux/widgets.c	/^static lv_obj_t *g_rem_lbl  = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_rpm	app_hmi_manager.c	/^static int g_rpm        = 0;   \/* raw motor RPM                     *\/$/;"	v	typeref:typename:int	file:
+g_rpm_arc	uiux/widgets.c	/^static lv_obj_t *g_rpm_arc  = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_rpm_line	uiux/widgets.c	/^static lv_obj_t           *g_rpm_line = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_rpm_pts	uiux/widgets.c	/^static lv_point_precise_t  g_rpm_pts[2];$/;"	v	typeref:typename:lv_point_precise_t[2]	file:
+g_screen_off	app_hmi_manager.c	/^static int g_screen_off = SCREEN_OFF_DISABLED;$/;"	v	typeref:typename:int	file:
+g_screen_request	app_hmi_manager.c	/^static volatile screen_id_t g_screen_request = SCREEN_COUNT;$/;"	v	typeref:typename:volatile screen_id_t	file:
+g_screens	uiux/screen/screen_manager.c	/^static lv_obj_t *g_screens[SCREEN_COUNT];$/;"	v	typeref:typename:lv_obj_t * []	file:
+g_soc_lbl	uiux/widgets.c	/^static lv_obj_t *g_soc_lbl  = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_spd_arc	uiux/widgets.c	/^static lv_obj_t *g_spd_arc  = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_spd_line	uiux/widgets.c	/^static lv_obj_t           *g_spd_line = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_spd_pivot	uiux/widgets.c	/^static lv_obj_t *g_spd_pivot = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_spd_pts	uiux/widgets.c	/^static lv_point_precise_t  g_spd_pts[2];$/;"	v	typeref:typename:lv_point_precise_t[2]	file:
+g_speed	app_hmi_manager.c	/^static int g_speed      = 0;   \/* km\/h converted from RPM           *\/$/;"	v	typeref:typename:int	file:
+g_start_time	can/can_trace.c	/^static uint32_t g_start_time = 0;$/;"	v	typeref:typename:uint32_t	file:
+g_temp_lbl	uiux/widgets.c	/^static lv_obj_t *g_temp_lbl = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_trace_enabled	can/can_trace.c	/^static bool g_trace_enabled = false;$/;"	v	typeref:typename:bool	file:
+g_turn_l	uiux/widgets.c	/^static lv_obj_t   *g_turn_l      = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_turn_l_on	uiux/widgets.c	/^static bool        g_turn_l_on   = false;$/;"	v	typeref:typename:bool	file:
+g_turn_r	uiux/widgets.c	/^static lv_obj_t   *g_turn_r      = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_turn_r_on	uiux/widgets.c	/^static bool        g_turn_r_on   = false;$/;"	v	typeref:typename:bool	file:
+g_ui_dirty	app_hmi_manager.c	/^static volatile bool g_ui_dirty = false;$/;"	v	typeref:typename:volatile bool	file:
+g_ui_snap	app_hmi_manager.c	/^static struct ui_snapshot_t g_ui_snap;$/;"	v	typeref:struct:ui_snapshot_t	file:
+g_volt_arc	uiux/widgets.c	/^static lv_obj_t *g_volt_arc = NULL;$/;"	v	typeref:typename:lv_obj_t *	file:
+g_voltage	app_hmi_manager.c	/^static int g_voltage    = 0;   \/* battery voltage decivolts         *\/$/;"	v	typeref:typename:int	file:
+hmi1ms_ticks	can/car_can.h	/^    uint32_t hmi1ms_ticks;$/;"	m	struct:car_can_hmi_info_t	typeref:typename:uint32_t
+id_demand	can/car_can.h	/^    int16_t id_demand;$/;"	m	struct:car_can_inverter_demanders_t	typeref:typename:int16_t
+id_ref	can/car_can.h	/^    int16_t id_ref;$/;"	m	struct:car_can_foc_vars_t	typeref:typename:int16_t
+img_bifrostox_flat	uiux/assets/img_bifrostox_flat.c	/^const lv_img_dsc_t img_bifrostox_flat =$/;"	v	typeref:typename:const lv_img_dsc_t
+img_bifrostox_flat_map	uiux/assets/img_bifrostox_flat.c	/^static const uint8_t img_bifrostox_flat_map[] =$/;"	v	typeref:typename:const uint8_t[]	file:
+img_bifrostox_nordic	uiux/assets/img_bifrostox_nordic.c	/^const lv_img_dsc_t img_bifrostox_nordic =$/;"	v	typeref:typename:const lv_img_dsc_t
+img_bifrostox_nordic_map	uiux/assets/img_bifrostox_nordic.c	/^static const uint8_t img_bifrostox_nordic_map[] =$/;"	v	typeref:typename:const uint8_t[]	file:
+img_cluster_final	uiux/assets/img_cluster_final.c	/^const lv_img_dsc_t img_cluster_final =$/;"	v	typeref:typename:const lv_img_dsc_t
+img_cluster_final_map	uiux/assets/img_cluster_final.c	/^static const uint8_t img_cluster_final_map[] =$/;"	v	typeref:typename:const uint8_t[]	file:
+img_main_cyberpunk	uiux/assets/img_main_cyberpunk.c	/^const lv_img_dsc_t img_main_cyberpunk =$/;"	v	typeref:typename:const lv_img_dsc_t
+img_main_cyberpunk_map	uiux/assets/img_main_cyberpunk.c	/^static const uint8_t img_main_cyberpunk_map[] =$/;"	v	typeref:typename:const uint8_t[]	file:
+img_main_modern	uiux/assets/img_main_modern.c	/^const lv_img_dsc_t img_main_modern =$/;"	v	typeref:typename:const lv_img_dsc_t
+img_main_modern_map	uiux/assets/img_main_modern.c	/^static const uint8_t img_main_modern_map[] =$/;"	v	typeref:typename:const uint8_t[]	file:
+img_main_retro	uiux/assets/img_main_retro.c	/^const lv_img_dsc_t img_main_retro =$/;"	v	typeref:typename:const lv_img_dsc_t
+img_main_retro_map	uiux/assets/img_main_retro.c	/^static const uint8_t img_main_retro_map[] =$/;"	v	typeref:typename:const uint8_t[]	file:
+img_main_retro_t3	uiux/assets/img_main_retro_t3.c	/^const lv_img_dsc_t img_main_retro_t3 =$/;"	v	typeref:typename:const lv_img_dsc_t
+img_main_retro_t3_	uiux/assets/img_main_retro_t3_.c	/^const lv_img_dsc_t img_main_retro_t3_ =$/;"	v	typeref:typename:const lv_img_dsc_t
+img_main_retro_t3__map	uiux/assets/img_main_retro_t3_.c	/^static const uint8_t img_main_retro_t3__map[] =$/;"	v	typeref:typename:const uint8_t[]	file:
+img_main_retro_t3_lcd_	uiux/assets/img_main_retro_t3_lcd_.c	/^const lv_img_dsc_t img_main_retro_t3_lcd_ =$/;"	v	typeref:typename:const lv_img_dsc_t
+img_main_retro_t3_lcd__map	uiux/assets/img_main_retro_t3_lcd_.c	/^static const uint8_t img_main_retro_t3_lcd__map[] =$/;"	v	typeref:typename:const uint8_t[]	file:
+img_main_retro_t3_map	uiux/assets/img_main_retro_t3.c	/^static const uint8_t img_main_retro_t3_map[] =$/;"	v	typeref:typename:const uint8_t[]	file:
+init_command_socket	app_hmi_manager.c	/^static int init_command_socket(void)$/;"	f	typeref:typename:int	file:
+inverter1ms_ticks	can/car_can.h	/^    uint32_t inverter1ms_ticks;$/;"	m	struct:car_can_inverter_info_t	typeref:typename:uint32_t
+inverter_reset_demand	can/car_can.h	/^    uint8_t inverter_reset_demand;$/;"	m	struct:car_can_debug_demands_t	typeref:typename:uint8_t
+inverter_temp_u	can/car_can.h	/^    uint8_t inverter_temp_u;$/;"	m	struct:car_can_inverter_temp_t	typeref:typename:uint8_t
+inverter_temp_v	can/car_can.h	/^    uint8_t inverter_temp_v;$/;"	m	struct:car_can_inverter_temp_t	typeref:typename:uint8_t
+inverter_temp_w	can/car_can.h	/^    uint8_t inverter_temp_w;$/;"	m	struct:car_can_inverter_temp_t	typeref:typename:uint8_t
+iq_demand	can/car_can.h	/^    int16_t iq_demand;$/;"	m	struct:car_can_inverter_demanders_t	typeref:typename:int16_t
+iq_ref	can/car_can.h	/^    int16_t iq_ref;$/;"	m	struct:car_can_foc_vars_t	typeref:typename:int16_t
+led_control_close	io_handler/led_control.c	/^void led_control_close(void)$/;"	f	typeref:typename:void
+led_control_init	io_handler/led_control.c	/^int led_control_init(const char *devpath)$/;"	f	typeref:typename:int
+led_control_off	io_handler/led_control.c	/^void led_control_off(int led)$/;"	f	typeref:typename:void
+led_control_on	io_handler/led_control.c	/^void led_control_on(int led)$/;"	f	typeref:typename:void
+led_control_set_all	io_handler/led_control.c	/^void led_control_set_all(uint32_t ledset)$/;"	f	typeref:typename:void
+log_debug	logs/logger.c	/^void log_debug(const char *fmt, ...)$/;"	f	typeref:typename:void
+log_error	logs/logger.c	/^void log_error(const char *fmt, ...)$/;"	f	typeref:typename:void
+log_frame	can/can_trace.c	/^static void log_frame(const char *dir, const struct can_frame *frame)$/;"	f	typeref:typename:void	file:
+log_info	logs/logger.c	/^void log_info(const char *fmt, ...)$/;"	f	typeref:typename:void
+log_warn	logs/logger.c	/^void log_warn(const char *fmt, ...)$/;"	f	typeref:typename:void
+logger_enable	logs/logger.c	/^void logger_enable(bool enable)$/;"	f	typeref:typename:void
+logger_init	logs/logger.c	/^void logger_init(int level)$/;"	f	typeref:typename:void
+logger_set_level	logs/logger.c	/^void logger_set_level(int level)$/;"	f	typeref:typename:void
+lvgl_thread	app_hmi_manager.c	/^static void *lvgl_thread(void *arg)$/;"	f	typeref:typename:void *	file:
+main	app_hmi_manager.c	/^int main(int argc, char *argv[])$/;"	f	typeref:typename:int
+main	hmi_ctl.c	/^int main(int argc, char *argv[])$/;"	f	typeref:typename:int
+meas12_v	can/car_can.h	/^    uint16_t meas12_v;$/;"	m	struct:car_can_system_voltages_t	typeref:typename:uint16_t
+meas5_v	can/car_can.h	/^    uint8_t meas5_v;$/;"	m	struct:car_can_system_voltages_t	typeref:typename:uint8_t
+meas_batt_voltage	can/car_can.h	/^    uint16_t meas_batt_voltage;$/;"	m	struct:car_can_system_voltages_t	typeref:typename:uint16_t
+meas_dc_link	can/car_can.h	/^    uint16_t meas_dc_link;$/;"	m	struct:car_can_system_voltages_t	typeref:typename:uint16_t
+mft_state	can/car_can.h	/^    uint8_t mft_state;$/;"	m	struct:car_can_inverter_info_t	typeref:typename:uint8_t
+mk_turn	uiux/widgets.c	/^static lv_obj_t *mk_turn(lv_coord_t x,$/;"	f	typeref:typename:lv_obj_t *	file:
+mkarc	uiux/widgets.c	/^static lv_obj_t *mkarc(lv_coord_t cx,$/;"	f	typeref:typename:lv_obj_t *	file:
+mklabel	uiux/widgets.c	/^static lv_obj_t *mklabel(lv_coord_t x,$/;"	f	typeref:typename:lv_obj_t *	file:
+mkneedle	uiux/widgets.c	/^static lv_obj_t *mkneedle($/;"	f	typeref:typename:lv_obj_t *	file:
+mkpivot	uiux/widgets.c	/^static lv_obj_t *mkpivot(lv_coord_t cx,$/;"	f	typeref:typename:lv_obj_t *	file:
+needle_update	uiux/widgets.c	/^static void needle_update(lv_obj_t *line,$/;"	f	typeref:typename:void	file:
+notifications_hide	uiux/notifications.c	/^void notifications_hide(void)$/;"	f	typeref:typename:void
+notifications_init	uiux/notifications.c	/^int notifications_init(void)$/;"	f	typeref:typename:int
+notifications_show	uiux/notifications.c	/^int notifications_show(int type, const char *message, int timeout_ms)$/;"	f	typeref:typename:int
+pack_left_shift_u16	can/car_can.c	/^static inline uint8_t pack_left_shift_u16($/;"	f	typeref:typename:uint8_t	file:
+pack_left_shift_u32	can/car_can.c	/^static inline uint8_t pack_left_shift_u32($/;"	f	typeref:typename:uint8_t	file:
+pack_left_shift_u8	can/car_can.c	/^static inline uint8_t pack_left_shift_u8($/;"	f	typeref:typename:uint8_t	file:
+pack_right_shift_u16	can/car_can.c	/^static inline uint8_t pack_right_shift_u16($/;"	f	typeref:typename:uint8_t	file:
+pack_right_shift_u32	can/car_can.c	/^static inline uint8_t pack_right_shift_u32($/;"	f	typeref:typename:uint8_t	file:
+pedal_request	can/car_can.h	/^    uint16_t pedal_request;$/;"	m	struct:car_can_inverter_demanders_t	typeref:typename:uint16_t
+pedal_setting	can/car_can.h	/^    uint8_t pedal_setting;$/;"	m	struct:car_can_driver_commands_t	typeref:typename:uint8_t
+phase_urms_current	can/car_can.h	/^    int16_t phase_urms_current;$/;"	m	struct:car_can_inverter_rms_currents_t	typeref:typename:int16_t
+phase_vrms_current	can/car_can.h	/^    int16_t phase_vrms_current;$/;"	m	struct:car_can_inverter_rms_currents_t	typeref:typename:int16_t
+phase_wrms_current	can/car_can.h	/^    int16_t phase_wrms_current;$/;"	m	struct:car_can_inverter_rms_currents_t	typeref:typename:int16_t
+process_button_press	app_hmi_manager.c	/^static void process_button_press(int button)$/;"	f	typeref:typename:void	file:
+process_can_frame	app_hmi_manager.c	/^static void process_can_frame(struct can_frame *frame)$/;"	f	typeref:typename:void	file:
+process_command	app_hmi_manager.c	/^static void process_command(const char *cmd_str)$/;"	f	typeref:typename:void	file:
+reset_inverter_errrors	can/car_can.h	/^    uint8_t reset_inverter_errrors;$/;"	m	struct:car_can_driver_commands_t	typeref:typename:uint8_t
+rfid_close	modules/rfid.c	/^void rfid_close(void)$/;"	f	typeref:typename:void
+rfid_init	modules/rfid.c	/^int rfid_init(const char *devpath)$/;"	f	typeref:typename:int
+rfid_read_card	modules/rfid.c	/^int rfid_read_card(uint8_t *uid, size_t *len)$/;"	f	typeref:typename:int
+rfid_set_mode	modules/rfid.c	/^int rfid_set_mode(int mode)$/;"	f	typeref:typename:int
+rpm	app_hmi_manager.c	/^  int rpm;        \/* raw RPM  *\/$/;"	m	struct:ui_snapshot_t	typeref:typename:int	file:
+rpm_to_kmh	app_hmi_manager.c	/^static int rpm_to_kmh(int rpm)$/;"	f	typeref:typename:int	file:
+screen_id_t	uiux/screen/screen_manager.h	/^} screen_id_t;$/;"	t	typeref:enum:__anondc2b73de0103
+screen_manager_current	uiux/screen/screen_manager.c	/^screen_id_t screen_manager_current(void)$/;"	f	typeref:typename:screen_id_t
+screen_manager_init	uiux/screen/screen_manager.c	/^int screen_manager_init(void)$/;"	f	typeref:typename:int
+screen_manager_load	uiux/screen/screen_manager.c	/^void screen_manager_load(screen_id_t screen)$/;"	f	typeref:typename:void
+screen_manager_setup_assets	uiux/screen/screen_manager.c	/^void screen_manager_setup_assets(void)$/;"	f	typeref:typename:void
+speed	app_hmi_manager.c	/^  int speed;      \/* km\/h     *\/$/;"	m	struct:ui_snapshot_t	typeref:typename:int	file:
+toggle_dc_link_demand	app_hmi_manager.c	/^static void toggle_dc_link_demand(void)$/;"	f	typeref:typename:void	file:
+ui_snapshot_t	app_hmi_manager.c	/^struct ui_snapshot_t$/;"	s	file:
+unpack_left_shift_u16	can/car_can.c	/^static inline uint16_t unpack_left_shift_u16($/;"	f	typeref:typename:uint16_t	file:
+unpack_left_shift_u32	can/car_can.c	/^static inline uint32_t unpack_left_shift_u32($/;"	f	typeref:typename:uint32_t	file:
+unpack_right_shift_u16	can/car_can.c	/^static inline uint16_t unpack_right_shift_u16($/;"	f	typeref:typename:uint16_t	file:
+unpack_right_shift_u32	can/car_can.c	/^static inline uint32_t unpack_right_shift_u32($/;"	f	typeref:typename:uint32_t	file:
+unpack_right_shift_u8	can/car_can.c	/^static inline uint8_t unpack_right_shift_u8($/;"	f	typeref:typename:uint8_t	file:
+voltage	app_hmi_manager.c	/^  int voltage;    \/* dV       *\/$/;"	m	struct:ui_snapshot_t	typeref:typename:int	file:
+widgets_init	uiux/widgets.c	/^int widgets_init(void)$/;"	f	typeref:typename:int
+widgets_set_batt_temp	uiux/widgets.c	/^void widgets_set_batt_temp(int temp_c)$/;"	f	typeref:typename:void
+widgets_set_battery_pct	uiux/widgets.c	/^void widgets_set_battery_pct(int pct)$/;"	f	typeref:typename:void
+widgets_set_clock	uiux/widgets.c	/^void widgets_set_clock(int hour, int minute)$/;"	f	typeref:typename:void
+widgets_set_current	uiux/widgets.c	/^void widgets_set_current(int amps)$/;"	f	typeref:typename:void
+widgets_set_direction	uiux/widgets.c	/^void widgets_set_direction(int dir)$/;"	f	typeref:typename:void
+widgets_set_ext_temp	uiux/widgets.c	/^void widgets_set_ext_temp(int temp_c)$/;"	f	typeref:typename:void
+widgets_set_kw	uiux/widgets.c	/^void widgets_set_kw(int watts)$/;"	f	typeref:typename:void
+widgets_set_mode	uiux/widgets.c	/^void widgets_set_mode(int mode)$/;"	f	typeref:typename:void
+widgets_set_odometer	uiux/widgets.c	/^void widgets_set_odometer(uint32_t km)$/;"	f	typeref:typename:void
+widgets_set_remaining_time	uiux/widgets.c	/^void widgets_set_remaining_time(int minutes)$/;"	f	typeref:typename:void
+widgets_set_rpm	uiux/widgets.c	/^void widgets_set_rpm(int rpm)$/;"	f	typeref:typename:void
+widgets_set_soc	uiux/widgets.c	/^void widgets_set_soc(int pct)$/;"	f	typeref:typename:void
+widgets_set_speed	uiux/widgets.c	/^void widgets_set_speed(int kmh)$/;"	f	typeref:typename:void
+widgets_set_voltage	uiux/widgets.c	/^void widgets_set_voltage(int dv)$/;"	f	typeref:typename:void
+widgets_set_voltage_arc	uiux/widgets.c	/^void widgets_set_voltage_arc(int volts)$/;"	f	typeref:typename:void
+widgets_set_warning	uiux/widgets.c	/^void widgets_set_warning(const char *msg)$/;"	f	typeref:typename:void
+widgets_turn_hazard	uiux/widgets.c	/^void widgets_turn_hazard(bool on)$/;"	f	typeref:typename:void
+widgets_turn_left	uiux/widgets.c	/^void widgets_turn_left(bool on)$/;"	f	typeref:typename:void
+widgets_turn_off	uiux/widgets.c	/^void widgets_turn_off(void)$/;"	f	typeref:typename:void
+widgets_turn_right	uiux/widgets.c	/^void widgets_turn_right(bool on)$/;"	f	typeref:typename:void
+x	modules/accel.h	/^  int16_t x;$/;"	m	struct:accel_data_s	typeref:typename:int16_t
+y	modules/accel.h	/^  int16_t y;$/;"	m	struct:accel_data_s	typeref:typename:int16_t
+z	modules/accel.h	/^  int16_t z;$/;"	m	struct:accel_data_s	typeref:typename:int16_t

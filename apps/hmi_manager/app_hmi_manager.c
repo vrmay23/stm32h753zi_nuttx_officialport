@@ -416,13 +416,9 @@ static void process_button_press(int button)
       case 6:
 #ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
         {
-          /* Re-enable backlight if leaving black screen.
-           * The actual screen switch is deferred to lvgl_thread
-           * via g_screen_request to avoid calling lv_scr_load()
-           * from the main thread (LVGL is not thread-safe).
-           */
+          /* If screen is off, re-enable backlight first */
 
-          if (screen_manager_current() == SCREEN_BLACK)
+          if (g_screen_off == SCREEN_OFF_ENABLED)
             {
               int fb_fd = open("/dev/fb0", O_RDWR);
               if (fb_fd >= 0)
@@ -430,6 +426,8 @@ static void process_button_press(int button)
                   ioctl(fb_fd, FBIOSET_POWER, 1);
                   close(fb_fd);
                 }
+
+              g_screen_off = SCREEN_OFF_DISABLED;
             }
 
           g_btn6_index = (g_btn6_index + 1)
@@ -446,10 +444,9 @@ static void process_button_press(int button)
 
           if (g_screen_off == SCREEN_OFF_DISABLED)
             {
-              /* Screen is ON -> turn it OFF */
+              /* Screen is ON -> turn backlight OFF only */
 
               g_screen_off = SCREEN_OFF_ENABLED;
-              g_screen_request = SCREEN_BLACK;
               fb_fd = open("/dev/fb0", O_RDWR);
               if (fb_fd >= 0)
                 {
@@ -460,7 +457,10 @@ static void process_button_press(int button)
             }
           else
             {
-              /* Screen is OFF -> turn it back ON */
+              /* Screen is OFF -> turn backlight ON only.
+               * Framebuffer still has the last rendered
+               * content, so the screen appears instantly.
+               */
 
               g_screen_off = SCREEN_OFF_DISABLED;
               fb_fd = open("/dev/fb0", O_RDWR);
@@ -469,10 +469,6 @@ static void process_button_press(int button)
                   ioctl(fb_fd, FBIOSET_POWER, 1);
                   close(fb_fd);
                 }
-
-              /* Restore last carousel screen */
-
-              g_screen_request = g_btn6_carousel[g_btn6_index];
               printf("Screen: ON (restored)\n");
             }
         }
@@ -616,8 +612,16 @@ static void process_can_frame(struct can_frame *frame)
               &msg, frame->data, frame->can_dlc);
       if (ret == 0)
         {
-          g_current = msg.phase_urms_current > msg.phase_vrms_current ? msg.phase_urms_current : msg.phase_vrms_current;
-          g_current = g_current > msg.phase_wrms_current ? g_current : msg.phase_wrms_current;
+          int iu = msg.phase_urms_current;
+          int iv = msg.phase_vrms_current;
+          int iw = msg.phase_wrms_current;
+          g_current = iu > iv ? iu : iv;
+          g_current = g_current > iw
+                    ? g_current : iw;
+ 
+#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
+          g_ui_dirty = true;
+#endif
         }
     }
 }

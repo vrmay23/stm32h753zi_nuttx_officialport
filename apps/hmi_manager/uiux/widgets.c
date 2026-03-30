@@ -1,407 +1,664 @@
 /****************************************************************************
  * apps/hmi_manager/uiux/widgets.c
  *
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to you under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or
+ * more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the
+ * Apache License, Version 2.0 (the "License"); you may not use
+ * this file except in compliance with the License.  You may obtain
+ * a copy of the License at
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Dashboard Widget Implementation - Retro T3 Theme
- * LVGL 9.2  |  ST7796 480x320 RGB565
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  *
- * Coordinates source: lvgl_placeholder_retro_t3.svg (Inkscape)
+ ****************************************************************************/
+
+/****************************************************************************
+ * Dashboard Widget Implementation - Retro T3 v3
+ * LVGL 9.2 | ST7796 480x320 RGB565
  *
- * ── Widget list ──────────────────────────────────────────────────────────
+ * Coordinates: cluster_final.svg
  *
- *  Needle gauges (lv_line over static background image):
- *    1. Speed   needle — white, len=70, pivot cx=110 cy=116
- *    2. RPM     needle — amber, len=55, pivot cx=110 cy=116 (co-axial)
- *    3. Current needle — amber, len=70, pivot cx=375 cy=116
- *    4. Pivot dots     — filled circles at both gauge centres
+ * Key design decisions:
  *
- *  Text / bar widgets:
- *    5.  GEAR    lv_label  226, 81,  28×30   white large letter N/D/R/P
- *    6.  MODE    lv_label  202,135,  81×14   coloured text STANDARD/SPORT/ECO
- *    7.  BAT     lv_bar     39,233, 100×14   colour-coded fill 0-100 %
- *    8.  ODO     lv_label   71,268,  90×13   amber  "NNNNNN km"
- *    9.  TEMP    lv_label  343,234, 102×11   pink   "NN°C"
- *   10.  RANGE   lv_label  381,259,  63× 9   purple "NNN km"
- *   11.  CHG     lv_label  382,278,  63×10   orange "NhNNm"
- *   12.  AUX     lv_label  195,286,  91×27   white  warning / info text
+ * 1) Hub vs Arc centres
+ *    The SVG hub ellipses and arc paths have DIFFERENT centres.
+ *    Needles pivot from the HUB centre (visual anchor point).
+ *    lv_arc widgets are positioned at the ARC path centre.
  *
+ * 2) Label centering (container + LV_ALIGN_CENTER)
+ *    LVGL 9.x labels only centre text horizontally with
+ *    LV_TEXT_ALIGN_CENTER.  Vertical alignment is NOT automatic.
+ *    To centre both H and V, every label is a child of an
+ *    invisible container, aligned with LV_ALIGN_CENTER.
+ *    After each lv_label_set_text(), lv_obj_align() must be
+ *    called again because text changes invalidate layout.
+ *
+ ****************************************************************************/
+
+/****************************************************************************
+ * Included Files
  ****************************************************************************/
 
 #include "widgets.h"
 #include <stdio.h>
 #include <stdint.h>
-#include <math.h>   /* sinf, cosf — link with -lm */
+#include <math.h>
 
 /****************************************************************************
- * Font aliases  (swap here for custom 7-segment font if desired)
+ * Pre-processor Definitions
  ****************************************************************************/
 
-#define FONT_GEAR    (&lv_font_montserrat_28)   /* N D R P                 */
-#define FONT_STD     (&lv_font_montserrat_14)   /* all small text labels   */
+#define FONT_GEAR   (&lv_font_montserrat_28)
+#define FONT_HUB    (&lv_font_montserrat_22)
+#define FONT_HUB_SM (&lv_font_montserrat_14)
+#define FONT_STD    (&lv_font_montserrat_14)
+#define FONT_SMALL  (&lv_font_montserrat_12)
+#define FONT_CLK    (&lv_font_montserrat_22)
+
+#define ARC_W_OUTER 10
+#define ARC_W_INNER  7
+
+/* Hub numeric label bounding boxes */
+
+#define HUB_NUM_W    60
+#define HUB_NUM_H    26
+#define HUB_SUB_W    60
+#define HUB_SUB_H    18
 
 /****************************************************************************
- * Needle geometry
+ * Private Data
  ****************************************************************************/
 
-#define LV_PI_F      3.14159265f
-#define NEEDLE_W     2     /* line width in pixels  */
-#define PIVOT_R      4     /* pivot dot radius      */
+static lv_obj_t *g_spd_arc  = NULL;
+static lv_obj_t *g_rpm_arc  = NULL;
+static lv_obj_t *g_volt_arc = NULL;
+static lv_obj_t *g_amp_arc  = NULL;
+
+/* Hub numeric labels (replace needles + pivots) */
+
+static lv_obj_t *g_spd_num_lbl  = NULL;
+static lv_obj_t *g_rpm_num_lbl  = NULL;
+static lv_obj_t *g_volt_num_lbl = NULL;
+static lv_obj_t *g_amp_num_lbl  = NULL;
+
+static lv_obj_t   *g_turn_l      = NULL;
+static lv_obj_t   *g_turn_r      = NULL;
+static lv_timer_t *g_blink_tm    = NULL;
+static bool        g_turn_l_on   = false;
+static bool        g_turn_r_on   = false;
+static bool        g_blink_state = false;
+
+static lv_obj_t *g_gear_lbl = NULL;
+static lv_obj_t *g_mode_lbl = NULL;
+static lv_obj_t *g_rem_lbl  = NULL;
+static lv_obj_t *g_btmp_lbl = NULL;
+static lv_obj_t *g_odo_lbl  = NULL;
+static lv_obj_t *g_soc_lbl  = NULL;
+static lv_obj_t *g_temp_lbl = NULL;
+static lv_obj_t *g_clk_lbl  = NULL;
+static lv_obj_t *g_aux_lbl  = NULL;
+static lv_obj_t *g_bat_bar  = NULL;
+
+static int g_cached_voltage_dv = 0;
 
 /****************************************************************************
- * Private widget handles
+ * Private Functions
  ****************************************************************************/
 
-/* Needle lines */
-static lv_obj_t *g_spd_line   = NULL;
-static lv_obj_t *g_rpm_line   = NULL;
-static lv_obj_t *g_reg_line   = NULL;
-
-/* Pivot dots */
-static lv_obj_t *g_spd_pivot  = NULL;
-static lv_obj_t *g_reg_pivot  = NULL;
-
-/* Needle point arrays (pivot + tip, reused on every update) */
-static lv_point_precise_t g_spd_pts[2];
-static lv_point_precise_t g_rpm_pts[2];
-static lv_point_precise_t g_reg_pts[2];
-
-/* KW gauge needle (white, regen circle — separate from current) */
-static lv_obj_t           *g_kw_line  = NULL;
-static lv_point_precise_t  g_kw_pts[2];
-
-/* Text / bar widgets */
-static lv_obj_t *g_gear_lbl   = NULL;
-static lv_obj_t *g_mode_lbl   = NULL;
-static lv_obj_t *g_bat_bar    = NULL;
-static lv_obj_t *g_odo_lbl    = NULL;
-static lv_obj_t *g_temp_lbl   = NULL;
-static lv_obj_t *g_range_lbl  = NULL;
-static lv_obj_t *g_chg_lbl    = NULL;
-static lv_obj_t *g_aux_lbl    = NULL;
-
 /****************************************************************************
- * Private helpers
- ****************************************************************************/
-
-static void transp(lv_obj_t *o)
-{
-  lv_obj_set_style_bg_opa(o,        LV_OPA_TRANSP, LV_PART_MAIN);
-  lv_obj_set_style_border_width(o,  0,             LV_PART_MAIN);
-  lv_obj_set_style_outline_width(o, 0,             LV_PART_MAIN);
-  lv_obj_set_style_pad_all(o,       0,             LV_PART_MAIN);
-}
-
-/* Create a label filling a placeholder rectangle */
-static lv_obj_t *mklabel(lv_coord_t x, lv_coord_t y,
-                           lv_coord_t w, lv_coord_t h,
-                           const lv_font_t *font,
-                           lv_color_t color,
-                           const char *text)
-{
-  lv_obj_t *o = lv_label_create(lv_scr_act());
-  if (!o) return NULL;
-  transp(o);
-  lv_obj_set_style_text_font(o,  font,                   LV_PART_MAIN);
-  lv_obj_set_style_text_color(o, color,                  LV_PART_MAIN);
-  lv_obj_set_style_text_align(o, LV_TEXT_ALIGN_CENTER,   LV_PART_MAIN);
-  lv_obj_set_size(o, w, h);
-  lv_obj_set_pos(o, x, y);
-  lv_label_set_text(o, text);
-  return o;
-}
-
-/****************************************************************************
- * Name: needle_update
+ * Name: mklabel
  *
  * Description:
- *   Recompute the tip of a needle given a value, then refresh the lv_line.
- *
- *   angle_deg = start_deg + (value/max) * sweep_deg
- *   tip_x     = cx + len * sin(angle_rad)
- *   tip_y     = cy - len * cos(angle_rad)   (screen Y is inverted)
+ *   Create a label centred H+V inside a bounding box at (x,y,w,h).
+ *   Returns the lv_label (child), not the container (parent).
  *
  ****************************************************************************/
 
-static void needle_update(lv_obj_t           *line,
-                           lv_point_precise_t *pts,
-                           lv_coord_t cx, lv_coord_t cy,
-                           int value,  int max_val,
-                           int len,    int start_deg, int sweep_deg)
+static lv_obj_t *mklabel(lv_coord_t x,
+                          lv_coord_t y,
+                          lv_coord_t w,
+                          lv_coord_t h,
+                          const lv_font_t *font,
+                          lv_color_t color,
+                          const char *text)
 {
-  float ratio = (float)value / (float)max_val;
-  if (ratio < 0.0f) ratio = 0.0f;
-  if (ratio > 1.0f) ratio = 1.0f;
+  lv_obj_t *box;
+  lv_obj_t *lbl;
 
-  float deg = (float)start_deg + ratio * (float)sweep_deg;
-  float rad = deg * LV_PI_F / 180.0f;
+  box = lv_obj_create(lv_scr_act());
+  if (!box) return NULL;
 
-  pts[0].x = (lv_value_precise_t)cx;
-  pts[0].y = (lv_value_precise_t)cy;
-  pts[1].x = (lv_value_precise_t)(cx + (int)(len * sinf(rad)));
-  pts[1].y = (lv_value_precise_t)(cy - (int)(len * cosf(rad)));
+  lv_obj_set_size(box, w, h);
+  lv_obj_set_pos(box, x, y);
+  lv_obj_set_style_bg_opa(box,
+    LV_OPA_TRANSP, LV_PART_MAIN);
+  lv_obj_set_style_border_width(box,
+    0, LV_PART_MAIN);
+  lv_obj_set_style_pad_all(box,
+    0, LV_PART_MAIN);
+  lv_obj_set_scrollbar_mode(box,
+    LV_SCROLLBAR_MODE_OFF);
+  lv_obj_remove_flag(box,
+    LV_OBJ_FLAG_SCROLLABLE);
 
-  lv_line_set_points(line, pts, 2);
-}
+  lbl = lv_label_create(box);
+  if (!lbl) return NULL;
 
-/* Create a needle lv_line at value=0 */
-static lv_obj_t *mkneedle(lv_point_precise_t *pts,
-                            lv_coord_t cx, lv_coord_t cy,
-                            int len, int start_deg, int sweep_deg,
-                            int max_val,
-                            lv_color_t color)
-{
-  lv_obj_t *line = lv_line_create(lv_scr_act());
-  if (!line) return NULL;
-  transp(line);
-  lv_obj_set_style_line_color(line,    color,  LV_PART_MAIN);
-  lv_obj_set_style_line_width(line,    NEEDLE_W, LV_PART_MAIN);
-  lv_obj_set_style_line_rounded(line,  true,   LV_PART_MAIN);
-  needle_update(line, pts, cx, cy, 0, max_val, len, start_deg, sweep_deg);
-  return line;
-}
+  lv_obj_set_style_text_font(lbl,
+    font, LV_PART_MAIN);
+  lv_obj_set_style_text_color(lbl,
+    color, LV_PART_MAIN);
+  lv_obj_set_style_text_align(lbl,
+    LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
+  lv_label_set_long_mode(lbl,
+    LV_LABEL_LONG_CLIP);
+  lv_obj_set_width(lbl, w);
+  lv_label_set_text(lbl, text);
+  lv_obj_align(lbl, LV_ALIGN_CENTER, 0, 0);
 
-/* Small filled circle at needle pivot */
-static lv_obj_t *mkpivot(lv_coord_t cx, lv_coord_t cy, lv_color_t color)
-{
-  lv_obj_t *o = lv_obj_create(lv_scr_act());
-  if (!o) return NULL;
-  lv_obj_set_size(o, PIVOT_R * 2, PIVOT_R * 2);
-  lv_obj_set_pos(o, cx - PIVOT_R, cy - PIVOT_R);
-  lv_obj_set_style_radius(o,        LV_RADIUS_CIRCLE, LV_PART_MAIN);
-  lv_obj_set_style_bg_color(o,      color,            LV_PART_MAIN);
-  lv_obj_set_style_bg_opa(o,        LV_OPA_COVER,     LV_PART_MAIN);
-  lv_obj_set_style_border_width(o,  0,                LV_PART_MAIN);
-  lv_obj_set_style_outline_width(o, 0,                LV_PART_MAIN);
-  lv_obj_set_style_pad_all(o,       0,                LV_PART_MAIN);
-  return o;
+  return lbl;
 }
 
 /****************************************************************************
- * widgets_init
+ * Name: mkarc
+ ****************************************************************************/
+
+static lv_obj_t *mkarc(lv_coord_t cx,
+                        lv_coord_t cy,
+                        lv_coord_t radius,
+                        int arc_w,
+                        int sa, int ea,
+                        lv_color_t color,
+                        lv_opa_t opa)
+{
+  int sz = radius * 2;
+  lv_obj_t *a = lv_arc_create(lv_scr_act());
+  if (!a) return NULL;
+
+  lv_obj_set_size(a, sz, sz);
+  lv_obj_set_pos(a,
+    cx - radius, cy - radius);
+
+  lv_obj_set_style_pad_all(a,
+    0, LV_PART_KNOB);
+  lv_obj_set_style_bg_opa(a,
+    LV_OPA_TRANSP, LV_PART_KNOB);
+
+  lv_obj_set_style_arc_width(a,
+    arc_w, LV_PART_MAIN);
+  lv_obj_set_style_arc_opa(a,
+    LV_OPA_TRANSP, LV_PART_MAIN);
+
+  lv_obj_set_style_arc_width(a,
+    arc_w, LV_PART_INDICATOR);
+  lv_obj_set_style_arc_color(a,
+    color, LV_PART_INDICATOR);
+  lv_obj_set_style_arc_opa(a,
+    opa, LV_PART_INDICATOR);
+  lv_obj_set_style_arc_rounded(a,
+    true, LV_PART_INDICATOR);
+
+  lv_arc_set_bg_angles(a, sa, ea);
+  lv_arc_set_rotation(a, 0);
+  lv_arc_set_mode(a, LV_ARC_MODE_NORMAL);
+  lv_arc_set_range(a, 0, 1000);
+  lv_arc_set_value(a, 0);
+
+  lv_obj_remove_flag(a,
+    LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_set_style_bg_opa(a,
+    LV_OPA_TRANSP, LV_PART_MAIN);
+  lv_obj_set_style_border_width(a,
+    0, LV_PART_MAIN);
+
+  return a;
+}
+
+/* needle_update / mkneedle / mkpivot removed — replaced by
+ * hub numeric labels (g_spd_num_lbl, g_rpm_num_lbl, etc.)
+ */
+
+/****************************************************************************
+ * Turn Signal helpers
+ ****************************************************************************/
+
+static lv_obj_t *mk_turn(lv_coord_t x,
+                          lv_coord_t y,
+                          lv_coord_t w,
+                          lv_coord_t h,
+                          bool left)
+{
+  lv_obj_t *box;
+  lv_obj_t *lbl;
+
+  box = lv_obj_create(lv_scr_act());
+  if (!box) return NULL;
+
+  lv_obj_set_size(box, w, h);
+  lv_obj_set_pos(box, x, y);
+  lv_obj_set_style_bg_opa(box,
+    LV_OPA_TRANSP, LV_PART_MAIN);
+  lv_obj_set_style_border_width(box,
+    0, LV_PART_MAIN);
+  lv_obj_set_style_pad_all(box,
+    0, LV_PART_MAIN);
+  lv_obj_set_scrollbar_mode(box,
+    LV_SCROLLBAR_MODE_OFF);
+  lv_obj_remove_flag(box,
+    LV_OBJ_FLAG_SCROLLABLE);
+
+  lbl = lv_label_create(box);
+  if (!lbl) return NULL;
+
+  lv_obj_set_style_text_font(lbl,
+    &lv_font_montserrat_22,
+    LV_PART_MAIN);
+  lv_obj_set_style_text_color(lbl,
+    CLR_GREEN_TURN, LV_PART_MAIN);
+  lv_label_set_text(lbl,
+    left ? LV_SYMBOL_LEFT
+         : LV_SYMBOL_RIGHT);
+  lv_obj_align(lbl,
+    LV_ALIGN_CENTER, 0, 0);
+
+  lv_obj_set_style_opa(box,
+    LV_OPA_TRANSP, LV_PART_MAIN);
+
+  return box;
+}
+
+static void blink_cb(lv_timer_t *t)
+{
+  (void)t;
+  g_blink_state = !g_blink_state;
+
+  if (g_turn_l && g_turn_l_on)
+    {
+      lv_obj_set_style_opa(g_turn_l,
+        g_blink_state ? LV_OPA_COVER
+                      : LV_OPA_TRANSP,
+        LV_PART_MAIN);
+    }
+
+  if (g_turn_r && g_turn_r_on)
+    {
+      lv_obj_set_style_opa(g_turn_r,
+        g_blink_state ? LV_OPA_COVER
+                      : LV_OPA_TRANSP,
+        LV_PART_MAIN);
+    }
+}
+
+/****************************************************************************
+ * Public Functions
  ****************************************************************************/
 
 int widgets_init(void)
 {
-  /* ── 1. Speed needle (white, long) — speedometer ───────────────────── */
+  /* Left gauge arcs (at ARC centre) */
 
-  g_spd_line = mkneedle(g_spd_pts,
-                         SPD_CX, SPD_CY,
-                         SPD_NEEDLE_LEN,
-                         SPD_ANGLE_START, SPD_ANGLE_SWEEP,
-                         SPD_MAX_KMH, CLR_WHITE);
-  if (!g_spd_line) return -1;
+  g_spd_arc = mkarc(SPD_ARC_CX, SPD_ARC_CY,
+    SPD_R_OUTER, ARC_W_OUTER,
+    SPD_ARC_START, SPD_ARC_END,
+    CLR_CYAN, ARC_FILL_OPA);
+  if (!g_spd_arc) return -1;
 
-  /* ── 2. RPM needle (amber, shorter) — same pivot as speed ─────────── */
+  g_rpm_arc = mkarc(SPD_ARC_CX, SPD_ARC_CY,
+    SPD_R_INNER, ARC_W_INNER,
+    SPD_ARC_START, SPD_ARC_END,
+    CLR_MAGENTA, ARC_FILL_OPA);
+  if (!g_rpm_arc) return -1;
 
-  g_rpm_line = mkneedle(g_rpm_pts,
-                         SPD_CX, SPD_CY,
-                         RPM_NEEDLE_LEN,
-                         SPD_ANGLE_START, SPD_ANGLE_SWEEP,
-                         RPM_MAX, CLR_AMBER);
-  if (!g_rpm_line) return -1;
+  /* Left hub numeric labels (speed + RPM) */
 
-  /* ── 3. Speedometer pivot dot ──────────────────────────────────────── */
+  g_spd_num_lbl = mklabel(
+    SPD_HUB_CX - HUB_NUM_W / 2,
+    SPD_HUB_CY - HUB_NUM_H - 1,
+    HUB_NUM_W, HUB_NUM_H,
+    FONT_HUB, CLR_CYAN, "0");
+  if (!g_spd_num_lbl) return -1;
 
-  g_spd_pivot = mkpivot(SPD_CX, SPD_CY, CLR_WHITE);
-  if (!g_spd_pivot) return -1;
+  g_rpm_num_lbl = mklabel(
+    SPD_HUB_CX - HUB_SUB_W / 2,
+    SPD_HUB_CY + 1,
+    HUB_SUB_W, HUB_SUB_H,
+    FONT_HUB_SM, CLR_MAGENTA, "0");
+  if (!g_rpm_num_lbl) return -1;
 
-  /* ── 4. Current needle (amber) — regen gauge ───────────────────────── */
+  /* Right gauge arcs (at ARC centre) */
 
-  g_reg_line = mkneedle(g_reg_pts,
-                         REG_CX, REG_CY,
-                         REG_NEEDLE_LEN,
-                         REG_ANGLE_START, REG_ANGLE_SWEEP,
-                         REG_MAX_AMPS, CLR_AMBER);
-  if (!g_reg_line) return -1;
+  g_volt_arc = mkarc(REG_ARC_CX, REG_ARC_CY,
+    REG_R_OUTER, ARC_W_OUTER,
+    REG_ARC_START, REG_ARC_END,
+    CLR_CYAN, ARC_FILL_OPA);
+  if (!g_volt_arc) return -1;
 
-  /* ── 5. Regen gauge pivot dot ──────────────────────────────────────── */
+  g_amp_arc = mkarc(REG_ARC_CX, REG_ARC_CY,
+    REG_R_INNER, ARC_W_INNER,
+    REG_ARC_START, REG_ARC_END,
+    CLR_RED_ARC, ARC_FILL_OPA);
+  if (!g_amp_arc) return -1;
 
-  g_reg_pivot = mkpivot(REG_CX, REG_CY, CLR_AMBER);
-  if (!g_reg_pivot) return -1;
+  /* Right hub numeric labels (voltage + current) */
 
-  /* ── 5b. KW needle (white, shorter) — regen gauge ────────────────── *
-   *  Separate from current needle. Shows electrical power 0..max kW.   *
-   *  White colour distinguishes it from the amber current needle.       *
-   *  Length = 50px (shorter than current 70px — inner ring reference). */
+  g_volt_num_lbl = mklabel(
+    REG_HUB_CX - HUB_NUM_W / 2,
+    REG_HUB_CY - HUB_NUM_H - 1,
+    HUB_NUM_W, HUB_NUM_H,
+    FONT_HUB, CLR_CYAN, "0V");
+  if (!g_volt_num_lbl) return -1;
 
-  g_kw_line = mkneedle(g_kw_pts,
-                        REG_CX, REG_CY,
-                        50,
-                        REG_ANGLE_START, REG_ANGLE_SWEEP,
-                        1000,          /* max 100.0 kW (stored as 10x) */
-                        CLR_WHITE);
-  if (!g_kw_line) return -1;
+  g_amp_num_lbl = mklabel(
+    REG_HUB_CX - HUB_SUB_W / 2,
+    REG_HUB_CY + 1,
+    HUB_SUB_W, HUB_SUB_H,
+    FONT_HUB_SM, CLR_AMBER, "0A");
+  if (!g_amp_num_lbl) return -1;
 
-  /* ── 6. Gear label — cyan rect 226,81 28×30 ────────────────────────── *
-   *  Large single uppercase letter.  FONT_GEAR (28px) cap-height ≈ 22px, *
-   *  fits inside 30px rect height with minimal padding.                  */
+  /* Turn signals */
 
-  g_gear_lbl = mklabel(GEAR_X, GEAR_Y, GEAR_W, GEAR_H,
-                        FONT_GEAR, CLR_WHITE, "N");
+  g_turn_l = mk_turn(
+    TURN_L_X, TURN_L_Y,
+    TURN_L_W, TURN_L_H, true);
+  g_turn_r = mk_turn(
+    TURN_R_X, TURN_R_Y,
+    TURN_R_W, TURN_R_H, false);
+  g_blink_tm = lv_timer_create(
+    blink_cb, TURN_BLINK_MS, NULL);
+
+  /* Gear (centred in hexagon bbox) */
+
+  g_gear_lbl = mklabel(
+    GEAR_CX - GEAR_W / 2,
+    GEAR_CY - GEAR_H / 2,
+    GEAR_W, GEAR_H,
+    FONT_GEAR, CLR_WHITE, "N");
   if (!g_gear_lbl) return -1;
 
-  /* ── 7. Mode label — green rect 202,135 81×14 ──────────────────────── */
+  /* Mode */
 
-  g_mode_lbl = mklabel(MODE_X, MODE_Y, MODE_W, MODE_H,
-                        FONT_STD, CLR_GREEN_MODE, "STANDARD");
+  g_mode_lbl = mklabel(
+    MODE_X, MODE_Y,
+    MODE_W, MODE_H,
+    FONT_STD, CLR_GREEN_MODE,
+    "STANDARD");
   if (!g_mode_lbl) return -1;
 
-  /* ── 8. Battery bar — red rect 39,233 100×14 ───────────────────────── *
-   *  lv_bar: dark track + colour-coded fill.                             *
-   *  The red border rectangle is already drawn in the background image.  */
+  /* Battery bar */
 
   g_bat_bar = lv_bar_create(lv_scr_act());
   if (!g_bat_bar) return -1;
 
   lv_obj_set_size(g_bat_bar, BAT_W, BAT_H);
-  lv_obj_set_pos(g_bat_bar,  BAT_X, BAT_Y);
+  lv_obj_set_pos(g_bat_bar, BAT_X, BAT_Y);
   lv_bar_set_range(g_bat_bar, 0, 100);
   lv_bar_set_value(g_bat_bar, 0, LV_ANIM_OFF);
+  lv_obj_set_style_bg_color(g_bat_bar,
+    CLR_DARK_BG, LV_PART_MAIN);
+  lv_obj_set_style_bg_opa(g_bat_bar,
+    LV_OPA_COVER, LV_PART_MAIN);
+  lv_obj_set_style_border_width(g_bat_bar,
+    0, LV_PART_MAIN);
+  lv_obj_set_style_radius(g_bat_bar,
+    2, LV_PART_MAIN);
+  lv_obj_set_style_pad_all(g_bat_bar,
+    1, LV_PART_MAIN);
+  lv_obj_set_style_bg_color(g_bat_bar,
+    CLR_GREEN, LV_PART_INDICATOR);
+  lv_obj_set_style_bg_opa(g_bat_bar,
+    LV_OPA_COVER, LV_PART_INDICATOR);
+  lv_obj_set_style_radius(g_bat_bar,
+    1, LV_PART_INDICATOR);
 
-  lv_obj_set_style_bg_color(g_bat_bar,     CLR_DARK_BG,  LV_PART_MAIN);
-  lv_obj_set_style_bg_opa(g_bat_bar,       LV_OPA_COVER, LV_PART_MAIN);
-  lv_obj_set_style_border_width(g_bat_bar, 0,            LV_PART_MAIN);
-  lv_obj_set_style_radius(g_bat_bar,       2,            LV_PART_MAIN);
-  lv_obj_set_style_pad_all(g_bat_bar,      1,            LV_PART_MAIN);
+  /* Remaining time */
 
-  lv_obj_set_style_bg_color(g_bat_bar, CLR_AMBER,    LV_PART_INDICATOR);
-  lv_obj_set_style_bg_opa(g_bat_bar,   LV_OPA_COVER, LV_PART_INDICATOR);
-  lv_obj_set_style_radius(g_bat_bar,   1,            LV_PART_INDICATOR);
+  g_rem_lbl = mklabel(
+    REM_TIME_X, REM_TIME_Y,
+    REM_TIME_W, REM_TIME_H,
+    FONT_SMALL, CLR_CYAN, "--:--");
+  if (!g_rem_lbl) return -1;
 
-  /* ── 9. Odometer — yellow rect 71,268 90×13 ────────────────────────── */
+  /* Battery temp */
 
-  g_odo_lbl = mklabel(ODO_X, ODO_Y, ODO_W, ODO_H,
-                       FONT_STD, CLR_AMBER, "000000 km");
+  g_btmp_lbl = mklabel(
+    BATT_TEMP_X, BATT_TEMP_Y,
+    BATT_TEMP_W, BATT_TEMP_H,
+    FONT_SMALL, CLR_CYAN,
+    "--\xc2\xb0""C");
+  if (!g_btmp_lbl) return -1;
+
+  /* Odometer */
+
+  g_odo_lbl = mklabel(
+    ODO_X, ODO_Y, ODO_W, ODO_H,
+    FONT_SMALL, CLR_CYAN, "0");
   if (!g_odo_lbl) return -1;
 
-  /* ── 10. External temperature — pink rect 343,234 102×11 ───────────── */
+  /* SoC */
 
-  g_temp_lbl = mklabel(EXT_TEMP_X, EXT_TEMP_Y, EXT_TEMP_W, EXT_TEMP_H,
-                        FONT_STD, CLR_PINK, "--\xc2\xb0""C");
+  g_soc_lbl = mklabel(
+    SOC_X, SOC_Y, SOC_W, SOC_H,
+    FONT_SMALL, CLR_CYAN, "--%");
+  if (!g_soc_lbl) return -1;
+
+  /* Ext temp */
+
+  g_temp_lbl = mklabel(
+    EXT_TEMP_X, EXT_TEMP_Y,
+    EXT_TEMP_W, EXT_TEMP_H,
+    FONT_SMALL, CLR_CYAN,
+    "--\xc2\xb0""C");
   if (!g_temp_lbl) return -1;
 
-  /* ── 11. Range prediction — purple rect 381,259 63×9 ───────────────── */
+  /* Clock (static) */
 
-  g_range_lbl = mklabel(RANGE_X, RANGE_Y, RANGE_W, RANGE_H,
-                         FONT_STD, CLR_PURPLE, "--- km");
-  if (!g_range_lbl) return -1;
+  g_clk_lbl = mklabel(
+    CLK_X, CLK_Y, CLK_W, CLK_H,
+    FONT_CLK, CLR_CYAN, "12:00");
+  if (!g_clk_lbl) return -1;
 
-  /* ── 12. Charge time — orange rect 382,278 63×10 ───────────────────── */
+  /* Aux / warning */
 
-  g_chg_lbl = mklabel(CHG_X, CHG_Y, CHG_W, CHG_H,
-                       FONT_STD, CLR_ORANGE, "--h--m");
-  if (!g_chg_lbl) return -1;
-
-  /* ── 13. Aux / Warning — cream rect 195,286 91×27 ──────────────────── *
-   *  General-purpose text area: warnings, status messages.               *
-   *  Pass "" to clear.                                                   */
-
-  g_aux_lbl = mklabel(AUX_X, AUX_Y, AUX_W, AUX_H,
-                       FONT_STD, CLR_WHITE, "");
+  g_aux_lbl = mklabel(
+    MODE_X, MODE_Y + MODE_H + 2,
+    MODE_W, 14,
+    FONT_SMALL, CLR_WHITE, "");
   if (!g_aux_lbl) return -1;
 
   return 0;
 }
 
 /****************************************************************************
- * Needle update functions
+ * Gauge updates
  ****************************************************************************/
 
 void widgets_set_speed(int kmh)
 {
-  if (!g_spd_line) return;
+  char buf[8];
+
   if (kmh < 0)           kmh = 0;
   if (kmh > SPD_MAX_KMH) kmh = SPD_MAX_KMH;
-  needle_update(g_spd_line, g_spd_pts,
-                SPD_CX, SPD_CY, kmh, SPD_MAX_KMH,
-                SPD_NEEDLE_LEN, SPD_ANGLE_START, SPD_ANGLE_SWEEP);
+
+  if (g_spd_arc)
+    lv_arc_set_value(g_spd_arc,
+      (kmh * 1000) / SPD_MAX_KMH);
+
+  if (g_spd_num_lbl)
+    {
+      snprintf(buf, sizeof(buf), "%d", kmh);
+      lv_label_set_text(g_spd_num_lbl, buf);
+      lv_obj_align(g_spd_num_lbl,
+        LV_ALIGN_CENTER, 0, 0);
+    }
 }
 
 void widgets_set_rpm(int rpm)
 {
-  if (!g_rpm_line) return;
+  char buf[8];
+
   if (rpm < 0)       rpm = 0;
   if (rpm > RPM_MAX) rpm = RPM_MAX;
-  needle_update(g_rpm_line, g_rpm_pts,
-                SPD_CX, SPD_CY, rpm, RPM_MAX,
-                RPM_NEEDLE_LEN, SPD_ANGLE_START, SPD_ANGLE_SWEEP);
+
+  if (g_rpm_arc)
+    lv_arc_set_value(g_rpm_arc,
+      (rpm * 1000) / RPM_MAX);
+
+  if (g_rpm_num_lbl)
+    {
+      snprintf(buf, sizeof(buf), "%d", rpm);
+      lv_label_set_text(g_rpm_num_lbl, buf);
+      lv_obj_align(g_rpm_num_lbl,
+        LV_ALIGN_CENTER, 0, 0);
+    }
 }
 
-/* Cached voltage for kW = V * I computation */
-static int g_cached_voltage_dv = 0;
+void widgets_set_voltage_arc(int volts)
+{
+  if (volts < 0)             volts = 0;
+  if (volts > REG_MAX_VOLTS) volts = REG_MAX_VOLTS;
+
+  if (g_volt_arc)
+    lv_arc_set_value(g_volt_arc,
+      (volts * 1000) / REG_MAX_VOLTS);
+}
 
 void widgets_set_current(int amps)
 {
-  int watts;
+  char buf[8];
+  int da;
+  int av;
 
-  if (!g_reg_line) return;
+  da = amps < 0 ? -amps : amps;
+  if (da > REG_MAX_AMPS) da = REG_MAX_AMPS;
 
-  /* Current needle — shows raw amperes */
-  int display_amps = amps < 0 ? -amps : amps;
-  if (display_amps > REG_MAX_AMPS) display_amps = REG_MAX_AMPS;
-  needle_update(g_reg_line, g_reg_pts,
-                REG_CX, REG_CY, display_amps, REG_MAX_AMPS,
-                REG_NEEDLE_LEN, REG_ANGLE_START, REG_ANGLE_SWEEP);
+  av = (da * 1000) / REG_MAX_AMPS;
 
-  /* KW needle — computed from V * I
-   * g_cached_voltage_dv is in decivolts (e.g. 840 = 84.0V)
-   * amps is in raw amperes
-   * watts = (dv/10) * amps = dv * amps / 10                    */
-  watts = (g_cached_voltage_dv * amps) / 10;
-  widgets_set_kw(watts);
+  if (g_amp_arc)
+    {
+      lv_arc_set_value(g_amp_arc, av);
+      lv_obj_set_style_arc_color(g_amp_arc,
+        amps < 0 ? CLR_RED_ARC
+                 : CLR_MAGENTA,
+        LV_PART_INDICATOR);
+    }
+
+  if (g_amp_num_lbl)
+    {
+      snprintf(buf, sizeof(buf), "%dA", da);
+      lv_label_set_text(g_amp_num_lbl, buf);
+      lv_obj_align(g_amp_num_lbl,
+        LV_ALIGN_CENTER, 0, 0);
+    }
 }
 
 /****************************************************************************
- * Text widget update functions
+ * Turn signals
+ ****************************************************************************/
+
+void widgets_turn_left(bool on)
+{
+  g_turn_l_on = on;
+  if (!on && g_turn_l)
+    lv_obj_set_style_opa(g_turn_l,
+      LV_OPA_TRANSP, LV_PART_MAIN);
+}
+
+void widgets_turn_right(bool on)
+{
+  g_turn_r_on = on;
+  if (!on && g_turn_r)
+    lv_obj_set_style_opa(g_turn_r,
+      LV_OPA_TRANSP, LV_PART_MAIN);
+}
+
+void widgets_turn_hazard(bool on)
+{
+  widgets_turn_left(on);
+  widgets_turn_right(on);
+}
+
+void widgets_turn_off(void)
+{
+  widgets_turn_left(false);
+  widgets_turn_right(false);
+}
+
+/****************************************************************************
+ * Text / bar updates
+ *
+ * Every set function re-calls lv_obj_align(LV_ALIGN_CENTER)
+ * after changing text to keep the label centred.
  ****************************************************************************/
 
 void widgets_set_direction(int dir)
 {
   if (!g_gear_lbl) return;
+
   switch (dir)
     {
       case WIDGET_DIR_FORWARD:
         lv_label_set_text(g_gear_lbl, "D");
-        lv_obj_set_style_text_color(g_gear_lbl, CLR_WHITE,    LV_PART_MAIN);
+        lv_obj_set_style_text_color(
+          g_gear_lbl,
+          CLR_WHITE, LV_PART_MAIN);
         break;
       case WIDGET_DIR_REVERSE:
         lv_label_set_text(g_gear_lbl, "R");
-        lv_obj_set_style_text_color(g_gear_lbl, CLR_AMBER_HOT, LV_PART_MAIN);
+        lv_obj_set_style_text_color(
+          g_gear_lbl,
+          CLR_AMBER_HOT, LV_PART_MAIN);
         break;
-      case WIDGET_DIR_NEUTRAL:
       default:
         lv_label_set_text(g_gear_lbl, "N");
-        lv_obj_set_style_text_color(g_gear_lbl, CLR_WHITE,    LV_PART_MAIN);
+        lv_obj_set_style_text_color(
+          g_gear_lbl,
+          CLR_WHITE, LV_PART_MAIN);
         break;
     }
+
+  lv_obj_align(g_gear_lbl,
+    LV_ALIGN_CENTER, 0, 0);
 }
 
 void widgets_set_mode(int mode)
 {
   if (!g_mode_lbl) return;
+
   switch (mode)
     {
       case WIDGET_MODE_SPORT:
-        lv_label_set_text(g_mode_lbl, "SPORT");
-        lv_obj_set_style_text_color(g_mode_lbl, CLR_AMBER_HOT,        LV_PART_MAIN);
+        lv_label_set_text(
+          g_mode_lbl, "SPORT");
+        lv_obj_set_style_text_color(
+          g_mode_lbl,
+          CLR_AMBER_HOT, LV_PART_MAIN);
         break;
       case WIDGET_MODE_ECO:
-        lv_label_set_text(g_mode_lbl, "ECO");
-        lv_obj_set_style_text_color(g_mode_lbl, lv_color_hex(0x00FFAA), LV_PART_MAIN);
+        lv_label_set_text(
+          g_mode_lbl, "ECO");
+        lv_obj_set_style_text_color(
+          g_mode_lbl,
+          lv_color_hex(0x00FFAA),
+          LV_PART_MAIN);
         break;
-      case WIDGET_MODE_STANDARD:
       default:
-        lv_label_set_text(g_mode_lbl, "STANDARD");
-        lv_obj_set_style_text_color(g_mode_lbl, CLR_GREEN_MODE,        LV_PART_MAIN);
+        lv_label_set_text(
+          g_mode_lbl, "STANDARD");
+        lv_obj_set_style_text_color(
+          g_mode_lbl,
+          CLR_GREEN_MODE, LV_PART_MAIN);
         break;
     }
+
+  lv_obj_align(g_mode_lbl,
+    LV_ALIGN_CENTER, 0, 0);
 }
 
 void widgets_set_battery_pct(int pct)
@@ -411,119 +668,158 @@ void widgets_set_battery_pct(int pct)
   if (pct < 0)   pct = 0;
   if (pct > 100) pct = 100;
 
-  lv_bar_set_value(g_bat_bar, pct, LV_ANIM_OFF);
+  lv_bar_set_value(g_bat_bar,
+    pct, LV_ANIM_ON);
 
   if (pct == 0)
     {
-      /* 0% — hide indicator completely */
-      lv_obj_set_style_bg_opa(g_bat_bar, LV_OPA_TRANSP, LV_PART_INDICATOR);
+      lv_obj_set_style_bg_opa(g_bat_bar,
+        LV_OPA_TRANSP,
+        LV_PART_INDICATOR);
       return;
     }
 
-  /* Restore opacity in case it was hidden */
-  lv_obj_set_style_bg_opa(g_bat_bar, LV_OPA_COVER, LV_PART_INDICATOR);
+  lv_obj_set_style_bg_opa(g_bat_bar,
+    LV_OPA_COVER, LV_PART_INDICATOR);
 
-  if      (pct <= BAT_CRIT_PCT)    c = CLR_RED;           /* 1..10%  red    */
-  else if (pct <= BAT_WARN_LOW_PCT) c = CLR_AMBER_HOT;    /* 11..25% orange */
-  else if (pct <= BAT_WARN_PCT)    c = CLR_AMBER_HOT;     /* 26% boundary   */
-  else                              c = lv_color_hex(0x00CC44); /* 27..100% green */
+  if      (pct <= BAT_CRIT_PCT)     c = CLR_RED;
+  else if (pct <= BAT_WARN_LOW_PCT) c = CLR_AMBER_HOT;
+  else if (pct <= BAT_WARN_PCT)     c = CLR_AMBER;
+  else                               c = CLR_GREEN;
 
-  lv_obj_set_style_bg_color(g_bat_bar, c, LV_PART_INDICATOR);
+  lv_obj_set_style_bg_color(g_bat_bar,
+    c, LV_PART_INDICATOR);
 }
 
 void widgets_set_voltage(int dv)
 {
-  int range = BAT_VOLTAGE_MAX_DV - BAT_VOLTAGE_MIN_DV;
+  char buf[8];
+  int range;
   int pct;
 
-  /* Cache for kW = V * I computation in widgets_set_current() */
+  /* Skip zero — 0 dV is never a valid vehicle battery reading.
+   * Avoids arc/bar/label jumping to min (60V) on stale
+   * snapshots triggered by unrelated g_ui_dirty events.
+   */
+
+  if (dv == 0)
+    return;
+
   g_cached_voltage_dv = dv;
 
-  if (dv < BAT_VOLTAGE_MIN_DV) dv = BAT_VOLTAGE_MIN_DV;
-  if (dv > BAT_VOLTAGE_MAX_DV) dv = BAT_VOLTAGE_MAX_DV;
-  pct = ((dv - BAT_VOLTAGE_MIN_DV) * 100) / range;
+  if (dv < BAT_VOLTAGE_MIN_DV)
+    dv = BAT_VOLTAGE_MIN_DV;
+  if (dv > BAT_VOLTAGE_MAX_DV)
+    dv = BAT_VOLTAGE_MAX_DV;
+
+  range = BAT_VOLTAGE_MAX_DV
+        - BAT_VOLTAGE_MIN_DV;
+  pct   = ((dv - BAT_VOLTAGE_MIN_DV) * 100)
+        / range;
+
   widgets_set_battery_pct(pct);
+  widgets_set_voltage_arc(dv / 10);
+
+  if (g_volt_num_lbl)
+    {
+      snprintf(buf, sizeof(buf), "%d.%dV",
+        dv / 10, dv % 10);
+      lv_label_set_text(g_volt_num_lbl, buf);
+      lv_obj_align(g_volt_num_lbl,
+        LV_ALIGN_CENTER, 0, 0);
+    }
 }
 
 void widgets_set_odometer(uint32_t km)
 {
-  char buf[16];
+  char buf[12];
   if (!g_odo_lbl) return;
   if (km > 999999u) km = 999999u;
-  snprintf(buf, sizeof(buf), "%06lu km", (unsigned long)km);
+  snprintf(buf, sizeof(buf), "%lu",
+    (unsigned long)km);
   lv_label_set_text(g_odo_lbl, buf);
+  lv_obj_align(g_odo_lbl,
+    LV_ALIGN_CENTER, 0, 0);
 }
 
 void widgets_set_ext_temp(int temp_c)
 {
-  char buf[12];
+  char buf[8];
   if (!g_temp_lbl) return;
-  snprintf(buf, sizeof(buf), "%d\xc2\xb0""C", temp_c);
+  snprintf(buf, sizeof(buf),
+    "%d\xc2\xb0""C", temp_c);
   lv_label_set_text(g_temp_lbl, buf);
+  lv_obj_align(g_temp_lbl,
+    LV_ALIGN_CENTER, 0, 0);
 }
 
-void widgets_set_range(int km)
+void widgets_set_soc(int pct)
 {
-  char buf[12];
-  if (!g_range_lbl) return;
-  if (km < 0) km = 0;
-  snprintf(buf, sizeof(buf), "%d km", km);
-  lv_label_set_text(g_range_lbl, buf);
+  char buf[8];
+  if (!g_soc_lbl) return;
+  if (pct < 0)   pct = 0;
+  if (pct > 100) pct = 100;
+  snprintf(buf, sizeof(buf), "%d%%", pct);
+  lv_label_set_text(g_soc_lbl, buf);
+  lv_obj_align(g_soc_lbl,
+    LV_ALIGN_CENTER, 0, 0);
 }
 
-void widgets_set_chg_time(int minutes)
+void widgets_set_remaining_time(int minutes)
 {
-  char buf[12];
-  if (!g_chg_lbl) return;
-  if      (minutes <= 0)  lv_label_set_text(g_chg_lbl, "Full");
+  char buf[8];
+  if (!g_rem_lbl) return;
+
+  if (minutes <= 0)
+    {
+      lv_label_set_text(
+        g_rem_lbl, "Full");
+    }
   else if (minutes >= 60)
     {
-      snprintf(buf, sizeof(buf), "%dh%02dm", minutes/60, minutes%60);
-      lv_label_set_text(g_chg_lbl, buf);
+      snprintf(buf, sizeof(buf),
+        "%dh%02d", minutes / 60,
+        minutes % 60);
+      lv_label_set_text(g_rem_lbl, buf);
     }
   else
     {
-      snprintf(buf, sizeof(buf), "%d min", minutes);
-      lv_label_set_text(g_chg_lbl, buf);
+      snprintf(buf, sizeof(buf),
+        "%dmin", minutes);
+      lv_label_set_text(g_rem_lbl, buf);
     }
+
+  lv_obj_align(g_rem_lbl,
+    LV_ALIGN_CENTER, 0, 0);
+}
+
+void widgets_set_batt_temp(int temp_c)
+{
+  char buf[8];
+  if (!g_btmp_lbl) return;
+  snprintf(buf, sizeof(buf),
+    "%d\xc2\xb0""C", temp_c);
+  lv_label_set_text(g_btmp_lbl, buf);
+  lv_obj_align(g_btmp_lbl,
+    LV_ALIGN_CENTER, 0, 0);
+}
+
+void widgets_set_clock(int hour, int minute)
+{
+  char buf[8];
+  if (!g_clk_lbl) return;
+  snprintf(buf, sizeof(buf),
+    "%02d:%02d", hour % 24,
+    minute % 60);
+  lv_label_set_text(g_clk_lbl, buf);
+  lv_obj_align(g_clk_lbl,
+    LV_ALIGN_CENTER, 0, 0);
 }
 
 void widgets_set_warning(const char *msg)
 {
   if (!g_aux_lbl || !msg) return;
   lv_label_set_text(g_aux_lbl, msg);
-}
-
-/****************************************************************************
- * Name: widgets_set_kw
- *
- * Description:
- *   Update the KW needle on the regen gauge.
- *   @watts: instantaneous power in watts (0..100000 = 0..100 kW)
- *           Negative (regen) mapped to positive for display — needle
- *           shows magnitude only; colour indicates direction.
- *           Positive = white (motoring), Negative = amber (regenerating).
- *
- ****************************************************************************/
-
-void widgets_set_kw(int watts)
-{
-  int abs_w = watts < 0 ? -watts : watts;
-
-  if (!g_kw_line) return;
-
-  /* Clamp to 100 kW max */
-  if (abs_w > 100000) abs_w = 100000;
-
-  /* Store as 10x so max=1000 matches mkneedle(max_val=1000) */
-  int val10 = abs_w / 100;   /* 0..1000 */
-
-  needle_update(g_kw_line, g_kw_pts,
-                REG_CX, REG_CY, val10, 1000,
-                50, REG_ANGLE_START, REG_ANGLE_SWEEP);
-
-  /* Colour: white = motoring, amber = regenerating */
-  lv_obj_set_style_line_color(g_kw_line,
-                               watts >= 0 ? CLR_WHITE : CLR_AMBER,
-                               LV_PART_MAIN);
+  lv_obj_align(g_aux_lbl,
+    LV_ALIGN_CENTER, 0, 0);
 }

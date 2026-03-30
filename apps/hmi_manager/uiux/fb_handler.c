@@ -24,6 +24,8 @@
 
 #include <nuttx/config.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
@@ -40,6 +42,7 @@
 
 static int g_fb_fd = -1;
 static void *g_fb_mem = NULL;
+static void *g_draw_buf = NULL;
 
 /****************************************************************************
  * Private Functions
@@ -56,6 +59,12 @@ static void fb_flush_cb(lv_display_t *disp, const lv_area_t *area,
                         uint8_t *px_map)
 {
   struct fb_area_s fb_area;
+  int32_t y;
+  int32_t width = area->x2 - area->x1 + 1;
+  int32_t height = area->y2 - area->y1 + 1;
+  int32_t bytes_per_pixel = lv_display_get_color_format(disp) == LV_COLOR_FORMAT_RGB565 ? 2 : 4;
+  uint8_t *dst = (uint8_t *)g_fb_mem;
+  int32_t stride = lv_display_get_horizontal_resolution(disp) * bytes_per_pixel;
 
   if (g_fb_fd < 0)
     {
@@ -63,12 +72,21 @@ static void fb_flush_cb(lv_display_t *disp, const lv_area_t *area,
       return;
     }
 
+  /* Copy rendered partial buffer to memory-mapped framebuffer */
+
+  for (y = 0; y < height; y++)
+    {
+      memcpy(&dst[(area->y1 + y) * stride + area->x1 * bytes_per_pixel],
+             &px_map[y * width * bytes_per_pixel],
+             width * bytes_per_pixel);
+    }
+
   /* Convert LVGL area to NuttX fb_area */
 
   fb_area.x = area->x1;
   fb_area.y = area->y1;
-  fb_area.w = area->x2 - area->x1 + 1;
-  fb_area.h = area->y2 - area->y1 + 1;
+  fb_area.w = width;
+  fb_area.h = height;
 
   /* Update framebuffer */
 
@@ -169,10 +187,26 @@ int fb_handler_init(const char *devpath)
       return -ENOMEM;
     }
 
+  /* Allocate partial buffer (1/10 of screen size) */
+
+  uint32_t buf_size = (vinfo.xres * vinfo.yres * (pinfo.bpp / 8)) / 10;
+  if (g_draw_buf == NULL)
+    {
+      g_draw_buf = malloc(buf_size);
+      if (g_draw_buf == NULL)
+        {
+          printf("ERROR: malloc() for draw_buf failed\n");
+          munmap(g_fb_mem, pinfo.fblen);
+          close(g_fb_fd);
+          g_fb_fd = -1;
+          return -ENOMEM;
+        }
+    }
+
   lv_display_set_color_format(disp, LV_COLOR_FORMAT_RGB565);
   lv_display_set_flush_cb(disp, fb_flush_cb);
-  lv_display_set_buffers(disp, g_fb_mem, NULL, pinfo.fblen,
-                          LV_DISPLAY_RENDER_MODE_DIRECT);
+  lv_display_set_buffers(disp, g_draw_buf, NULL, buf_size,
+                          LV_DISPLAY_RENDER_MODE_PARTIAL);
 
   printf("FB: LVGL initialized\n");
   return 0;
@@ -192,6 +226,12 @@ void fb_handler_close(void)
       /* Note: Cannot get fblen here, assume cleanup handled by OS */
 
       g_fb_mem = NULL;
+    }
+
+  if (g_draw_buf != NULL)
+    {
+      free(g_draw_buf);
+      g_draw_buf = NULL;
     }
 
   if (g_fb_fd >= 0)
