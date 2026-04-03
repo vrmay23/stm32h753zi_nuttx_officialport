@@ -66,6 +66,10 @@ if(CONFIG_LCD_ST7796)
   list(APPEND SRCS drivers/driver_modules/stm32_st7796.c)
 endif()
 
+if(CONFIG_NUCLEO_H753ZI_FT6336_ENABLE)
+  list(APPEND SRCS drivers/driver_modules/stm32_ft6336.c)
+endif()
+
 if(CONFIG_STM32H7_PROGMEM)
   list(APPEND SRCS drivers/driver_middleware/stm32_progmem.c)
 endif()

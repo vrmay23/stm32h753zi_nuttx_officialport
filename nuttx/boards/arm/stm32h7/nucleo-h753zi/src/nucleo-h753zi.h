@@ -484,6 +484,44 @@
 
 #endif /* CONFIG_NUCLEO_H753ZI_SSD1306_ENABLE */
 
+/****************************************************************************
+ * Touch Controllers
+ ****************************************************************************/
+ 
+/* FT6336U - I2C Capacitive Touch Controller */
+ 
+#ifdef CONFIG_NUCLEO_H753ZI_FT6336_ENABLE
+ 
+/* Validate required Kconfig symbols */
+ 
+#  ifndef CONFIG_NUCLEO_H753ZI_FT6336_I2C_BUS
+#    error "FT6336U enabled but I2C bus not configured"
+#  endif
+ 
+#  ifndef CONFIG_NUCLEO_H753ZI_FT6336_I2C_ADDR
+#    error "FT6336U enabled but I2C address not configured"
+#  endif
+ 
+#  ifndef CONFIG_NUCLEO_H753ZI_FT6336_INT_PIN
+#    error "FT6336U enabled but INT pin not configured"
+#  endif
+ 
+#  ifndef CONFIG_NUCLEO_H753ZI_FT6336_RST_PIN
+#    error "FT6336U enabled but RST pin not configured"
+#  endif
+ 
+/* Expose Kconfig values under shorter board-level names */
+ 
+#  define NUCLEO_FT6336_I2C_BUS    CONFIG_NUCLEO_H753ZI_FT6336_I2C_BUS
+#  define NUCLEO_FT6336_I2C_ADDR   CONFIG_NUCLEO_H753ZI_FT6336_I2C_ADDR
+#  define NUCLEO_FT6336_I2C_FREQ   \
+            CONFIG_NUCLEO_H753ZI_FT6336_I2C_FREQUENCY
+#  define NUCLEO_FT6336_INT_PIN    CONFIG_NUCLEO_H753ZI_FT6336_INT_PIN
+#  define NUCLEO_FT6336_RST_PIN    CONFIG_NUCLEO_H753ZI_FT6336_RST_PIN
+#  define NUCLEO_FT6336_DEVNO      CONFIG_NUCLEO_H753ZI_FT6336_DEVNO
+ 
+#endif /* CONFIG_NUCLEO_H753ZI_FT6336_ENABLE */
+
 /* TODO: Add new displays here following ST7796/SSD1306 pattern:
  * - Validate required Kconfig settings
  * - Define GPIO pins (CS, DC, RESET, etc)
@@ -1093,6 +1131,23 @@ int stm32_ssd1306_set_brightness(int percent);
 
 #endif /* CONFIG_NUCLEO_H753ZI_SSD1306_ENABLE */
 
+#ifdef CONFIG_NUCLEO_H753ZI_FT6336_ENABLE
+/****************************************************************************
+ * Name: stm32_ft6336_initialize
+ *
+ * Description:
+ *   Initialize and register the FT6336U capacitive touch controller.
+ *   Resolves the INT GPIO pin from Kconfig, configures EXTI, and
+ *   registers the device via the NuttX FT5x06 driver.
+ *
+ * Returned Value:
+ *   Zero (OK) on success; a negated errno value on failure.
+ *
+ ****************************************************************************/
+ 
+int stm32_ft6336_initialize(void);
+#endif
+
 /****************************************************************************
  * Wireless Drivers
  ****************************************************************************/
@@ -1106,7 +1161,7 @@ int stm32_ssd1306_set_brightness(int percent);
  *   Initialize NRF24L01 wireless module.
  *
  * Returned Value:
- *   OK on success, negative errno on error
+ *   OK on success, negative errno on error	
  *
  ****************************************************************************/
 

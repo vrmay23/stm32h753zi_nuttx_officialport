@@ -593,18 +593,41 @@ static int nucleo_communication_initialize(void)
 static int nucleo_input_initialize(void)
 {
   int ret = OK;
+  int local_ret;
+
+  UNUSED(local_ret);
 
 #ifdef CONFIG_INPUT_BUTTONS
-
   ret = btn_lower_initialize("/dev/buttons");
   if (ret < 0)
     {
-      syslog(LOG_ERR, "ERROR: btn_lower_initialize() failed: %d\n", ret);
+      syslog(LOG_ERR,
+             "ERROR: btn_lower_initialize() failed: %d\n", ret);
     }
   else
     {
       syslog(LOG_INFO,
              "Buttons driver registered as /dev/buttons\n");
+    }
+#endif
+
+#ifdef CONFIG_NUCLEO_H753ZI_FT6336_ENABLE
+  local_ret = stm32_ft6336_initialize();
+  if (local_ret < 0)
+    {
+      syslog(LOG_ERR,
+             "ERROR: stm32_ft6336_initialize() failed: %d\n",
+             local_ret);
+      if (ret == OK)
+        {
+          ret = local_ret;
+        }
+    }
+  else
+    {
+      syslog(LOG_INFO,
+             "FT6336U touch registered as /dev/input%d\n",
+             CONFIG_NUCLEO_H753ZI_FT6336_DEVNO);
     }
 #endif
 

@@ -68,6 +68,10 @@ ifeq ($(CONFIG_LCD_ST7796),y)
   CSRCS += drivers/driver_modules/stm32_st7796.c
 endif
 
+ifeq ($(CONFIG_NUCLEO_H753ZI_FT6336_ENABLE),y)
+  CSRCS += drivers/driver_modules/stm32_ft6336.c
+endif
+
 ifeq ($(CONFIG_STM32H7_PROGMEM),y)
   CSRCS += drivers/driver_middleware/stm32_progmem.c
 endif

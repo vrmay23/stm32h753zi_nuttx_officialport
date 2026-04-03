@@ -1105,6 +1105,149 @@ endif
 
 endmenu
 
+menu "FT6336U Capacitive Touch Configuration"
+
+config NUCLEO_H753ZI_FT6336_ENABLE
+	bool "Enable FT6336U capacitive touch controller"
+	default n
+	select INPUT_FT5X06
+	help
+		Enable FT6336U capacitive touch controller via I2C.
+		The FT6336U is register-compatible with the NuttX FT5x06
+		driver (drivers/input/ft5x06.c).
+		Registers the touch device as /dev/input<N>.
+		Requires an I2C bus and an INT GPIO pin.
+
+if NUCLEO_H753ZI_FT6336_ENABLE
+
+choice
+	prompt "FT6336U I2C Bus"
+	default NUCLEO_H753ZI_FT6336_I2C2
+	help
+		Select which I2C bus the FT6336U is connected to.
+		The selected bus must be enabled in I2C Configuration.
+
+config NUCLEO_H753ZI_FT6336_I2C1
+	bool "I2C1"
+	depends on STM32H7_I2C1
+	select NUCLEO_H753ZI_I2C1_ENABLE
+	help
+		Use I2C1 for FT6336U.
+
+config NUCLEO_H753ZI_FT6336_I2C2
+	bool "I2C2"
+	depends on STM32H7_I2C2
+	select NUCLEO_H753ZI_I2C2_ENABLE
+	help
+		Use I2C2 for FT6336U.
+		Default validated pinset: PF1(SCL), PF0(SDA) - AF4.
+
+config NUCLEO_H753ZI_FT6336_I2C3
+	bool "I2C3"
+	depends on STM32H7_I2C3
+	select NUCLEO_H753ZI_I2C3_ENABLE
+	help
+		Use I2C3 for FT6336U.
+
+config NUCLEO_H753ZI_FT6336_I2C4
+	bool "I2C4"
+	depends on STM32H7_I2C4
+	select NUCLEO_H753ZI_I2C4_ENABLE
+	help
+		Use I2C4 for FT6336U.
+
+endchoice
+
+config NUCLEO_H753ZI_FT6336_I2C_BUS
+	int
+	default 1 if NUCLEO_H753ZI_FT6336_I2C1
+	default 2 if NUCLEO_H753ZI_FT6336_I2C2
+	default 3 if NUCLEO_H753ZI_FT6336_I2C3
+	default 4 if NUCLEO_H753ZI_FT6336_I2C4
+
+config NUCLEO_H753ZI_FT6336_I2C_FREQUENCY
+	int "I2C Bus Frequency (Hz)"
+	default 400000
+	range 10000 400000
+	help
+		I2C bus frequency for FT6336U communication.
+		- 100000 (100 kHz): Standard mode
+		- 400000 (400 kHz): Fast mode (recommended)
+		FT6336U maximum rated speed is 400 kHz.
+
+choice
+	prompt "FT6336U I2C Address"
+	default NUCLEO_H753ZI_FT6336_ADDR_38
+	help
+		Select the I2C address of the FT6336U module.
+		Use i2cdetect on the configured bus to confirm.
+
+config NUCLEO_H753ZI_FT6336_ADDR_38
+	bool "0x38 (default)"
+	help
+		Standard FT6336U I2C address.
+		Used when ADDR pin is pulled low (most modules).
+
+config NUCLEO_H753ZI_FT6336_ADDR_3E
+	bool "0x3E (alternate)"
+	help
+		Alternate FT6336U I2C address.
+		Used when ADDR pin is pulled high.
+
+config NUCLEO_H753ZI_FT6336_ADDR_CUSTOM
+	bool "Custom address"
+	help
+		Manually specify the I2C address.
+
+endchoice
+
+config NUCLEO_H753ZI_FT6336_ADDR_CUSTOM_VALUE
+	hex "Custom I2C Address"
+	depends on NUCLEO_H753ZI_FT6336_ADDR_CUSTOM
+	default 0x38
+	range 0x08 0x77
+	help
+		Custom I2C address in hexadecimal (0x08-0x77).
+
+config NUCLEO_H753ZI_FT6336_I2C_ADDR
+	hex
+	default 0x38 if NUCLEO_H753ZI_FT6336_ADDR_38
+	default 0x3e if NUCLEO_H753ZI_FT6336_ADDR_3E
+	default NUCLEO_H753ZI_FT6336_ADDR_CUSTOM_VALUE \
+		if NUCLEO_H753ZI_FT6336_ADDR_CUSTOM
+
+config NUCLEO_H753ZI_FT6336_INT_PIN
+	string "INT GPIO Pin"
+	default "PG8"
+	help
+		GPIO pin connected to FT6336U interrupt output (T_INT).
+		Format: PORT+PIN (e.g., "PG8", "PE0", "PF11")
+		Active-low: driven low when touch data is ready.
+		All STM32H7 GPIO pins support EXTI.
+		Confirmed free pins (no conflicts in this project):
+		PG8, PE0, PF11, PG5, PE4, PD4, PD6, PG6
+
+config NUCLEO_H753ZI_FT6336_RST_PIN
+	string "RST GPIO Pin"
+	default "PG5"
+	help
+		GPIO pin connected to FT6336U reset input (CTP_RST).
+		Format: PORT+PIN (e.g., "PG5", "PE4", "PD6")
+		Active-low: assert low for 10ms then release for chip boot.
+		Confirmed free pins (no conflicts in this project):
+		PG5, PE4, PD4, PD6, PG6, PE2
+
+config NUCLEO_H753ZI_FT6336_DEVNO
+	int "Touch Input Device Number"
+	default 0
+	range 0 7
+	help
+		Input device number. Registers as /dev/input<N>.
+		Use different numbers for multiple touch devices.
+
+endif
+endmenu
+
 endmenu
 
 config STM32_ROMFS
