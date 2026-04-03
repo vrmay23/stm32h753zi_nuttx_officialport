@@ -54,10 +54,11 @@ static void log_frame(const char *dir, const struct can_frame *frame)
 
   timestamp = TICK2MSEC(clock_systime_ticks()) - g_start_time;
 
-  /* Format: timestamp | interface | id | dlc | data */
+  /* Format: timestamp | interface | dir | id | dlc | data */
 
-  len = snprintf(buf, sizeof(buf), "%10lu | can0 | %08lX | %d |",
+  len = snprintf(buf, sizeof(buf), "%10lu | can0 | %-3s | %08lX | %d |",
                  (unsigned long)timestamp,
+                 dir,
                  (unsigned long)id,
                  frame->can_dlc);
 
@@ -96,9 +97,9 @@ void can_trace_enable(bool enable)
     {
       /* Print header when enabling */
       
-      syslog(LOG_INFO, "%-10s | %-9s | %-8s | %-3s | %s\n",
-             "timestamp", "interface", "id", "dlc", "data");
-      syslog(LOG_INFO, "----------------------------------------------\n");
+      syslog(LOG_INFO, "%-10s | %-9s | %-3s | %-8s | %-3s | %s\n",
+             "timestamp", "interface", "dir", "id", "dlc", "data");
+      syslog(LOG_INFO, "---------------------------------------------------------\n");
     }
   else
     {

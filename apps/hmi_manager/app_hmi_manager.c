@@ -751,11 +751,27 @@ static void *can_rx_thread(void *arg)
 
   while (true)
     {
+      if (can_handler_get_fd() < 0)
+        {
+          ret = can_handler_init("can0");
+          if (ret < 0)
+            {
+              nxsched_msleep(1000);
+              continue;
+            }
+        }
+
       ret = can_handler_read(&frame);
       if (ret == 0)
         {
           can_trace_rx(&frame);
           process_can_frame(&frame);
+        }
+      else if (ret == -ENETDOWN || ret == -ENODEV)
+        {
+          printf("[CAN RX] Interface down, reopening...\n");
+          can_handler_close();
+          nxsched_msleep(1000);
         }
       else if (ret != -EAGAIN)
         {
@@ -789,10 +805,15 @@ static void *can_tx_loop_100ms(void *arg)
           data, &g_driver_cmd,
           CAR_CAN_DRIVER_COMMANDS_LENGTH);
 
-      can_handler_send(CAR_CAN_DRIVER_COMMANDS_FRAME_ID,
+      int ret = can_handler_send(CAR_CAN_DRIVER_COMMANDS_FRAME_ID,
                        CAR_CAN_DRIVER_COMMANDS_IS_EXTENDED,
                        data,
                        CAR_CAN_DRIVER_COMMANDS_LENGTH);
+
+      if (ret == -EAGAIN)
+        {
+          /* Silently drop the frame if the network is busy recovering */
+        }
 
       nxsched_msleep(100);
     }
@@ -1054,11 +1075,7 @@ int main(int argc, char *argv[])
   ret = can_handler_init("can0");
   if (ret < 0)
     {
-      printf("ERROR: can_handler_init failed: %d\n", ret);
-#ifdef CONFIG_HMI_MANAGER_SCREEN_ENABLE
-      fb_handler_close();
-#endif
-      return 1;
+      printf("WARNING: can_handler_init failed (will retry in CAN RX thread): %d\n", ret);
     }
 
   /* --- 4. CAN trace init --- */

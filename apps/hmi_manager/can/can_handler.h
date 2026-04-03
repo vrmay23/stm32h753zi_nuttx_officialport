@@ -27,6 +27,7 @@
 
 #include <nuttx/can.h>
 #include <sys/socket.h>
+#include <stdbool.h>
 
 /****************************************************************************
  * Public Function Prototypes

@@ -34,6 +34,7 @@
 #include <nuttx/can.h>
 #include <netutils/netlib.h>
 
+#include "can_trace.h"
 #include "can_handler.h"
 
 /****************************************************************************
@@ -181,12 +182,24 @@ int can_handler_send(uint32_t id, bool extended, const uint8_t *data,
       memcpy(frame.data, data, dlc);
     }
 
-  nbytes = write(g_can_fd, &frame, sizeof(frame));
+  nbytes = send(g_can_fd, &frame, sizeof(frame), MSG_DONTWAIT);
   if (nbytes != sizeof(frame))
     {
-      printf("ERROR: write() failed: %d\n", errno);
+      if (errno == EAGAIN || errno == EWOULDBLOCK)
+        {
+          /* The kernel queue is continuously full because the CAN bus is physically
+           * restricted or disconnected. Since the application wants to log the transmission
+           * intent regardless of the physical link status, we trace the dropped frame.
+           */
+          can_trace_tx(&frame);
+          return -EAGAIN;
+        }
+      printf("ERROR: send() failed: %d\n", errno);
       return -errno;
     }
+
+  /* Automatically trace TX messages if successfully sent */
+  can_trace_tx(&frame);
 
   return 0;
 }
