@@ -404,6 +404,7 @@ struct fdcan_driver_s
 
   struct net_driver_s dev;              /* Interface understood by the network */
   bool bifup;                           /* true:ifup false:ifdown */
+  bool busoff;                          /* true:bus-off state active */
 
   struct txmbstats txmb[NUM_TX_FIFO];   /* Track deadline and status of every Tx entry */
 };
@@ -970,9 +971,20 @@ static int fdcan_txpoll(struct net_driver_s *dev)
 
   if (priv->dev.d_len > 0)
     {
-      /* Send the packet */
+      if (priv->busoff)
+        {
+          /* Silently drop: free IOB to prevent exhaustion during
+           * hardware Bus-Off recovery (128x11 recessive bits).
+           */
 
-      fdcan_transmit(priv);
+          NETDEV_TXDONE(&priv->dev);
+        }
+      else
+        {
+          /* Send the packet */
+
+          fdcan_transmit(priv);
+        }
 
       /* Check if there is room in the device to hold another packet. If
        * not, return a non-zero value to terminate the poll.
@@ -1060,13 +1072,17 @@ static void fdcan_receive(struct fdcan_driver_s *priv)
 
 static void fdcan_receive_work(void *arg)
 {
-  irqstate_t flags = enter_critical_section();
-
   struct fdcan_driver_s *priv = (struct fdcan_driver_s *)arg;
+  irqstate_t flags;
+  uint32_t irflags;
+
+  /* Stage 1: snapshot irflags under critical section */
+
+  flags = enter_critical_section();
+  irflags = priv->irflags;
+  leave_critical_section(flags);
 
   /* Check which FIFO triggered this work */
-
-  uint32_t irflags = priv->irflags;
 
   const uint32_t ir_fifo0 = FDCAN_IR_RF0N | FDCAN_IR_RF0F;
   const uint32_t ir_fifo1 = FDCAN_IR_RF1N | FDCAN_IR_RF1F;
@@ -1083,19 +1099,10 @@ static void fdcan_receive_work(void *arg)
   else
     {
       nerr("ERROR: Bad RX IR flags");
-      leave_critical_section(flags);
       return;
     }
 
-  /* Bitwise register definitions are the same for FIFO 0/1
-   *
-   *   FDCAN_RXFnC_F0S:   Rx FIFO Size
-   *   FDCAN_RXFnS_RF0L:  Rx Message Lost
-   *   FDCAN_RXFnS_F0FL:  Rx FIFO Fill Level
-   *   FDCAN_RXFnS_F0GI:  Rx FIFO Get Index
-   *
-   * So we will use only the RX FIFO0 register definitions for simplicity
-   */
+  /* Bitwise register definitions are the same for FIFO 0/1 */
 
   uint32_t offset_rxfnc = (fifo_id == 0) ? STM32_FDCAN_RXF0C_OFFSET
                                          : STM32_FDCAN_RXF1C_OFFSET;
@@ -1113,7 +1120,6 @@ static void fdcan_receive_work(void *arg)
   if ((*rxfnc & FDCAN_RXF0C_F0S) == 0)
     {
       nerr("ERROR: No RX FIFO elements allocated");
-      leave_critical_section(flags);
       return;
     }
 
@@ -1124,21 +1130,24 @@ static void fdcan_receive_work(void *arg)
       NETDEV_RXERRORS(&priv->dev);
     }
 
-  /* Check number of elements available (fill level) */
-
-  const uint8_t n_elem = (*rxfns & FDCAN_RXF0S_F0FL);
-
-  if (n_elem == 0)
-    {
-      nerr("RX interrupt but 0 frames available");
-      leave_critical_section(flags);
-      return;
-    }
-
   struct rx_fifo_s *rf = NULL;
 
-  while ((*rxfns & FDCAN_RXF0S_F0FL) > 0)
+  /* Stage 2: loop over FIFO elements. For each element:
+   *   - Enter critical section to read HW and ack FIFO
+   *   - Leave critical section
+   *   - Deliver to network stack under net_lock()
+   */
+
+  while (1)
     {
+      flags = enter_critical_section();
+
+      if ((*rxfns & FDCAN_RXF0S_F0FL) == 0)
+        {
+          leave_critical_section(flags);
+          break;
+        }
+
       /* Copy the frame from message RAM */
 
       const uint8_t index = (*rxfns & FDCAN_RXF0S_F0GI) >>
@@ -1146,14 +1155,13 @@ static void fdcan_receive_work(void *arg)
 
       rf = &priv->rx[index];
 
-      /* Read the frame contents */
+      /* Read the frame contents into priv->rx_pool */
 
 #ifdef CONFIG_NET_CAN_CANFD
       if (rf->header.fdf)
         {
-          /* CAN FD frame */
-
-          struct canfd_frame *frame = (struct canfd_frame *)priv->rx_pool;
+          struct canfd_frame *frame =
+            (struct canfd_frame *)priv->rx_pool;
 
           if (rf->header.id.xtd)
             {
@@ -1171,31 +1179,21 @@ static void fdcan_receive_work(void *arg)
             }
 
           frame->len = g_can_dlc_to_len[rf->header.dlc];
-
           uint32_t *frame_data_word = (uint32_t *)&frame->data[0];
-
           for (int i = 0; i < (frame->len + 4 - 1) / 4; i++)
             {
               frame_data_word[i] = rf->data[i].word;
             }
 
-          /* Acknowledge receipt of this FIFO element */
-
           putreg32(index, rxfna);
-
-          /* Copy the buffer pointer to priv->dev
-           * Set amount of data in priv->dev.d_len
-           */
-
           priv->dev.d_len = sizeof(struct canfd_frame);
           priv->dev.d_buf = (uint8_t *)frame;
         }
       else
 #endif
         {
-          /* CAN 2.0 Frame */
-
-          struct can_frame *frame = (struct can_frame *)priv->rx_pool;
+          struct can_frame *frame =
+            (struct can_frame *)priv->rx_pool;
 
           if (rf->header.id.xtd)
             {
@@ -1213,42 +1211,28 @@ static void fdcan_receive_work(void *arg)
             }
 
           frame->can_dlc = rf->header.dlc;
-
           *(uint32_t *)&frame->data[0] = rf->data[0].word;
           *(uint32_t *)&frame->data[4] = rf->data[1].word;
 
-          /* Acknowledge receipt of this FIFO element */
-
           putreg32(index, rxfna);
-
-          /* Copy the buffer pointer to priv->dev
-           * Set amount of data in priv->dev.d_len
-           */
-
           priv->dev.d_len = sizeof(struct can_frame);
           priv->dev.d_buf = (uint8_t *)frame;
         }
 
-      /* Send to socket interface */
+      leave_critical_section(flags);
 
+      /* Deliver to network stack under net_lock */
+
+      net_lock();
       can_input(&priv->dev);
-
-      /* Update iface statistics */
-
       NETDEV_RXPACKETS(&priv->dev);
-
-      /* Point the packet buffer back to the next Tx buffer that will be
-       * used during the next write.  If the write queue is full, then
-       * this will point at an active buffer, which must not be written
-       * to.  This is OK because devif_poll won't be called unless the
-       * queue is not full.
-       */
-
       priv->dev.d_buf = priv->tx_pool;
+      net_unlock();
     }
 
-  /* Check for errors and abort-transmission requests */
+  /* Check for errors */
 
+  flags = enter_critical_section();
   fdcan_check_errors(priv);
 
 #ifdef CONFIG_NET_CAN_ERRORS
@@ -1321,37 +1305,29 @@ static void fdcan_txdone(struct fdcan_driver_s *priv)
 
 static void fdcan_txdone_work(void *arg)
 {
-  irqstate_t flags = enter_critical_section();
-
   struct fdcan_driver_s *priv = (struct fdcan_driver_s *)arg;
+  irqstate_t flags = enter_critical_section();
+  uint32_t txbto;
+  uint32_t completed = 0;
+
+  /* Stage 1: snapshot TXBTO and mark completed under critical section */
+
+  txbto = getreg32(priv->base + STM32_FDCAN_TXBTO_OFFSET);
 
   /* Update counters for successful transmissions */
 
   for (uint8_t i = 0; i < NUM_TX_FIFO; i++)
     {
-      if ((getreg32(priv->base + STM32_FDCAN_TXBTO_OFFSET) & (1 << i)) > 0)
+      if ((txbto & (1 << i)) > 0)
         {
-          /* Transmission Occurred in buffer i
-           *   (Not necessarily a 'new' transmission, however)
-           * Check that it's a new transmission, not a previously handled
-           * transmission
-           */
-
           struct txmbstats *txi = &priv->txmb[i];
 
           if (txi->pending == TX_BUSY)
             {
-              /* This is a transmission that just now completed */
-
-              NETDEV_TXDONE(&priv->dev);
-
+              completed |= (1 << i);
               txi->pending = TX_FREE;
 
 #ifdef TX_TIMEOUT_WQ
-              /* We are here because a transmission completed, so the
-               * corresponding watchdog can be canceled.
-               */
-
               wd_cancel(&priv->txmb[i].txtimeout);
 #endif
             }
@@ -1372,13 +1348,28 @@ static void fdcan_txdone_work(void *arg)
   putreg32(regval, priv->base + STM32_FDCAN_IE_OFFSET);
 #endif
 
-  /* There should be space for a new TX in any event
-   * Poll the network for new data to transmit
-   */
-
-  devif_poll(&priv->dev, fdcan_txpoll);
-
   leave_critical_section(flags);
+
+  /* Stage 2: report completions and poll under net_lock */
+
+  if (completed != 0)
+    {
+      net_lock();
+      for (uint8_t i = 0; i < NUM_TX_FIFO; i++)
+        {
+          if ((completed & (1 << i)) != 0)
+            {
+              NETDEV_TXDONE(&priv->dev);
+            }
+        }
+
+      /* There should be space for a new TX in any event.
+       * Poll the network for new data to transmit.
+       */
+
+      devif_poll(&priv->dev, fdcan_txpoll);
+      net_unlock();
+    }
 }
 
 /****************************************************************************
@@ -2940,13 +2931,17 @@ static void fdcan_error(struct fdcan_driver_s *priv, uint32_t status,
     {
       /* Bus_Off Status changed */
 
+      putreg32(FDCAN_IR_BO, priv->base + STM32_FDCAN_IR_OFFSET);
+
       if ((psr & FDCAN_PSR_BO) != 0)
         {
           errbits |= CAN_ERR_BUSOFF;
+          priv->busoff = true;
         }
       else
         {
           errbits |= CAN_ERR_RESTARTED;
+          priv->busoff = false;
         }
     }
 
@@ -3010,6 +3005,41 @@ static void fdcan_error(struct fdcan_driver_s *priv, uint32_t status,
       NETDEV_ERRORS(&priv->dev);
 
       can_input(&priv->dev);
+
+      /* If bus-off, trigger auto-recovery per RM0433:
+       * Set INIT=1, wait, then clear INIT. The FDCAN waits for
+       * 128x11 consecutive recessive bits before going operational.
+       * Also drain all pending TX mailboxes to prevent zombie
+       * transmissions after the hardware queue is cleared by INIT.
+       */
+
+      if (priv->busoff)
+        {
+          nerr("FDCAN%d: Bus-off! Triggering recovery...\n",
+               priv->iface_idx);
+
+          fdcan_setinit(priv->base, 1);
+          up_mdelay(1);
+
+          for (int i = 0; i < NUM_TX_FIFO; i++)
+            {
+#ifdef TX_TIMEOUT_WQ
+              if (priv->txmb[i].pending == TX_BUSY)
+                {
+                  wd_cancel(&priv->txmb[i].txtimeout);
+                }
+#endif
+              priv->txmb[i].pending = TX_FREE;
+            }
+
+          fdcan_setinit(priv->base, 0);
+
+          /* NOTE: Do NOT clear priv->busoff here. The HW must
+           * complete the 128x11 bit wait first. The flag is
+           * cleared when FDCAN_IR_BO fires with PSR.BO == 0
+           * (CAN_ERR_RESTARTED path above).
+           */
+        }
 
       /* Point the packet buffer back to the next Tx buffer that will be
        * used during the next write.  If the write queue is full, then
