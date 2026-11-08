@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STM32H753ZI Nucleo-144 Pinout Map - Rev14</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#1a1a2e;color:#eee;padding:20px}
+h1{text-align:center;margin-bottom:10px;color:#00d4ff}
+.correction-note{text-align:center;color:#2ECC71;font-size:12px;margin-bottom:15px;
+background:#1a3a1a;padding:8px;border-radius:5px;max-width:1200px;margin:10px auto}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:15px auto;padding:10px;
+background:#252540;border-radius:8px;max-width:1200px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px}
+.legend-color{width:16px;height:16px;border-radius:3px;border:1px solid #555}
+.controls{text-align:center;margin:15px 0}
+.btn{background:#00d4ff;color:#000;border:none;padding:8px 20px;border-radius:5px;
+cursor:pointer;font-weight:bold;font-size:14px;margin:0 5px}
+.btn:hover{background:#00a8cc}
+.rotation-info{color:#888;font-size:12px;margin-top:8px}
+.board-container{background:#0d0d1a;border:3px solid #333;border-radius:15px;
+padding:20px;margin:20px auto;max-width:1400px;overflow:auto}
+.board{display:flex;gap:30px;justify-content:center;align-items:flex-start;
+transition:transform 0.3s ease}
+.connector{padding:10px;background:#1a1a30;border-radius:8px;border:1px solid #444;
+display:inline-block}
+.connector-title{font-weight:bold;color:#ffd700;margin-bottom:8px;font-size:12px;
+text-align:center;white-space:nowrap}
+.connector-body{display:flex;gap:2px}
+.pin-col{display:flex;flex-direction:column;gap:2px}
+.pin{width:44px;height:22px;display:flex;align-items:center;justify-content:center;
+font-size:7px;font-weight:bold;border-radius:3px;cursor:pointer;transition:all 0.2s;
+border:1px solid rgba(0,0,0,0.3);text-shadow:0 0 2px rgba(0,0,0,0.8);
+white-space:nowrap;overflow:hidden}
+.pin:hover{transform:scale(1.15);z-index:100;box-shadow:0 0 10px rgba(255,255,255,0.5)}
+.pin-num{background:#333!important;color:#888!important;font-size:6px;width:20px}
+.pin-can{background:#E74C3C;color:#fff}
+.pin-spi{background:#3498DB;color:#fff}
+.pin-i2c{background:#9B59B6;color:#fff}
+.pin-uart{background:#2ECC71;color:#fff}
+.pin-tim{background:#F39C12;color:#fff}
+.pin-adc{background:#1ABC9C;color:#fff}
+.pin-dac{background:#16A085;color:#fff}
+.pin-eth{background:#34495E;color:#fff}
+.pin-usb{background:#E91E63;color:#fff}
+.pin-sdmmc{background:#795548;color:#fff}
+.pin-qspi{background:#FF5722;color:#fff}
+.pin-sai{background:#673AB7;color:#fff}
+.pin-dcmi{background:#607D8B;color:#fff}
+.pin-fmc{background:#9E9E9E;color:#000}
+.pin-comp{background:#00BCD4;color:#fff}
+.pin-debug{background:#000;color:#0f0}
+.pin-osc{background:#8BC34A;color:#fff}
+.pin-gpio{background:#78909C;color:#fff}
+.pin-pwr{background:#C0392B;color:#fff}
+.pin-gnd{background:#212121;color:#fff}
+.pin-nc{background:#424242;color:#888}
+.tooltip{position:fixed;background:#1a1a2e;border:2px solid #00d4ff;border-radius:8px;
+padding:12px;font-size:11px;max-width:400px;z-index:1000;display:none;
+box-shadow:0 4px 20px rgba(0,212,255,0.3)}
+.tooltip h4{color:#00d4ff;margin-bottom:8px;font-size:14px}
+.tooltip .af-list{display:grid;grid-template-columns:auto 1fr;gap:2px 8px}
+.tooltip .af-key{color:#ffd700}
+.tooltip .af-val{color:#ccc}
+.tabs{display:flex;gap:5px;margin:20px auto;max-width:1200px}
+.tab{padding:10px 20px;background:#252540;border:none;color:#aaa;cursor:pointer;
+border-radius:5px 5px 0 0;font-size:14px}
+.tab.active{background:#00d4ff;color:#000;font-weight:bold}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.af-table-container{margin:20px auto;overflow-x:auto;max-height:600px;
+overflow-y:auto;max-width:1400px}
+.af-table{width:100%;border-collapse:collapse;font-size:10px;background:#1a1a30}
+.af-table th,.af-table td{border:1px solid #444;padding:4px 6px;text-align:left}
+.af-table th{background:#252550;color:#ffd700;position:sticky;top:0;z-index:10}
+.af-table tr:nth-child(even){background:#1f1f3a}
+.af-table tr:hover{background:#2a2a50}
+.af-table .pin-cell{font-weight:bold;color:#00d4ff}
+.filter-container{margin:15px auto;display:flex;gap:10px;flex-wrap:wrap;
+align-items:center;max-width:1200px}
+.filter-container input{background:#252540;border:1px solid #444;color:#fff;
+padding:6px 10px;border-radius:4px;width:200px}
+.rotate-0 .connector-body{flex-direction:row}
+.rotate-0 .pin-col{flex-direction:column}
+.rotate-90 .connector-body{flex-direction:column-reverse}
+.rotate-90 .pin-col{flex-direction:row}
+.rotate-90 .pin{width:22px;height:44px;writing-mode:vertical-rl;
+text-orientation:mixed}
+.rotate-90 .pin-num{width:22px;height:20px}
+.rotate-180 .connector-body{flex-direction:row-reverse}
+.rotate-180 .pin-col{flex-direction:column-reverse}
+.rotate-270 .connector-body{flex-direction:column}
+.rotate-270 .pin-col{flex-direction:row-reverse}
+.rotate-270 .pin{width:22px;height:44px;writing-mode:vertical-rl;
+text-orientation:mixed;transform:rotate(180deg)}
+.rotate-270 .pin-num{width:22px;height:20px}
+.usage-table{width:100%;border-collapse:collapse;font-size:11px;background:#1a1a30;
+max-width:1200px;margin:20px auto}
+.usage-table th,.usage-table td{border:1px solid #444;padding:8px 10px;
+text-align:left}
+.usage-table th{background:#252550;color:#ffd700}
+.usage-table tr:nth-child(even){background:#1f1f3a}
+.usage-table tr:hover{background:#2a2a50}
+.usage-table .func-cell{font-weight:bold}
+.usage-table .pin-name{color:#00d4ff;font-weight:bold}
+.usage-table td.multi{color:#F39C12;font-weight:bold}
+.usage-table .af-used{color:#2ECC71}
+.usage-table .note{color:#888;font-size:10px}
+.usage-section{margin:20px auto;max-width:1200px}
+.usage-section h3{color:#ffd700;margin:20px 0 10px;padding-bottom:5px;
+border-bottom:1px solid #444}
+.usage-category{margin-bottom:30px}
+</style>
+</head>
+<body>
+<h1>STM32H753ZI Nucleo-144 Pinout Map</h1>
+<div class="correction-note">
+Rev14 - Application Pinout Updated | SPI1 RFID: PA0 (CS) + Pin Set 2 (PB3/PB4/PB5) |
+Buttons (11x): PC13,PB1,PD0,PG4,PD5,PE6,PE3,PD12,PF9,PD15,PE11 - All tested on NuttX
+</div>
+<p style="text-align:center;color:#888;margin-bottom:10px">
+Hover over pins to see alternate functions</p>
+<div class="legend">
+<div class="legend-item"><div class="legend-color" style="background:#E74C3C">
+</div>CAN</div>
+<div class="legend-item"><div class="legend-color" style="background:#3498DB">
+</div>SPI</div>
+<div class="legend-item"><div class="legend-color" style="background:#9B59B6">
+</div>I2C</div>
+<div class="legend-item"><div class="legend-color" style="background:#2ECC71">
+</div>USART/UART</div>
+<div class="legend-item"><div class="legend-color" style="background:#F39C12">
+</div>TIM</div>
+<div class="legend-item"><div class="legend-color" style="background:#1ABC9C">
+</div>ADC</div>
+<div class="legend-item"><div class="legend-color" style="background:#16A085">
+</div>DAC</div>
+<div class="legend-item"><div class="legend-color" style="background:#34495E">
+</div>ETH/RMII</div>
+<div class="legend-item"><div class="legend-color" style="background:#E91E63">
+</div>USB</div>
+<div class="legend-item"><div class="legend-color" style="background:#795548">
+</div>SDMMC</div>
+<div class="legend-item"><div class="legend-color" style="background:#FF5722">
+</div>QSPI</div>
+<div class="legend-item"><div class="legend-color" style="background:#673AB7">
+</div>SAI/I2S</div>
+<div class="legend-item"><div class="legend-color" style="background:#78909C">
+</div>GPIO</div>
+<div class="legend-item"><div class="legend-color" style="background:#C0392B">
+</div>PWR</div>
+<div class="legend-item"><div class="legend-color" style="background:#212121">
+</div>GND</div>
+</div>
+
+<div class="tabs">
+<button class="tab active" onclick="showTab('pinout')">Pinout Map</button>
+<button class="tab" onclick="showTab('aftable')">Full AF Table</button>
+<button class="tab" onclick="showTab('boardusage')">Board Usage</button>
+<button class="tab" onclick="showTab('apppinout')">Application Pinout</button>
+<button class="tab" onclick="showTab('hwadvanced')">Hardware Advanced</button>
+<button class="tab" onclick="showTab('freeperiph')">Free Pins</button>
+<button class="tab" onclick="showTab('nextsteps')">Next Steps</button>
+</div>
+
+<div id="pinout" class="tab-content active">
+<div class="controls">
+<button class="btn" onclick="rotate()">&#10227; Rotate 90</button>
+<div class="rotation-info">Rotation: <span id="rotationAngle">0</span></div>
+</div>
+<div class="board-container">
+<div class="board rotate-0" id="board">
+<div class="morpho-group" style="display:flex;gap:40px;justify-content:center">
+<div class="connector" id="cn11-container">
+<div class="connector-title">CN11 (70 pins)</div>
+<div class="connector-body" id="cn11"></div>
+</div>
+<div class="connector" id="cn12-container">
+<div class="connector-title">CN12 (70 pins)</div>
+<div class="connector-body" id="cn12"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="board-container">
+<div class="board rotate-0" id="board2">
+<div class="zio-group" style="display:flex;gap:20px;justify-content:center;
+flex-wrap:wrap">
+<div class="connector">
+<div class="connector-title">CN7 (20 pins)</div>
+<div class="connector-body" id="cn7"></div>
+</div>
+<div class="connector">
+<div class="connector-title">CN10 (34 pins)</div>
+<div class="connector-body" id="cn10"></div>
+</div>
+<div class="connector">
+<div class="connector-title">CN8 (16 pins)</div>
+<div class="connector-body" id="cn8"></div>
+</div>
+<div class="connector">
+<div class="connector-title">CN9 (30 pins)</div>
+<div class="connector-body" id="cn9"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="aftable" class="tab-content">
+<p style="color:#888;margin:0 0 10px 0">Source: stm32h7x3xx_pinmap.h of the vrmay23 port, plus the CubeMX signals that pinmap omits (USART DE/NSS, RTC outputs, RCC_CRS_SYNC and similar). Names follow the NuttX macros, so FDCAN appears as CAN and SAI master clocks as MCK.</p>
+<div class="filter-container">
+<label style="color:#aaa">Search:</label>
+<input type="text" id="searchFilter" placeholder="e.g. PA0, SPI1, CAN, TIM1"
+onkeyup="filterTable()">
+</div>
+<div class="af-table-container">
+<table class="af-table" id="afTable">
+<thead><tr>
+<th>Pin</th><th>AF0</th><th>AF1</th><th>AF2</th><th>AF3</th><th>AF4</th>
+<th>AF5</th><th>AF6</th><th>AF7</th><th>AF8</th><th>AF9</th><th>AF10</th>
+<th>AF11</th><th>AF12</th><th>AF13</th><th>AF14</th><th>Other</th>
+</tr></thead>
+<tbody id="afTableBody"></tbody>
+</table>
+</div>
+</div>
+
+<div id="boardusage" class="tab-content">
+<div class="usage-section">
+<p style="color:#888;margin-bottom:20px">Pins already used by NUCLEO-H753ZI
+board peripherals. Check solder bridges before use.</p>
+<div class="usage-category">
+<h3>User LEDs</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF/Mode</th><th>Notes</th></tr>
+<tr><td class="func-cell">LD1 (Green)</td><td class="pin-name">PB0</td>
+<td>GPIO Output</td><td class="note">SB39=ON, SB47=OFF (default)</td></tr>
+<tr><td class="func-cell">LD2 (Yellow)</td><td class="pin-name">PE1</td>
+<td>GPIO Output</td><td class="note">Active high</td></tr>
+<tr><td class="func-cell">LD3 (Red)</td><td class="pin-name">PB14</td>
+<td>GPIO Output</td><td class="note">Active high</td></tr>
+</table>
+</div>
+<div class="usage-category">
+<h3>CRITICAL HARDWARE CONFLICTS</h3>
+<table class="usage-table">
+<tr><th>Pin</th><th>Conflict</th><th>Details</th></tr>
+<tr><td class="pin-name">PA0</td><td class="func-cell">B1 option (SB58)</td>
+<td class="note">Not tied to the USER button by default: B1 is on PC13 (SB51 ON, SB58 OFF). PA0 reaches B1 only if SB58 is fitted, and the Zio pin CN10-29 through SB75 (UM2407 Table 14)</td></tr>
+<tr><td class="pin-name">PA1</td><td class="func-cell">ETH vs QSPI</td>
+<td class="note">RMII_REF_CLK active by default. If using Ethernet,
+QSPI_BK1_IO3 won't work. Remove SB57 to free</td></tr>
+<tr><td class="pin-name">PC8-PC12</td><td class="func-cell">SDMMC1</td>
+<td class="note">PC8-PC12 + PD2 are the SDMMC1 4-bit bus. In this design PC9, PC10, PC11 and PC12 go to I2C3, I2S3 and QSPI, so SDMMC1 is not available.
+Cannot be used simultaneously</td></tr>
+<tr><td class="pin-name">PB13</td><td class="func-cell">ETH vs I2S</td>
+<td class="note">JP6 controls: OFF=I2S_A_CK (CN7), ON=ETH_TXD1. Default:
+Ethernet active</td></tr>
+</table>
+</div>
+<div class="usage-category">
+<h3>Summary: Unavailable Pins</h3>
+<table class="usage-table">
+<tr><th>Category</th><th>Pins</th></tr>
+<tr><td class="func-cell">Debug (SWD)</td><td>PA13, PA14, PB3 (SWO reaches the ST-LINK through SB32; PB3 is reused as SPI1_SCK, so no SWO trace)</td></tr>
+<tr><td class="func-cell">VCP (USART3)</td><td>PD8, PD9</td></tr>
+<tr><td class="func-cell">LEDs</td><td>PB0, PE1, PB14</td></tr>
+<tr><td class="func-cell">Button</td><td>PC13</td></tr>
+<tr><td class="func-cell">USB OTG</td>
+<td>PA9 VBUS (SB23), PA10 ID (SB24), PA11/PA12 DM/DP (SB21/SB22), PD10 power enable (SB77), PG7 overcurrent (SB76); PA8 is USB SOF on test point TP4 only (UM2407 Table 12)</td></tr>
+<tr><td class="func-cell">Ethernet</td>
+<td>PA1, PA2, PA7, PB13, PC1, PC4, PC5, PG11, PG13</td></tr>
+<tr><td class="func-cell">Clock</td><td>PH0, PH1, PC14, PC15</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<div id="freeperiph" class="tab-content">
+<div class="usage-section">
+<h2 style="text-align:center;color:#00d4ff;margin-bottom:20px">
+Free Peripherals - Conflict-Free Expansion Map (rev27)</h2>
+<p style="text-align:center;color:#2ECC71;margin-bottom:8px;font-weight:bold">Checked against every pin used today: Ethernet, LCD, MFRC522, I2C2 + FT6336, FDCAN1, USART3 console, 3 LEDs, 11 buttons (PC13 + CONFIG_NUCLEO_H753ZI_BUTTON_PINS), SWD, HSE and CONFIG_DEV_GPIO. In the vrmay23 port, stm32_gpio.c only claims GPIO_INT1 (PE5); GPIO_IN1 (PE2) and GPIO_OUT1 (PE4) are defined but unused. All three are avoided here. The upstream Apache board reserves a different set of 10 pins; this map does not follow it. Interrupt inputs are also checked against the 16 EXTI lines, which are shared by all ports (PA3, PB3, PC3... use the same line).</p>
+<p style="text-align:center;color:#F39C12;margin-bottom:4px;font-weight:bold">&#9650; = shared pin: also serves other peripherals (shown in Notes). All rows are PLANNED, not wired yet.</p>
+<p style="text-align:center;color:#888;margin-bottom:30px">Every pin and AF resolves to a macro in stm32h7x3xx_pinmap.h of the port and matches modm-devices (CubeMX data, LQFP144). Nucleo USB pins (PA9-PA12, PD10, PG7) are avoided.</p>
+
+<div class="usage-category">
+<h3>I2S3 - Digital audio (SPI3/I2S3 block)</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">I2S3_CK</td><td class="pin-name multi">PC10 &#9650;</td><td class="af-used">AF6</td><td class="note">Bit clock. Also: UART4_TX, QUADSPI_BK1_IO1, SDMMC1_D2</td></tr>
+<tr><td class="func-cell">I2S3_WS</td><td class="pin-name multi">PA15 &#9650;</td><td class="af-used">AF6</td><td class="note">Word select (is JTDI; SWD keeps PA13/PA14). Also: I2S1_WS, SPI1_NSS, SPI6_NSS, UART4_DE</td></tr>
+<tr><td class="func-cell">I2S3_SDO</td><td class="pin-name multi">PC12 &#9650;</td><td class="af-used">AF6</td><td class="note">Serial data out. Also: UART5_TX, SDMMC1_CK</td></tr>
+<tr><td class="func-cell">I2S3_MCK</td><td class="pin-name multi">PC7 &#9650;</td><td class="af-used">AF6</td><td class="note">Master clock (optional, codec dependent). Also: SDMMC1_D123DIR, SDMMC2_D7, SDMMC1_D7</td></tr>
+</table>
+<p class="note" style="color:#888;margin-top:6px">The SPI3 block is used as I2S3: keep CONFIG_NUCLEO_H753ZI_SPI3_ENABLE off and keep the MFRC522 on SPI1 (pin set 2). Note that the SPI3 pin-set labels in Kconfig are swapped versus board.h.</p>
+</div>
+
+<div class="usage-category">
+<h3>SPI4 - Link to ESP32-S3 co-processor (10in display)</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">SPI4_SCK</td><td class="pin-name multi">PE12 &#9650;</td><td class="af-used">AF5</td><td class="note">Serial clock. Also: SAI2_SCK_B</td></tr>
+<tr><td class="func-cell">SPI4_MISO</td><td class="pin-name multi">PE13 &#9650;</td><td class="af-used">AF5</td><td class="note">Data from ESP32. Also: SAI2_FS_B</td></tr>
+<tr><td class="func-cell">SPI4_MOSI</td><td class="pin-name multi">PE14 &#9650;</td><td class="af-used">AF5</td><td class="note">Data to ESP32. Also: SAI2_MCLK_B</td></tr>
+<tr><td class="func-cell">SPI4_CS</td><td class="pin-name multi">PE0 &#9650;</td><td class="af-used">GPIO</td><td class="note">Software chip select (STM32 = SPI master). Also: UART8_RX, SAI2_MCLK_A</td></tr>
+</table>
+<p class="note" style="color:#888;margin-top:6px">Hardware NSS pins PE4/PE11 are taken (GPIO_OUT1 definition / BTN10), so the STM32 must be the SPI master with a GPIO chip select.</p>
+</div>
+
+<div class="usage-category">
+<h3>QSPI NOR flash - OTA / logs / config / certificates (bank 2)</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">QUADSPI_CLK</td><td class="pin-name multi">PB2 &#9650;</td><td class="af-used">AF9</td><td class="note">Winbond W25Q128JVSIQ, 16MB, SOIC-8. Also: SAI1_D1, SAI1_SD_A, I2S3_SDO, SPI3_MOSI</td></tr>
+<tr><td class="func-cell">QUADSPI_BK2_NCS</td><td class="pin-name multi">PC11 &#9650;</td><td class="af-used">AF9</td><td class="note">Bank 2 chip select. Also: I2S3_SDI, SPI3_MISO, UART4_RX, SDMMC1_D3</td></tr>
+<tr><td class="func-cell">QUADSPI_BK2_IO0</td><td class="pin-name multi">PE7 &#9650;</td><td class="af-used">AF10</td><td class="note">Data line 0. Also: UART7_RX</td></tr>
+<tr><td class="func-cell">QUADSPI_BK2_IO1</td><td class="pin-name multi">PE8 &#9650;</td><td class="af-used">AF10</td><td class="note">Data line 1. Also: UART7_TX</td></tr>
+<tr><td class="func-cell">QUADSPI_BK2_IO2</td><td class="pin-name multi">PE9 &#9650;</td><td class="af-used">AF10</td><td class="note">Data line 2. Also: UART7_DE, UART7_RTS</td></tr>
+<tr><td class="func-cell">QUADSPI_BK2_IO3</td><td class="pin-name multi">PE10 &#9650;</td><td class="af-used">AF10</td><td class="note">Data line 3. Also: UART7_CTS</td></tr>
+</table>
+<p class="note" style="color:#888;margin-top:6px">Bank 1 is impossible: every BK1_IO1 option (PC10, PD12, PF9) is taken. NuttX: CONFIG_STM32_QSPI_MODE_BANK2=y + drivers/mtd/w25qxxxjv.c.</p>
+</div>
+
+<div class="usage-category">
+<h3>4G modem (Quectel EC200A-EU, LTE Cat 4) - UART7</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">UART7_TX</td><td class="pin-name multi">PF7 &#9650;</td><td class="af-used">AF7</td><td class="note">To modem RXD. Also: SPI5_SCK, SAI1_MCLK_B, SAI4_MCLK_B, QUADSPI_BK1_IO2</td></tr>
+<tr><td class="func-cell">UART7_RX</td><td class="pin-name multi">PF6 &#9650;</td><td class="af-used">AF7</td><td class="note">From modem TXD. Also: SPI5_NSS, SAI1_SD_B, SAI4_SD_B, QUADSPI_BK1_IO3</td></tr>
+</table>
+</div>
+
+<div class="usage-category">
+<h3>GPS module - USART6</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">USART6_TX</td><td class="pin-name multi">PG14 &#9650;</td><td class="af-used">AF7</td><td class="note">To GPS RXD. Also: SPI6_MOSI, QUADSPI_BK2_IO3</td></tr>
+<tr><td class="func-cell">USART6_RX</td><td class="pin-name multi">PG9 &#9650;</td><td class="af-used">AF7</td><td class="note">From GPS TXD. Also: I2S1_SDI, SPI1_MISO, QUADSPI_BK2_IO2, SAI2_FS_B</td></tr>
+</table>
+</div>
+
+<div class="usage-category">
+<h3>1-Wire (DS18B20 and similar) - UART4 half-duplex</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">UART4_TX</td><td class="pin-name multi">PD1 &#9650;</td><td class="af-used">AF8</td><td class="note">Single-wire bus, open-drain + 4.7k pull-up. Also: SAI3_SD_A, FDCAN1_TX</td></tr>
+</table>
+<p class="note" style="color:#888;margin-top:6px">NuttX upstream 1-Wire lower-half targets the F1/F4 USART (v1); it must be ported for the H7 USART before use.</p>
+</div>
+
+<div class="usage-category">
+<h3>FDCAN2 - Second CAN bus</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">FDCAN2_TX</td><td class="pin-name multi">PB6 &#9650;</td><td class="af-used">AF9</td><td class="note">Needs external transceiver. Also: I2C1_SCL, I2C4_SCL, LPUART1_TX, QUADSPI_BK1_NCS</td></tr>
+<tr><td class="func-cell">FDCAN2_RX</td><td class="pin-name multi">PB12 &#9650;</td><td class="af-used">AF9</td><td class="note">-. Also: I2C2_SMBA, I2S2_WS, SPI2_NSS, UART5_RX</td></tr>
+</table>
+</div>
+
+<div class="usage-category">
+<h3>I2C3 - On-board IMU (LSM6DSOX, 0x6A) + expansion bus</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">I2C3_SCL</td><td class="pin-name multi">PA8 &#9650;</td><td class="af-used">AF4</td><td class="note">Add 4.7k pull-ups. Also: UART7_RX</td></tr>
+<tr><td class="func-cell">I2C3_SDA</td><td class="pin-name multi">PC9 &#9650;</td><td class="af-used">AF4</td><td class="note">-. Also: I2S_CKIN, UART5_CTS, QUADSPI_BK1_IO0, SDMMC1_D1</td></tr>
+</table>
+</div>
+
+<div class="usage-category">
+<h3>Analog - 3x ADC + 1x ADC/DAC</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">ADC</td><td class="pin-name multi">PC0 &#9650;</td><td class="af-used">ADC123_INP10</td><td class="note">Any of ADC1/2/3. Also: SAI2_FS_B</td></tr>
+<tr><td class="func-cell">ADC</td><td class="pin-name">PF3</td><td class="af-used">ADC3_INP5</td><td class="note">Port F analog bank</td></tr>
+<tr><td class="func-cell">ADC</td><td class="pin-name">PF4</td><td class="af-used">ADC3_INP9</td><td class="note">-</td></tr>
+<tr><td class="func-cell">ADC / DAC</td><td class="pin-name multi">PA5 &#9650;</td><td class="af-used">ADC12_INP19 / DAC1_OUT2</td><td class="note">Input or DAC output. Also: I2S1_CK, SPI1_SCK, SPI6_SCK</td></tr>
+</table>
+<p class="note" style="color:#888;margin-top:6px">Quadrature encoder dropped: exhaustive search found no free TIM1/2/3/4/5/8 CH1+CH2 pair (PD12 = BTN7, PB6 = FDCAN2, PC7 = I2S3_MCK, PE9/PE11 taken). The two encoder slots became PF4 and PA5.</p>
+</div>
+
+<div class="usage-category">
+<h3>Ethernet PHY control (DP83TC812)</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">PHY_RESET</td><td class="pin-name">PG2</td><td class="af-used">GPIO</td><td class="note">Moved from PD10 (PD10 is the Nucleo USB power enable, SB77)</td></tr>
+<tr><td class="func-cell">PHY_INT / TC10 wake</td><td class="pin-name">PF2</td><td class="af-used">GPIO</td><td class="note">EXTI2. Moved from PG3, whose EXTI3 line is taken by BTN6 (PE3)</td></tr>
+</table>
+</div>
+
+<div class="usage-category">
+<h3>Control GPIOs and interrupt lines (rev25, + KL15 and RFID in rev26, + IMU in rev27)</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">ESP32_IRQ</td><td class="pin-name">PD14</td><td class="af-used">GPIO in</td><td class="note">EXTI14. Data-ready from the ESP32-S3 (SPI slave cannot start a transfer)</td></tr>
+<tr><td class="func-cell">ESP32_EN</td><td class="pin-name">PD13</td><td class="af-used">GPIO out</td><td class="note">Reset/enable of the ESP32-S3 module</td></tr>
+<tr><td class="func-cell">MODEM_PWRKEY</td><td class="pin-name">PF10</td><td class="af-used">GPIO out</td><td class="note">EC200A power-on key, through the transistor stage of the Quectel reference design</td></tr>
+<tr><td class="func-cell">MODEM_RESET</td><td class="pin-name">PF11</td><td class="af-used">GPIO out</td><td class="note">EC200A reset, same driver stage</td></tr>
+<tr><td class="func-cell">MODEM_STATUS</td><td class="pin-name">PF12</td><td class="af-used">GPIO in</td><td class="note">EC200A on/off status, polled</td></tr>
+<tr><td class="func-cell">MODEM_RI</td><td class="pin-name">PG10</td><td class="af-used">GPIO in</td><td class="note">EXTI10. Ring indicator, wakes the MCU on SMS or data</td></tr>
+<tr><td class="func-cell">GNSS_RESET</td><td class="pin-name">PG15</td><td class="af-used">GPIO out</td><td class="note">GNSS module reset</td></tr>
+<tr><td class="func-cell">GNSS_PPS</td><td class="pin-name">PB7</td><td class="af-used">GPIO in</td><td class="note">EXTI7. One pulse per second, for time sync</td></tr>
+<tr><td class="func-cell">KL15_SENSE</td><td class="pin-name">PF13</td><td class="af-used">ADC2_INP2</td><td class="note">Ignition (KL15) through divider + RC + TVS; read as ADC or polled input (no EXTI line left)</td></tr>
+<tr><td class="func-cell">RFID_RST</td><td class="pin-name">PG0</td><td class="af-used">GPIO out</td><td class="note">MFRC522 reset (NRSTPD)</td></tr>
+<tr><td class="func-cell">RFID_IRQ</td><td class="pin-name">PG1</td><td class="af-used">GPIO in</td><td class="note">MFRC522 IRQ, polled (EXTI1 is BTN1)</td></tr>
+<tr><td class="func-cell">IMU_INT1</td><td class="pin-name">PG3</td><td class="af-used">GPIO in</td><td class="note">LSM6DSOX INT1 (data ready / FIFO); polled, EXTI3 is BTN6</td></tr>
+<tr><td class="func-cell">CAN1_STB</td><td class="pin-name">PD4</td><td class="af-used">GPIO out</td><td class="note">Standby of the FDCAN1 transceiver (TCAN1044AV-Q1)</td></tr>
+<tr><td class="func-cell">CAN2_STB</td><td class="pin-name">PD6</td><td class="af-used">GPIO out</td><td class="note">Standby of the FDCAN2 transceiver</td></tr>
+</table>
+<p class="note" style="color:#888;margin-top:6px">EXTI map after rev25: 0 PD0, 1 PB1, 2 PF2, 3 PE3, 4 PG4, 5 PD5 + PE5 (see caveat), 6 PE6, 7 PB7, 8 PG8, 9 PF9, 10 PG10, 11 PE11, 12 PD12, 13 PC13, 14 PD14, 15 PD15. All 16 lines are in use.</p>
+</div>
+
+<p style="color:#E74C3C;margin-top:20px;font-weight:bold">Shared-pool caveat</p>
+<p style="color:#888">Each pin serves one function at a time. If you reassign one, re-check it here. SWD (PA13/PA14) is reserved for debug. PE2 and PE4 are only defined, not used; PE5 becomes free if GPIO_INT1 is moved or CONFIG_DEV_GPIO is disabled. All 16 EXTI lines are now in use: a new interrupt input needs polling or a freed line. In the port, BTN4 (PD5) and GPIO_INT1 (PE5) share EXTI5, so only one of them can be armed at a time.</p>
+</div>
+</div>
+
+<div id="nextsteps" class="tab-content">
+<div class="usage-section">
+<h2 style="text-align:center;color:#00d4ff;margin-bottom:20px">
+Next Steps - Custom PCB (rev27)</h2>
+<p style="text-align:center;color:#888;margin-bottom:30px">
+Selected components and open tasks to move from the Nucleo config to the custom board.</p>
+
+<div class="usage-category">
+<h3>Ethernet PHY - SELECTED: TI DP83TC812RRHARQ1 (LCSC C3225810)</h3>
+<table class="usage-table">
+<tr><th>Item</th><th>Value</th><th>Notes</th></tr>
+<tr><td class="func-cell">Standard</td><td>100BASE-T1</td><td class="note">Automotive single-pair Ethernet (IEEE 802.3bw). VQFN-36 6x6mm, AEC-Q100</td></tr>
+<tr><td class="func-cell">MAC interface</td><td>RMII</td><td class="note">Same 9 RMII pins already in board.h - no MCU-side change</td></tr>
+<tr><td class="func-cell">Clock mode</td><td>RMII Master</td><td class="note">PHY outputs 50MHz REF_CLK on RX_D3 -&gt; MCU PA1. PHY has its own 25MHz crystal (XI/XO), separate from the MCU HSE</td></tr>
+<tr><td class="func-cell">PHY_RESET</td><td class="pin-name">PG2</td><td class="note">GPIO hardware reset (from Free Pins tab)</td></tr>
+<tr><td class="func-cell">PHY_INT / wake</td><td class="pin-name">PF2</td><td class="note">GPIO interrupt / TC10 wake (from Free Pins tab)</td></tr>
+<tr><td class="func-cell">MDI network</td><td>CMC + DC-block + termination + ESD</td><td class="note">Values from TI snla434 (EMC/SPE design) + DP83TC812 schematic review checklist</td></tr>
+<tr><td class="func-cell">Connector</td><td>MATEnet / H-MTD (not RJ45)</td><td class="note">Single unshielded pair. RJ45 is bench-only and never plugs into a PC</td></tr>
+</table>
+</div>
+
+<div class="usage-category">
+<h3>MCU clock (custom board)</h3>
+<table class="usage-table">
+<tr><th>Item</th><th>Pins</th><th>Notes</th></tr>
+<tr><td class="func-cell">HSE 25MHz crystal</td><td class="pin-name">PH0 / PH1</td><td class="note">OSC_IN / OSC_OUT. 2 load caps to GND; a series resistor only if the crystal drive level requires it (AN2867)</td></tr>
+<tr><td class="func-cell">LSE 32.768kHz (optional)</td><td class="pin-name">PC14 / PC15</td><td class="note">OSC32_IN / OSC32_OUT - only if RTC needs an external crystal</td></tr>
+</table>
+</div>
+
+<div class="usage-category">
+<h3>Open tasks</h3>
+<table class="usage-table">
+<tr><th>Task</th><th>Status</th><th>Notes</th></tr>
+<tr><td class="func-cell">T1 link master/slave</td><td style="color:#F39C12">DECISION PENDING</td><td class="note">Sets a strap on the PHY. Bench default: board = slave, media converter = master</td></tr>
+<tr><td class="func-cell">board.h PHY pins</td><td style="color:#F39C12">TODO</td><td class="note">Add GPIO_PHY_RESET (PG2) and GPIO_PHY_INT (PF2, EXTI2); remove the TODO comment at line 828</td></tr>
+<tr><td class="func-cell">EXTI5 conflict in the port</td><td style="color:#E74C3C">FIX</td><td class="note">BTN4 (PD5) and GPIO_INT1 (PE5) share EXTI5. The button driver checks conflicts only between buttons. On the custom board, drop GPIO_INT1 or disable CONFIG_DEV_GPIO</td></tr>
+<tr><td class="func-cell">Modem, GNSS, ESP32 and CAN control pins</td><td style="color:#F39C12">TODO</td><td class="note">Add the control GPIOs to board.h (PD13, PD14, PF10, PF11, PF12, PG10, PG15, PB7, PD4, PD6, PF13, PG0, PG1, PG3)</td></tr>
+<tr><td class="func-cell">QSPI flash driver</td><td style="color:#F39C12">TODO</td><td class="note">Enable CONFIG_STM32_QSPI_MODE_BANK2 and drivers/mtd/w25qxxxjv.c (not w25.c, which is SPI only)</td></tr>
+<tr><td class="func-cell">1-Wire driver</td><td style="color:#F39C12">TODO</td><td class="note">Port the 1-Wire lower-half to the H7 USART (upstream one is F1/F4 only)</td></tr>
+<tr><td class="func-cell">DEV_GPIO examples</td><td style="color:#888">CONSIDER</td><td class="note">Only GPIO_INT1 (PE5) is claimed by stm32_gpio.c; GPIO_IN1/OUT1 (PE2/PE4) are unused definitions</td></tr>
+<tr><td class="func-cell">SPI3 pin sets (Kconfig vs board.h)</td><td style="color:#F39C12">FIX</td><td class="note">Labels are swapped: Kconfig "Pin Set 1: PC10/PC11/PC12" drives PB3/PB4/PD6, and "Pin Set 2: PB3/PB4/PB5" drives PC10/PC11/PC12. Wire by board.h, not by the menu label</td></tr>
+<tr><td class="func-cell">SPI5 pin sets (Kconfig vs board.h)</td><td style="color:#F39C12">FIX</td><td class="note">Set 1 MOSI is PF11, not PF9 as labeled; set 2 drives PH6/PH7/PF9 (PH6/PH7 not in LQFP144)</td></tr>
+<tr><td class="func-cell">Unreachable pin sets</td><td style="color:#888">CLEANUP</td><td class="note">board.h SPI3 set 3, SPI5 sets 3-4 and SPI6 set 3 have no Kconfig option, so they never build; SPI3 set 3 and SPI5 set 4 also use undefined macros</td></tr>
+<tr><td class="func-cell">board.h I2C pin sets on port H</td><td style="color:#F39C12">FIX</td><td class="note">I2C2 set 3 (PH4/PH5), I2C3 set 2 (PH7/PH8) and I2C4 set 3 (PH11/PH12) use pins that do not exist in LQFP144; remove them from Kconfig</td></tr>
+<tr><td class="func-cell">GPIO_OTGFS_PWRON</td><td style="color:#F39C12">FIX</td><td class="note">Port uses PG6; the MB1364 uses PD10 (SB77). PG6 is QSPI_CS on the Zio header (SB59)</td></tr>
+<tr><td class="func-cell">Rotary encoder</td><td style="color:#E74C3C">DROPPED</td><td class="note">No free timer CH1+CH2 pair in LQFP144 with the current pin budget</td></tr>
+<tr><td class="func-cell">LCD_RESET hardware</td><td style="color:#2ECC71">PIN FIXED (PD7)</td><td class="note">Add 10k pull-up (active-low reset) on the PCB</td></tr>
+<tr><td class="func-cell">PHY driver (NuttX)</td><td style="color:#F39C12">TODO</td><td class="note">Port the MDIO init (~200 lines) from TI snla404 + github ti-ethernet-software</td></tr>
+<tr><td class="func-cell">Bench-to-PC link</td><td style="color:#F39C12">NEED HARDWARE</td><td class="note">100BASE-T1 to 100BASE-TX media converter (RAD-Moon / Innomaker), set opposite master/slave</td></tr>
+<tr><td class="func-cell">Two-board strategy (optional)</td><td style="color:#888">CONSIDER</td><td class="note">v1 with LAN8742A (100BASE-TX, RJ45) to validate the network stack; v2 with DP83TC812 (T1) - only the PHY init changes</td></tr>
+</table>
+</div>
+
+</div>
+</div>
+
+<div id="apppinout" class="tab-content">
+<div class="usage-section">
+<h2 style="text-align:center;color:#00d4ff;margin-bottom:20px">
+Application Pinout - FINAL VALIDATED MAPPING</h2>
+<p style="text-align:center;color:#2ECC71;margin-bottom:10px;font-weight:bold">
+Ethernet-compatible configuration - No solder bridge modifications required!</p>
+<p style="text-align:center;color:#888;margin-bottom:30px">
+All peripherals can operate simultaneously with Ethernet enabled</p>
+
+<div class="usage-category">
+<h3>LCD Display (SPI2) - VALIDATED</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>Required AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">LCD_CS</td><td class="pin-name">PA4</td>
+<td>GPIO Output</td><td class="note">Chip Select - Manual GPIO control</td></tr>
+<tr><td class="func-cell">LCD_RESET</td><td class="pin-name">PD7</td>
+<td>GPIO Output</td><td class="note">Display reset - Manual GPIO control</td></tr>
+<tr><td class="func-cell">LCD_DC</td><td class="pin-name">PA3</td>
+<td>GPIO Output</td><td class="note">Data/Command select - Manual GPIO</td></tr>
+<tr><td class="func-cell">LCD_MOSI</td><td class="pin-name">PC3</td>
+<td class="af-used">AF5: SPI2_MOSI</td>
+<td class="note">Validated - No conflicts</td></tr>
+<tr><td class="func-cell">LCD_SCK</td><td class="pin-name">PD3</td>
+<td class="af-used">AF5: SPI2_SCK</td>
+<td class="note">Validated - No conflicts</td></tr>
+<tr><td class="func-cell">LCD_MISO</td><td class="pin-name">PC2</td>
+<td class="af-used">AF5: SPI2_MISO</td>
+<td class="note">Validated - No conflicts</td></tr>
+<tr style="background:#1a4a1a">
+<td class="func-cell">LCD_LED <span style="color:#F39C12">(REMAPPED)</span></td>
+<td class="pin-name">PE15</td><td>GPIO Output</td>
+<td class="note">Changed from PA1 - Backlight on/off.
+PE15 has no timer output channel (TIM1_BKIN is an input), so no PWM dimming on this pin.</td></tr>
+</table>
+<p style="color:#2ECC71;font-size:11px;margin-top:10px">
+All validated: SPI2 configured as Master with PD7, PA3, PA4 as GPIO outputs.</p>
+<p style="color:#F39C12;font-size:11px;margin-top:5px">
+Important: PA1 cannot be used (ETH_RMII_REF_CLK 50MHz conflicts).
+PE15 is the correct replacement.</p>
+</div>
+
+<div class="usage-category">
+<h3>RFID Reader (SPI1) - VALIDATED - Pin Set 2</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>Required AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">RFID_CS</td><td class="pin-name">PA0</td>
+<td>GPIO Output</td><td class="note">Chip Select - Manual GPIO control</td></tr>
+<tr style="background:#1a4a1a">
+<td class="func-cell">RFID_SCK <span style="color:#F39C12">(SET 2)</span></td>
+<td class="pin-name">PB3</td>
+<td class="af-used">AF5: SPI1_SCK</td>
+<td class="note">Pin Set 2 - Conflicts with SWO (debug trace only)</td></tr>
+<tr style="background:#1a4a1a">
+<td class="func-cell">RFID_MISO <span style="color:#F39C12">(SET 2)</span></td>
+<td class="pin-name">PB4</td>
+<td class="af-used">AF5: SPI1_MISO</td>
+<td class="note">Pin Set 2 - No conflicts</td></tr>
+<tr style="background:#1a4a1a">
+<td class="func-cell">RFID_MOSI <span style="color:#F39C12">(SET 2)</span></td>
+<td class="pin-name">PB5</td>
+<td class="af-used">AF5: SPI1_MOSI</td>
+<td class="note">Pin Set 2 - No conflicts</td></tr>
+</table>
+<p style="color:#2ECC71;font-size:11px;margin-top:10px">
+NuttX SPI1 Pin Set 2: PB3 (SCK), PB4 (MISO), PB5 (MOSI) - all AF5.
+Ethernet remains fully functional!</p>
+<p style="color:#F39C12;font-size:11px;margin-top:5px">
+Note: PB3 conflicts with SWO trace output. Debug (breakpoints/step/watch)
+still works via SWDIO/SWCLK. Only printf-via-SWO is lost.</p>
+<p style="color:#E74C3C;font-size:11px;margin-top:5px">
+Pin Set 1 (PA5/PA6/PA7) cannot be used: PA7 = ETH_RMII_CRS_DV.
+Pin Set 3 (PG11/PG9/PD7) cannot be used: PG11 = ETH_RMII_TX_EN.</p>
+</div>
+
+<div class="usage-category">
+<h3>CAN Bus (FDCAN1) - VALIDATED</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>Required AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">CAN_RX</td><td class="pin-name">PB8</td>
+<td class="af-used">AF9: FDCAN1_RX</td>
+<td class="note">Validated - No conflicts</td></tr>
+<tr><td class="func-cell">CAN_TX</td><td class="pin-name">PB9</td>
+<td class="af-used">AF9: FDCAN1_TX</td>
+<td class="note">Validated - No conflicts</td></tr>
+</table>
+<p style="color:#2ECC71;font-size:11px;margin-top:10px">
+Perfect: FDCAN1 with external CAN transceiver (TJA1050, MCP2551, etc.).
+120 ohm termination required at bus ends.</p>
+</div>
+
+<div class="usage-category">
+<h3>I2C Bus (I2C2) - VALIDATED</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>Required AF</th><th>Notes</th></tr>
+<tr><td class="func-cell">I2C_SCL</td><td class="pin-name">PF1</td>
+<td class="af-used">AF4: I2C2_SCL</td>
+<td class="note">Validated - No conflicts</td></tr>
+<tr><td class="func-cell">I2C_SDA</td><td class="pin-name">PF0</td>
+<td class="af-used">AF4: I2C2_SDA</td>
+<td class="note">Validated - No conflicts</td></tr>
+</table>
+<p style="color:#2ECC71;font-size:11px;margin-top:10px">
+Perfect: I2C2 with external pull-ups: 4.7k for 100kHz (Standard),
+2.2k for 400kHz (Fast Mode).</p>
+</div>
+
+<div class="usage-category">
+<h3>User Buttons (11x) - VALIDATED</h3>
+<table class="usage-table">
+<tr><th>Function</th><th>Pin</th><th>Mode</th><th>Notes</th></tr>
+<tr><td class="func-cell">BTN0 (USER)</td><td class="pin-name">PC13</td>
+<td>GPIO Input</td><td class="note">Nucleo USER button (directly on board)</td></tr>
+<tr><td class="func-cell">BTN1</td><td class="pin-name">PB1</td>
+<td>GPIO Input</td><td class="note">No conflicts - ADC12_INP5 available</td></tr>
+<tr><td class="func-cell">BTN2</td><td class="pin-name">PD0</td>
+<td>GPIO Input</td><td class="note">No conflicts - FDCAN1_RX alt available</td></tr>
+<tr><td class="func-cell">BTN3</td><td class="pin-name">PG4</td>
+<td>GPIO Input</td><td class="note">No conflicts</td></tr>
+<tr><td class="func-cell">BTN4</td><td class="pin-name">PD5</td>
+<td>GPIO Input</td><td class="note">No conflicts - USART2_TX alt available</td></tr>
+<tr><td class="func-cell">BTN5</td><td class="pin-name">PE6</td>
+<td>GPIO Input</td><td class="note">No conflicts - SAI1_SD_A alt available</td></tr>
+<tr><td class="func-cell">BTN6</td><td class="pin-name">PE3</td>
+<td>GPIO Input</td><td class="note">No conflicts - SAI1_SD_B alt available</td></tr>
+<tr><td class="func-cell">BTN7</td><td class="pin-name">PD12</td>
+<td>GPIO Input</td><td class="note">No conflicts - TIM4_CH1 alt available</td></tr>
+<tr><td class="func-cell">BTN8</td><td class="pin-name">PF9</td>
+<td>GPIO Input</td><td class="note">No conflicts - SAI1_FS_B alt available</td></tr>
+<tr><td class="func-cell">BTN9</td><td class="pin-name">PD15</td>
+<td>GPIO Input</td><td class="note">No conflicts - TIM4_CH4 alt available</td></tr>
+<tr><td class="func-cell">BTN10</td><td class="pin-name">PE11</td>
+<td>GPIO Input</td><td class="note">No conflicts - TIM1_CH2 alt available</td></tr>
+</table>
+<p style="color:#2ECC71;font-size:11px;margin-top:10px">
+All 11 buttons tested and working on NuttX. Configure as GPIO_MODE_INPUT
+with GPIO_PULLUP (buttons connect to GND).</p>
+</div>
+
+<div class="usage-category">
+<h3>Final Configuration Summary</h3>
+<table class="usage-table">
+<tr><th>Peripheral</th><th>Final Pins</th><th>Interface</th><th>Status</th></tr>
+<tr><td class="func-cell">LCD Display</td>
+<td>PD7, PA3, PA4, PC2, PC3, PD3, <strong>PE15</strong></td>
+<td>SPI2 + GPIOs</td><td style="color:#2ECC71">VALIDATED</td></tr>
+<tr><td class="func-cell">RFID Reader</td>
+<td><strong>PA0</strong> (CS), <strong>PB3, PB4, PB5</strong> (Pin Set 2)</td>
+<td>SPI1</td><td style="color:#2ECC71">VALIDATED</td></tr>
+<tr><td class="func-cell">CAN Bus</td><td>PB8, PB9</td>
+<td>FDCAN1</td><td style="color:#2ECC71">VALIDATED</td></tr>
+<tr><td class="func-cell">I2C Bus</td><td>PF0, PF1</td>
+<td>I2C2</td><td style="color:#2ECC71">VALIDATED</td></tr>
+<tr><td class="func-cell">Buttons (11x)</td>
+<td>PC13, PB1, PD0, PG4, PD5, PE6, PE3, PD12, PF9, PD15, PE11</td>
+<td>GPIO</td><td style="color:#2ECC71">VALIDATED</td></tr>
+<tr><td class="func-cell">Ethernet</td>
+<td>PA1, PA2, PA7, PB13, PC1, PC4, PC5, PG11, PG13</td>
+<td>RMII</td><td style="color:#2ECC71">FULLY FUNCTIONAL</td></tr>
+</table>
+</div>
+
+<div class="usage-category" style="background:#0a2a0a;padding:20px;
+border-radius:8px;margin-top:30px;border:2px solid #2ECC71">
+<h3 style="color:#2ECC71;text-align:center">
+FIRMWARE CONFIGURATION CHECKLIST - COPY &amp; PASTE READY</h3>
+<div style="background:#000;padding:15px;border-radius:5px;margin-top:15px;
+font-family:monospace;font-size:11px;color:#0f0">
+<strong style="color:#00d4ff">// SPI1 for RFID (AF5)</strong><br>
+PB3 -&gt; SPI1_SCK  (AF5, pin set 2)<br>
+PB4 -&gt; SPI1_MISO (AF5, pin set 2)<br>
+<strong style="color:#2ECC71">PB5 -&gt; SPI1_MOSI (AF5, pin set 2)
+</strong><br><br>
+<strong style="color:#00d4ff">// SPI2 for LCD (AF5)</strong><br>
+PC3 -&gt; SPI2_MOSI (AF5)<br>
+PD3 -&gt; SPI2_SCK  (AF5)<br>
+PC2 -&gt; SPI2_MISO (AF5)<br>
+PD7 -&gt; LCD_RESET (GPIO Output)<br>
+PA3 -&gt; LCD_DC    (GPIO Output)<br>
+PA4 -&gt; LCD_CS    (GPIO Output)<br>
+<strong style="color:#2ECC71">PE15 -&gt; LCD_LED  (GPIO Output, on/off only)
+// CORRECTED from PA1</strong><br><br>
+<strong style="color:#00d4ff">// FDCAN1 for CAN Bus (AF9)</strong><br>
+PB8 -&gt; FDCAN1_RX (AF9)<br>
+PB9 -&gt; FDCAN1_TX (AF9)<br><br>
+<strong style="color:#00d4ff">// I2C2 (AF4) + 4.7k pull-ups</strong><br>
+PF1 -&gt; I2C2_SCL (AF4)<br>
+PF0 -&gt; I2C2_SDA (AF4)<br><br>
+<strong style="color:#00d4ff">// Buttons (GPIO Input with pull-up)</strong><br>
+PB1  -&gt; BTN1  (GPIO Input)<br>
+PD0  -&gt; BTN2  (GPIO Input)<br>
+PG4  -&gt; BTN3  (GPIO Input)<br>
+PD5  -&gt; BTN4  (GPIO Input)<br>
+PE6  -&gt; BTN5  (GPIO Input)<br>
+PE3  -&gt; BTN6  (GPIO Input)<br>
+PD12 -&gt; BTN7  (GPIO Input)<br>
+PF9  -&gt; BTN8  (GPIO Input)<br>
+PD15 -&gt; BTN9  (GPIO Input)<br>
+PE11 -&gt; BTN10 (GPIO Input)<br>
+</div>
+<ul style="color:#ccc;font-size:12px;line-height:1.8;margin:15px 0 0 20px">
+<li>No solder bridge modifications required - All default jumper settings work!
+</li>
+<li>Ethernet remains fully functional alongside all application peripherals</li>
+<li>All AFs validated against DS12117 Rev 9 datasheet</li>
+<li>Hardware conflicts resolved - PA1 to PE15, PA7 to PB5, PB12 to PG4, PA2 to PD7</li>
+<li>Ready for STM32CubeMX - Use pin names above for IOC configuration</li>
+</ul>
+</div>
+
+<div class="usage-category" style="background:#1a2a3a;padding:15px;
+border-radius:8px;margin-top:30px">
+<h3 style="color:#00d4ff">Configuration Checklist</h3>
+<ul style="color:#ccc;font-size:12px;line-height:1.8;margin-left:20px">
+<li>Configure SPI1 (RFID): AF5 on PB3 (SCK), PB4 (MISO),
+<strong>PB5 (MOSI)</strong> - Pin Set 2, Ethernet compatible!</li>
+<li>Configure SPI2 (LCD): AF5 on PC3 (MOSI), PD3 (SCK), PC2 (MISO)</li>
+<li>Configure FDCAN1: AF9 on PB8 (RX), PB9 (TX)</li>
+<li>Configure I2C2: AF4 on PF1 (SCL), PF0 (SDA) + 4.7k pull-ups</li>
+<li>LCD Control GPIOs: PD7, PA3, PA4 as Output Push-Pull</li>
+<li>LCD Backlight: <strong>PE15</strong> as GPIO Output (on/off, no PWM)
+</li>
+<li>Buttons: All 10 external pins as Input with pull-up/down based on hardware.
+<strong>BTN3 on PG4</strong> instead of PB12 (order = CONFIG_NUCLEO_H753ZI_BUTTON_PINS)</li>
+<li>Keep Ethernet: Leave all SB jumpers as default -
+no modifications needed with remapped pins!</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="hwadvanced" class="tab-content">
+<div class="usage-section">
+<h2 style="text-align:center;color:#E74C3C;margin-bottom:20px">
+STM32H7 CRITICAL HARDWARE NOTES</h2>
+<p style="text-align:center;color:#F39C12;margin-bottom:30px;font-weight:bold">
+Advanced configuration required for production-grade firmware</p>
+
+<div class="usage-category" style="background:#3a1a1a;padding:20px;
+border-radius:8px;border:2px solid #E74C3C">
+<h3 style="color:#E74C3C">#1 CRITICAL: D-Cache Coherency (MPU Configuration)</h3>
+<p style="color:#ccc;font-size:12px;line-height:1.8;margin-bottom:15px">
+The STM32H7 has a Data Cache that <strong>WILL corrupt your Ethernet and
+FDCAN data</strong> if not properly configured. The CPU reads from cache
+while DMA writes to RAM, causing stale data reads.
+</p>
+<div style="background:#000;padding:15px;border-radius:5px;
+font-family:monospace;font-size:10px;color:#0f0">
+<strong style="color:#E74C3C">// MANDATORY: Configure MPU for non-cacheable
+regions</strong><br>
+<strong style="color:#00d4ff">// Place in main.c BEFORE HAL_Init()</strong><br>
+<br>
+void MPU_Config(void) {<br>
+&nbsp;&nbsp;MPU_Region_InitTypeDef MPU_InitStruct = {0};<br>
+&nbsp;&nbsp;HAL_MPU_Disable();<br>
+<br>
+&nbsp;&nbsp;<strong style="color:#F39C12">// Ethernet DMA Descriptors &amp;
+Buffers (SRAM3)</strong><br>
+&nbsp;&nbsp;MPU_InitStruct.Enable = MPU_REGION_ENABLE;<br>
+&nbsp;&nbsp;MPU_InitStruct.Number = MPU_REGION_NUMBER0;<br>
+&nbsp;&nbsp;MPU_InitStruct.BaseAddress = 0x30040000; // SRAM3 start<br>
+&nbsp;&nbsp;MPU_InitStruct.Size = MPU_REGION_SIZE_32KB;<br>
+&nbsp;&nbsp;MPU_InitStruct.SubRegionDisable = 0x0;<br>
+&nbsp;&nbsp;MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;<br>
+&nbsp;&nbsp;MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;<br>
+&nbsp;&nbsp;MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;<br>
+&nbsp;&nbsp;MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;<br>
+&nbsp;&nbsp;<strong style="color:#2ECC71">MPU_InitStruct.IsCacheable =
+MPU_ACCESS_NOT_CACHEABLE;</strong><br>
+&nbsp;&nbsp;MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;<br>
+&nbsp;&nbsp;HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);<br>
+<br>
+&nbsp;&nbsp;<strong style="color:#F39C12">// FDCAN Message RAM
+(0x4000AC00 for FDCAN1)</strong><br>
+&nbsp;&nbsp;MPU_InitStruct.Number = MPU_REGION_NUMBER1;<br>
+&nbsp;&nbsp;MPU_InitStruct.BaseAddress = 0x4000A000;<br>
+&nbsp;&nbsp;MPU_InitStruct.Size = MPU_REGION_SIZE_4KB;<br>
+&nbsp;&nbsp;<strong style="color:#2ECC71">MPU_InitStruct.IsCacheable =
+MPU_ACCESS_NOT_CACHEABLE;</strong><br>
+&nbsp;&nbsp;HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);<br>
+<br>
+&nbsp;&nbsp;HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);<br>
+}<br>
+<br>
+<strong style="color:#00d4ff">// In main():</strong><br>
+MPU_Config();<br>
+SCB_EnableICache();<br>
+SCB_EnableDCache();<br>
+HAL_Init();
+</div>
+<p style="color:#E74C3C;font-size:11px;margin-top:10px">
+<strong>Without MPU:</strong> Random packet loss, corrupted CAN frames,
+system hangs after minutes/hours of operation.</p>
+</div>
+
+<div class="usage-category" style="background:#1a2a3a;padding:20px;
+border-radius:8px;margin-top:20px">
+<h3 style="color:#00d4ff">#2: GPIO Speed Configuration (OSPEEDR)</h3>
+<p style="color:#ccc;font-size:12px;line-height:1.8;margin-bottom:15px">
+SPI signals above 25MHz require <strong>GPIO_SPEED_FREQ_VERY_HIGH</strong>
+to maintain signal integrity. The H7 default is MEDIUM, which causes
+setup/hold violations at high frequencies.
+</p>
+<div style="background:#000;padding:15px;border-radius:5px;
+font-family:monospace;font-size:10px;color:#0f0">
+<strong style="color:#00d4ff">// SPI1 for RFID (MFRC522 SPI is limited to 10 Mbit/s)</strong><br>
+GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5; // PB3(SCK), PB4(MISO), PB5(MOSI)<br>
+GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;<br>
+GPIO_InitStruct.Pull = GPIO_NOPULL;<br>
+<strong style="color:#2ECC71">GPIO_InitStruct.Speed =
+GPIO_SPEED_FREQ_VERY_HIGH; // Critical!</strong><br>
+GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;<br>
+HAL_GPIO_Init(GPIOB, &amp;GPIO_InitStruct);<br>
+<br>
+<strong style="color:#00d4ff">// SPI2 for LCD (display refresh rate depends
+on this)</strong><br>
+GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3; // PC2(MISO), PC3(MOSI)<br>
+<strong style="color:#2ECC71">GPIO_InitStruct.Speed =
+GPIO_SPEED_FREQ_VERY_HIGH;</strong><br>
+GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;<br>
+HAL_GPIO_Init(GPIOC, &amp;GPIO_InitStruct);<br>
+<br>
+GPIO_InitStruct.Pin = GPIO_PIN_3; // PD3(SCK)<br>
+HAL_GPIO_Init(GPIOD, &amp;GPIO_InitStruct);
+</div>
+<p style="color:#F39C12;font-size:11px;margin-top:10px">
+<strong>Symptom:</strong> LCD artifacts, RFID read errors, intermittent
+SPI failures at high clock rates.</p>
+</div>
+
+<div class="usage-category" style="background:#2a1a1a;padding:20px;
+border-radius:8px;margin-top:20px">
+<h3 style="color:#F39C12">#3: FDCAN Clock Configuration</h3>
+<p style="color:#ccc;font-size:12px;line-height:1.8;margin-bottom:15px">
+The FDCAN peripheral <strong>MUST use HSE or PLL-derived clock</strong>,
+NOT HSI. The HSI has temperature drift (plus/minus 1%) that violates
+CAN bit timing tolerances.
+</p>
+<div style="background:#000;padding:15px;border-radius:5px;
+font-family:monospace;font-size:10px;color:#0f0">
+<strong style="color:#00d4ff">// In SystemClock_Config() or
+CubeMX Clock Tree:</strong><br>
+<br>
+<strong style="color:#F39C12">// Option 1: Use PLL1Q for FDCAN
+(recommended)</strong><br>
+RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};<br>
+PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_FDCAN;<br>
+<strong style="color:#2ECC71">PeriphClkInitStruct.FdcanClockSelection =
+RCC_FDCANCLKSOURCE_PLL;</strong><br>
+HAL_RCCEx_PeriphCLKConfig(&amp;PeriphClkInitStruct);<br>
+<br>
+<strong style="color:#F39C12">// PLL1Q should output 20-80MHz for
+optimal FDCAN operation</strong><br>
+<strong style="color:#888">// Example: 480MHz / DIVQ=10 = 48MHz FDCAN clock
+</strong>
+</div>
+<p style="color:#E74C3C;font-size:11px;margin-top:10px">
+<strong>With HSI:</strong> CAN bus errors increase with temperature changes,
+intermittent communication failures.</p>
+</div>
+
+<div class="usage-category" style="background:#1a3a1a;padding:20px;
+border-radius:8px;margin-top:20px">
+<h3 style="color:#2ECC71">#4: 480MHz Operation (VOS &amp; Over-drive)</h3>
+<p style="color:#ccc;font-size:12px;line-height:1.8;margin-bottom:15px">
+To run at 480MHz, you <strong>MUST configure Voltage Scaling</strong>
+and enable Over-drive mode. Default HAL configuration runs at 400MHz.
+</p>
+<div style="background:#000;padding:15px;border-radius:5px;
+font-family:monospace;font-size:10px;color:#0f0">
+<strong style="color:#00d4ff">// In main() before SystemClock_Config():</strong>
+<br><br>
+<strong style="color:#2ECC71">// Enable CPU ICache and DCache</strong><br>
+SCB_EnableICache();<br>
+SCB_EnableDCache();<br>
+<br>
+<strong style="color:#2ECC71">// Configure Voltage Scaling to VOS0
+(480MHz capable)</strong><br>
+__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE0);<br>
+while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}<br>
+<br>
+<strong style="color:#00d4ff">// In SystemClock_Config():</strong><br>
+RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1; // 480MHz<br>
+<strong style="color:#F39C12">// Latency for 480MHz @ VOS0 with VDD=3.3V:
+</strong><br>
+RCC_ClkInitStruct.FlashLatency = FLASH_LATENCY_4;
+</div>
+<p style="color:#F39C12;font-size:11px;margin-top:10px">
+<strong>Power consumption:</strong> ~350mA at 480MHz.
+Consider thermal management in enclosed designs.</p>
+</div>
+
+<div class="usage-category" style="background:#2a2a1a;padding:20px;
+border-radius:8px;margin-top:20px">
+<h3 style="color:#673AB7">#5: Nucleo-144 Solder Bridge Reference</h3>
+<table class="usage-table" style="font-size:10px">
+<tr><th>Solder Bridge</th><th>Default State</th><th>Controls</th>
+<th>Impact on Application</th></tr>
+<tr><td class="pin-name">SB31</td><td>CLOSED</td>
+<td>PA7 to ETH_RMII_CRS_DV</td>
+<td class="note">Blocks SPI1_MOSI on PA7. Solution: Use PB5 instead</td></tr>
+<tr><td class="pin-name">SB57</td><td>CLOSED</td>
+<td>PA1 to ETH_RMII_REF_CLK</td>
+<td class="note">Blocks LCD_LED on PA1. Solution: Use PE15 instead</td></tr>
+<tr><td class="pin-name">JP6</td><td>CLOSED</td>
+<td>PB13 to ETH_TXD1</td>
+<td class="note">If opened, PB13 available for I2S_A_CK on CN7</td></tr>
+<tr><td class="pin-name">SB19/SB12</td><td>CLOSED</td>
+<td>PD8/PD9 to USART3 VCP (UM2407 Table 10)</td>
+<td class="note">Keep closed for Serial debug via USB</td></tr>
+<tr><td class="pin-name">SB39</td><td>CLOSED</td>
+<td>PB0 to LD1 (Green LED)</td>
+<td class="note">Keep SB47 OFF: it would move LD1 to PA5, which is planned as ADC/DAC</td></tr>
+</table>
+</div>
+
+<div class="usage-category" style="background:#1a1a3a;padding:20px;
+border-radius:8px;margin-top:20px">
+<h3 style="color:#00d4ff">Additional Critical Notes</h3>
+<ul style="color:#ccc;font-size:12px;line-height:2;margin-left:20px">
+<li><strong>SDMMC1:</strong> PC8-PC12 + PD2. Not available here: PC9-PC12 are taken by I2C3, I2S3 and QSPI.</li>
+<li><strong>PA0:</strong> B1 is on PC13 by default (SB58 OFF), so PA0 is free of the button; it is used as RFID chip select.</li>
+<li><strong>USB OTG:</strong> PA11/PA12 are the OTG_FS port (full-speed, 12 Mbit/s), with ESD protection on the MB1364. Not used in this design.</li>
+<li><strong>Ethernet PHY:</strong> LAN8742A requires 50MHz ref clock from
+PA1. If disabled, Ethernet is non-functional.</li>
+<li><strong>I2C Pull-ups:</strong> UM2407 lists no on-board pull-ups for PF0/PF1; add external 4.7k pull-ups.</li>
+<li><strong>CAN Transceiver:</strong> NOT included on Nucleo. External
+TJA1050/MCP2551 + 120 ohm termination required.</li>
+</ul>
+</div>
+
+<div class="usage-category" style="background:#0a3a0a;padding:20px;
+border-radius:8px;margin-top:30px;border:2px solid #2ECC71">
+<h3 style="color:#2ECC71;text-align:center">PRODUCTION CHECKLIST</h3>
+<ul style="color:#ccc;font-size:12px;line-height:2;margin-left:20px">
+<li>MPU configured for non-cacheable Ethernet/FDCAN regions</li>
+<li>All SPI pins set to GPIO_SPEED_FREQ_VERY_HIGH</li>
+<li>FDCAN clock source set to PLL (not HSI)</li>
+<li>VOS0 enabled for 480MHz operation</li>
+<li>Flash latency set to FLASH_LATENCY_4</li>
+<li>Solder bridges verified (SB31, SB57, JP6)</li>
+<li>External pull-ups added to I2C (4.7k)</li>
+<li>CAN transceiver connected with 120 ohm termination</li>
+<li>Thermal management considered for extended 480MHz operation</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const afData={
+'PA0':{'AF1':'TIM2_CH1/TIM2_ETR','AF2':'TIM5_CH1','AF3':'TIM8_ETR','AF4':'TIM15_BKIN','AF7':'USART2_CTS_NSS/USART2_NSS','AF8':'UART4_TX','AF9':'SDMMC2_CMD','AF10':'SAI2_SD_B','AF11':'ETH_MII_CRS','ADC':'ADC1_INP16'},
+'PA1':{'AF1':'TIM2_CH2','AF2':'TIM5_CH2','AF3':'LPTIM3_OUT','AF4':'TIM15_CH1N','AF7':'USART2_RTS/USART2_DE','AF8':'UART4_RX','AF9':'QUADSPI_BK1_IO3','AF10':'SAI2_MCK_B','AF11':'ETH_MII_RX_CLK/ETH_RMII_REF_CLK','AF14':'LTDC_R2','ADC':'ADC1_INP17'},
+'PA2':{'AF1':'TIM2_CH3','AF2':'TIM5_CH3','AF3':'LPTIM4_OUT','AF4':'TIM15_CH1','AF7':'USART2_TX','AF8':'SAI2_SCK_B','AF11':'ETH_MDIO','AF12':'MDIOS_MDIO','AF14':'LTDC_R1','ADC':'ADC12_INP14'},
+'PA3':{'AF1':'TIM2_CH4','AF2':'TIM5_CH4','AF3':'LPTIM5_OUT','AF4':'TIM15_CH2','AF7':'USART2_RX','AF9':'LTDC_B2','AF10':'OTG_HS_ULPI_D0','AF11':'ETH_MII_COL','AF14':'LTDC_B5','ADC':'ADC12_INP15'},
+'PA4':{'AF2':'TIM5_ETR','AF5':'I2S1_WS/SPI1_NSS','AF6':'I2S3_WS/SPI3_NSS','AF7':'USART2_CK','AF8':'SPI6_NSS','AF12':'USB_OTG_HS_SOF','AF13':'DCMI_HSYNC','AF14':'LTDC_VSYNC','ADC':'ADC12_INP18','DAC':'DAC1_OUT1'},
+'PA5':{'AF1':'TIM2_CH1/TIM2_ETR','AF3':'TIM8_CH1N','AF5':'I2S1_CK/SPI1_SCK','AF8':'SPI6_SCK','AF10':'OTG_HS_ULPI_CK','AF14':'LTDC_R4','ADC':'ADC12_INP19','DAC':'DAC1_OUT2'},
+'PA6':{'AF1':'TIM1_BKIN','AF2':'TIM3_CH1','AF3':'TIM8_BKIN','AF5':'I2S1_SDI/SPI1_MISO','AF8':'SPI6_MISO','AF9':'TIM13_CH1','AF10':'TIM8_BKIN_COMP12','AF11':'MDIOS_MDC','AF12':'TIM1_BKIN_COMP12','AF13':'DCMI_PIXCLK','AF14':'LTDC_G2','ADC':'ADC12_INP3'},
+'PA7':{'AF1':'TIM1_CH1N','AF2':'TIM3_CH2','AF3':'TIM8_CH1N','AF5':'I2S1_SDO/SPI1_MOSI','AF8':'SPI6_MOSI','AF9':'TIM14_CH1','AF11':'ETH_MII_RX_DV/ETH_RMII_CRS_DV','AF12':'FMC_SDNWE','ADC':'ADC12_INP7'},
+'PA8':{'AF0':'MCO1','AF1':'TIM1_CH1','AF2':'HRTIM_CHB2','AF3':'TIM8_BKIN2','AF4':'I2C3_SCL','AF7':'USART1_CK','AF10':'USB_OTG_FS_SOF','AF11':'UART7_RX','AF12':'TIM8_BKIN2_COMP12','AF13':'LTDC_B3','AF14':'LTDC_R6'},
+'PA9':{'AF1':'TIM1_CH2','AF2':'HRTIM_CHC1','AF3':'LPUART1_TX','AF4':'I2C3_SMBA','AF5':'I2S2_CK/SPI2_SCK','AF7':'USART1_TX','AF9':'CAN1_RXFD','AF11':'ETH_TX_ER','AF13':'DCMI_D0','AF14':'LTDC_R5'},
+'PA10':{'AF1':'TIM1_CH3','AF2':'HRTIM_CHC2','AF3':'LPUART1_RX','AF7':'USART1_RX','AF9':'CAN1_TXFD','AF10':'USB_OTG_FS_ID','AF11':'MDIOS_MDIO','AF12':'LTDC_B4','AF13':'DCMI_D1','AF14':'LTDC_B1'},
+'PA11':{'AF1':'TIM1_CH4','AF2':'HRTIM_CHD1','AF3':'LPUART1_CTS','AF5':'I2S2_WS/SPI2_NSS','AF6':'UART4_RX','AF7':'USART1_CTS_NSS/USART1_NSS','AF9':'CAN1_RX','AF10':'USB_OTG_FS_DM','AF14':'LTDC_R4'},
+'PA12':{'AF1':'TIM1_ETR','AF2':'HRTIM_CHD2','AF3':'LPUART1_RTS/LPUART1_DE','AF5':'I2S2_CK/SPI2_SCK','AF6':'UART4_TX','AF7':'USART1_RTS/USART1_DE','AF8':'SAI2_FS_B','AF9':'CAN1_TX','AF10':'USB_OTG_FS_DP','AF14':'LTDC_R5'},
+'PA13':{'AF0':'JTMS/SWDIO'},
+'PA14':{'AF0':'JTCK/SWCLK'},
+'PA15':{'AF0':'JTDI','AF1':'TIM2_CH1/TIM2_ETR','AF2':'HRTIM_FLT1','AF4':'HDMI_CEC','AF5':'I2S1_WS/SPI1_NSS','AF6':'I2S3_WS/SPI3_NSS','AF7':'SPI6_NSS','AF8':'UART4_RTS/UART4_DE','AF11':'UART7_TX'},
+'PB0':{'AF1':'TIM1_CH2N','AF2':'TIM3_CH3','AF3':'TIM8_CH2N','AF6':'DFSDM_CKOUT','AF8':'UART4_CTS','AF9':'LTDC_R3','AF10':'OTG_HS_ULPI_D1','AF11':'ETH_MII_RXD2','AF14':'LTDC_G1','ADC':'ADC12_INP9'},
+'PB1':{'AF1':'TIM1_CH3N','AF2':'TIM3_CH4','AF3':'TIM8_CH3N','AF6':'DFSDM_DATIN1','AF9':'LTDC_R6','AF10':'OTG_HS_ULPI_D2','AF11':'ETH_MII_RXD3','AF14':'LTDC_G0','ADC':'ADC12_INP5'},
+'PB2':{'AF0':'RTC_OUT_ALARM/RTC_OUT_CALIB','AF2':'SAI1_D1','AF4':'DFSDM_CKIN1','AF6':'SAI1_SD_A','AF7':'I2S3_SDO/SPI3_MOSI','AF8':'SAI4_SD_A','AF9':'QUADSPI_CLK','AF10':'SAI4_D1','AF11':'ETH_TX_ER'},
+'PB3':{'AF0':'JTDO/TRACESWO','AF1':'TIM2_CH2','AF2':'HRTIM_FLT4','AF5':'I2S1_CK/SPI1_SCK','AF6':'I2S3_CK/SPI3_SCK','AF8':'SPI6_SCK','AF9':'SDMMC2_D2','AF10':'RCC_CRS_SYNC','AF11':'UART7_RX'},
+'PB4':{'AF0':'NJTRST','AF1':'TIM16_BKIN','AF2':'TIM3_CH1','AF3':'HRTIM_EEV6','AF5':'I2S1_SDI/SPI1_MISO','AF6':'I2S3_SDI/SPI3_MISO','AF7':'I2S2_WS/SPI2_NSS','AF8':'SPI6_MISO','AF9':'SDMMC2_D3','AF11':'UART7_TX'},
+'PB5':{'AF1':'TIM17_BKIN','AF2':'TIM3_CH2','AF3':'HRTIM_EEV7','AF4':'I2C1_SMBA','AF5':'I2S1_SDO/SPI1_MOSI','AF6':'I2C4_SMBA','AF7':'I2S3_SDO/SPI3_MOSI','AF8':'SPI6_MOSI','AF9':'CAN2_RX','AF10':'OTG_HS_ULPI_D7','AF11':'ETH_PPS_OUT','AF12':'FMC_SDCKE1','AF13':'DCMI_D10','AF14':'UART5_RX'},
+'PB6':{'AF1':'TIM16_CH1N','AF2':'TIM4_CH1','AF3':'HRTIM_EEV8','AF4':'I2C1_SCL','AF5':'HDMI_CEC','AF6':'I2C4_SCL','AF7':'USART1_TX','AF8':'LPUART1_TX','AF9':'CAN2_TX','AF10':'QUADSPI_BK1_NCS','AF11':'DFSDM_DATIN5','AF12':'FMC_SDNE1','AF13':'DCMI_D5','AF14':'UART5_TX'},
+'PB7':{'AF1':'TIM17_CH1N','AF2':'TIM4_CH2','AF3':'HRTIM_EEV9','AF4':'I2C1_SDA','AF6':'I2C4_SDA','AF7':'USART1_RX','AF8':'LPUART1_RX','AF9':'CAN2_TXFD','AF11':'DFSDM_CKIN5','AF12':'FMC_NL','AF13':'DCMI_VSYNC'},
+'PB8':{'AF1':'TIM16_CH1','AF2':'TIM4_CH3','AF3':'DFSDM_CKIN7','AF4':'I2C1_SCL','AF6':'I2C4_SCL','AF7':'SDMMC1_CKIN','AF8':'UART4_RX','AF9':'CAN1_RX','AF10':'SDMMC2_D4','AF11':'ETH_MII_TXD3','AF12':'SDMMC1_D4','AF13':'DCMI_D6','AF14':'LTDC_B6'},
+'PB9':{'AF1':'TIM17_CH1','AF2':'TIM4_CH4','AF3':'DFSDM_DATIN7','AF4':'I2C1_SDA','AF5':'I2S2_WS/SPI2_NSS','AF6':'I2C4_SDA','AF7':'SDMMC1_CDIR','AF8':'UART4_TX','AF9':'CAN1_TX','AF10':'SDMMC2_D5','AF11':'I2C4_SMBA','AF12':'SDMMC1_D5','AF13':'DCMI_D7','AF14':'LTDC_B7'},
+'PB10':{'AF1':'TIM2_CH3','AF2':'HRTIM_SCOUT','AF3':'LPTIM2_IN1','AF4':'I2C2_SCL','AF5':'I2S2_CK/SPI2_SCK','AF6':'DFSDM_DATIN7','AF7':'USART3_TX','AF9':'QUADSPI_BK1_NCS','AF10':'OTG_HS_ULPI_D3','AF11':'ETH_MII_RX_ER','AF14':'LTDC_G4'},
+'PB11':{'AF1':'TIM2_CH4','AF2':'HRTIM_SCIN','AF3':'LPTIM2_ETR','AF4':'I2C2_SDA','AF6':'DFSDM_CKIN7','AF7':'USART3_RX','AF10':'OTG_HS_ULPI_D4','AF11':'ETH_MII_TX_EN/ETH_RMII_TX_EN','AF14':'LTDC_G5'},
+'PB12':{'AF1':'TIM1_BKIN','AF4':'I2C2_SMBA','AF5':'I2S2_WS/SPI2_NSS','AF6':'DFSDM_DATIN1','AF7':'USART3_CK','AF9':'CAN2_RX','AF10':'OTG_HS_ULPI_D5','AF11':'ETH_MII_TXD0/ETH_RMII_TXD0','AF12':'USB_OTG_HS_ID','AF13':'TIM1_BKIN_COMP12','AF14':'UART5_RX'},
+'PB13':{'AF1':'TIM1_CH1N','AF3':'LPTIM2_OUT','AF5':'I2S2_CK/SPI2_SCK','AF6':'DFSDM_CKIN1','AF7':'USART3_CTS_NSS/USART3_NSS','AF9':'CAN2_TX','AF10':'OTG_HS_ULPI_D6','AF11':'ETH_MII_TXD1/ETH_RMII_TXD1','AF14':'UART5_TX'},
+'PB14':{'AF1':'TIM1_CH2N','AF2':'TIM12_CH1','AF3':'TIM8_CH2N','AF4':'USART1_TX','AF5':'I2S2_SDI/SPI2_MISO','AF6':'DFSDM_DATIN2','AF7':'USART3_RTS/USART3_DE','AF8':'UART4_RTS/UART4_DE','AF9':'SDMMC2_D0','AF12':'USB_OTG_HS_DM'},
+'PB15':{'AF0':'RTC_REFIN','AF1':'TIM1_CH3N','AF2':'TIM12_CH2','AF3':'TIM8_CH3N','AF4':'USART1_RX','AF5':'I2S2_SDO/SPI2_MOSI','AF6':'DFSDM_CKIN2','AF8':'UART4_CTS','AF9':'SDMMC2_D1','AF12':'USB_OTG_HS_DP'},
+'PC0':{'AF3':'DFSDM_CKIN0','AF6':'DFSDM_DATIN4','AF8':'SAI2_FS_B','AF10':'OTG_HS_ULPI_STP','AF12':'FMC_SDNWE','AF14':'LTDC_R5','ADC':'ADC123_INP10'},
+'PC1':{'AF0':'TRACED0','AF2':'SAI1_D1','AF3':'DFSDM_DATIN0','AF4':'DFSDM_CKIN4','AF5':'I2S2_SDO/SPI2_MOSI','AF6':'SAI1_SD_A','AF8':'SAI4_SD_A','AF9':'SDMMC2_CK','AF10':'SAI4_D1','AF11':'ETH_MDC','AF12':'MDIOS_MDC','ADC':'ADC123_INP11'},
+'PC2':{'AF3':'DFSDM_CKIN1','AF5':'I2S2_SDI/SPI2_MISO','AF6':'DFSDM_CKOUT','AF10':'OTG_HS_ULPI_DIR','AF11':'ETH_MII_TXD2','AF12':'FMC_SDNE0','ADC':'ADC123_INP12/ADC3_INP0'},
+'PC3':{'AF3':'DFSDM_DATIN1','AF5':'I2S2_SDO/SPI2_MOSI','AF10':'OTG_HS_ULPI_NXT','AF11':'ETH_MII_TX_CLK','AF12':'FMC_SDCKE0','ADC':'ADC12_INP13/ADC3_INP1'},
+'PC4':{'AF3':'DFSDM_CKIN2','AF5':'I2S1_MCK','AF9':'SPDIFRX_IN2','AF11':'ETH_MII_RXD0/ETH_RMII_RXD0','AF12':'FMC_SDNE0','ADC':'ADC12_INP4'},
+'PC5':{'AF2':'SAI1_D3','AF3':'DFSDM_DATIN2','AF9':'SPDIFRX_IN3','AF10':'SAI4_D3','AF11':'ETH_MII_RXD1/ETH_RMII_RXD1','AF12':'FMC_SDCKE0','AF13':'COMP_1_OUT','ADC':'ADC12_INP8'},
+'PC6':{'AF1':'HRTIM_CHA1','AF2':'TIM3_CH1','AF3':'TIM8_CH1','AF4':'DFSDM_CKIN3','AF5':'I2S2_MCK','AF7':'USART6_TX','AF8':'SDMMC1_D0DIR','AF9':'FMC_NWAIT','AF10':'SDMMC2_D6','AF12':'SDMMC1_D6','AF13':'DCMI_D0','AF14':'LTDC_HSYNC'},
+'PC7':{'AF0':'TRGIO','AF1':'HRTIM_CHA2','AF2':'TIM3_CH2','AF3':'TIM8_CH2','AF4':'DFSDM_DATIN3','AF6':'I2S3_MCK','AF7':'USART6_RX','AF8':'SDMMC1_D123DIR','AF9':'FMC_NE1','AF10':'SDMMC2_D7','AF11':'SWPMI_TX','AF12':'SDMMC1_D7','AF13':'DCMI_D1','AF14':'LTDC_G6'},
+'PC8':{'AF0':'TRACED1','AF1':'HRTIM_CHB1','AF2':'TIM3_CH3','AF3':'TIM8_CH3','AF7':'USART6_CK','AF8':'UART5_RTS/UART5_DE','AF9':'FMC_NCE/FMC_NE2','AF11':'SWPMI_RX','AF12':'SDMMC1_D0','AF13':'DCMI_D2'},
+'PC9':{'AF0':'MCO2','AF2':'TIM3_CH4','AF3':'TIM8_CH4','AF4':'I2C3_SDA','AF5':'I2S_CKIN','AF8':'UART5_CTS','AF9':'QUADSPI_BK1_IO0','AF10':'LTDC_G3','AF11':'SWPMI_SUSPEND','AF12':'SDMMC1_D1','AF13':'DCMI_D3','AF14':'LTDC_B2'},
+'PC10':{'AF2':'HRTIM_EEV1','AF3':'DFSDM_CKIN5','AF6':'I2S3_CK/SPI3_SCK','AF7':'USART3_TX','AF8':'UART4_TX','AF9':'QUADSPI_BK1_IO1','AF12':'SDMMC1_D2','AF13':'DCMI_D8','AF14':'LTDC_R2'},
+'PC11':{'AF2':'HRTIM_FLT2','AF3':'DFSDM_DATIN5','AF6':'I2S3_SDI/SPI3_MISO','AF7':'USART3_RX','AF8':'UART4_RX','AF9':'QUADSPI_BK2_NCS','AF12':'SDMMC1_D3','AF13':'DCMI_D4'},
+'PC12':{'AF0':'TRACED3','AF2':'HRTIM_EEV2','AF6':'I2S3_SDO/SPI3_MOSI','AF7':'USART3_CK','AF8':'UART5_TX','AF12':'SDMMC1_CK','AF13':'DCMI_D9'},
+'PC13':{},
+'PC14':{},
+'PC15':{},
+'PD0':{'AF3':'DFSDM_CKIN6','AF6':'SAI3_SCK_A','AF8':'UART4_RX','AF9':'CAN1_RX','AF12':'FMC_D2/FMC_DA2'},
+'PD1':{'AF3':'DFSDM_DATIN6','AF6':'SAI3_SD_A','AF8':'UART4_TX','AF9':'CAN1_TX','AF12':'FMC_D3/FMC_DA3'},
+'PD2':{'AF0':'TRACED2','AF2':'TIM3_ETR','AF8':'UART5_RX','AF12':'SDMMC1_CMD','AF13':'DCMI_D11'},
+'PD3':{'AF3':'DFSDM_CKOUT','AF5':'I2S2_CK/SPI2_SCK','AF7':'USART2_CTS_NSS/USART2_NSS','AF12':'FMC_CLK','AF13':'DCMI_D5','AF14':'LTDC_G7'},
+'PD4':{'AF2':'HRTIM_FLT3','AF6':'SAI3_FS_A','AF7':'USART2_RTS/USART2_DE','AF9':'CAN1_RXFD','AF12':'FMC_NOE'},
+'PD5':{'AF2':'HRTIM_EEV3','AF7':'USART2_TX','AF9':'CAN1_TXFD','AF12':'FMC_NWE'},
+'PD6':{'AF2':'SAI1_D1','AF3':'DFSDM_CKIN4','AF4':'DFSDM_DATIN1','AF5':'I2S3_SDO/SPI3_MOSI','AF6':'SAI1_SD_A','AF7':'USART2_RX','AF8':'SAI4_SD_A','AF9':'CAN2_RXFD','AF10':'SAI4_D1','AF11':'SDMMC2_CK','AF12':'FMC_NWAIT','AF13':'DCMI_D10','AF14':'LTDC_B2'},
+'PD7':{'AF3':'DFSDM_DATIN4','AF5':'I2S1_SDO/SPI1_MOSI','AF6':'DFSDM_CKIN1','AF7':'USART2_CK','AF9':'SPDIFRX_IN0','AF11':'SDMMC2_CMD','AF12':'FMC_NE1'},
+'PD8':{'AF3':'DFSDM_CKIN3','AF6':'SAI3_SCK_B','AF7':'USART3_TX','AF9':'SPDIFRX_IN1','AF12':'FMC_D13/FMC_DA13'},
+'PD9':{'AF3':'DFSDM_DATIN3','AF6':'SAI3_SD_B','AF7':'USART3_RX','AF9':'CAN2_RXFD','AF12':'FMC_D14/FMC_DA14'},
+'PD10':{'AF3':'DFSDM_CKOUT','AF6':'SAI3_FS_B','AF7':'USART3_CK','AF9':'CAN2_TXFD','AF12':'FMC_D15/FMC_DA15','AF14':'LTDC_B3'},
+'PD11':{'AF3':'LPTIM2_IN2','AF4':'I2C4_SMBA','AF7':'USART3_CTS_NSS/USART3_NSS','AF9':'QUADSPI_BK1_IO0','AF10':'SAI2_SD_A','AF12':'FMC_A16'},
+'PD12':{'AF1':'LPTIM1_IN1','AF2':'TIM4_CH1','AF3':'LPTIM2_IN1','AF4':'I2C4_SCL','AF7':'USART3_RTS/USART3_DE','AF9':'QUADSPI_BK1_IO1','AF10':'SAI2_FS_A','AF12':'FMC_A17'},
+'PD13':{'AF1':'LPTIM1_OUT','AF2':'TIM4_CH2','AF4':'I2C4_SDA','AF9':'QUADSPI_BK1_IO3','AF10':'SAI2_SCK_A','AF12':'FMC_A18'},
+'PD14':{'AF2':'TIM4_CH3','AF6':'SAI3_MCLK_B','AF8':'UART8_CTS','AF12':'FMC_D0/FMC_DA0'},
+'PD15':{'AF2':'TIM4_CH4','AF6':'SAI3_MCLK_A','AF8':'UART8_RTS/UART8_DE','AF12':'FMC_D1/FMC_DA1'},
+'PE0':{'AF1':'LPTIM1_ETR','AF2':'TIM4_ETR','AF3':'HRTIM_SCIN','AF4':'LPTIM2_ETR','AF8':'UART8_RX','AF9':'CAN1_RXFD','AF10':'SAI2_MCK_A','AF12':'FMC_NBL0','AF13':'DCMI_D2'},
+'PE1':{'AF1':'LPTIM1_IN2','AF3':'HRTIM_SCOUT','AF8':'UART8_TX','AF9':'CAN1_TXFD','AF12':'FMC_NBL1','AF13':'DCMI_D3'},
+'PE2':{'AF0':'TRACECLK','AF2':'SAI1_CK1','AF5':'SPI4_SCK','AF6':'SAI1_MCLK_A','AF8':'SAI4_MCLK_A','AF9':'QUADSPI_BK1_IO2','AF10':'SAI4_CK1','AF11':'ETH_MII_TXD3','AF12':'FMC_A23'},
+'PE3':{'AF0':'TRACED0','AF4':'TIM15_BKIN','AF6':'SAI1_SD_B','AF8':'SAI4_SD_B','AF12':'FMC_A19'},
+'PE4':{'AF0':'TRACED1','AF2':'SAI1_D2','AF3':'DFSDM_DATIN3','AF4':'TIM15_CH1N','AF5':'SPI4_NSS','AF6':'SAI1_FS_A','AF8':'SAI4_FS_A','AF10':'SAI4_D2','AF12':'FMC_A20','AF13':'DCMI_D4','AF14':'LTDC_B0'},
+'PE5':{'AF0':'TRACED2','AF2':'SAI1_CK2','AF3':'DFSDM_CKIN3','AF4':'TIM15_CH1','AF5':'SPI4_MISO','AF6':'SAI1_SCK_A','AF8':'SAI4_SCK_A','AF10':'SAI4_CK2','AF12':'FMC_A21','AF13':'DCMI_D6','AF14':'LTDC_G0'},
+'PE6':{'AF0':'TRACED3','AF1':'TIM1_BKIN2','AF2':'SAI1_D1','AF4':'TIM15_CH2','AF5':'SPI4_MOSI','AF6':'SAI1_SD_A','AF8':'SAI4_SD_A','AF9':'SAI4_D1','AF10':'SAI2_MCK_B','AF11':'TIM1_BKIN2_COMP12','AF12':'FMC_A22','AF13':'DCMI_D7','AF14':'LTDC_G1'},
+'PE7':{'AF1':'TIM1_ETR','AF3':'DFSDM_DATIN2','AF7':'UART7_RX','AF10':'QUADSPI_BK2_IO0','AF12':'FMC_D4/FMC_DA4'},
+'PE8':{'AF1':'TIM1_CH1N','AF3':'DFSDM_CKIN2','AF7':'UART7_TX','AF10':'QUADSPI_BK2_IO1','AF12':'FMC_D5/FMC_DA5','AF13':'COMP_2_OUT'},
+'PE9':{'AF1':'TIM1_CH1','AF3':'DFSDM_CKOUT','AF7':'UART7_RTS/UART7_DE','AF10':'QUADSPI_BK2_IO2','AF12':'FMC_D6/FMC_DA6'},
+'PE10':{'AF1':'TIM1_CH2N','AF3':'DFSDM_DATIN4','AF7':'UART7_CTS','AF10':'QUADSPI_BK2_IO3','AF12':'FMC_D7/FMC_DA7'},
+'PE11':{'AF1':'TIM1_CH2','AF3':'DFSDM_CKIN4','AF5':'SPI4_NSS','AF10':'SAI2_SD_B','AF12':'FMC_D8/FMC_DA8','AF14':'LTDC_G3'},
+'PE12':{'AF1':'TIM1_CH3N','AF3':'DFSDM_DATIN5','AF5':'SPI4_SCK','AF10':'SAI2_SCK_B','AF12':'FMC_D9/FMC_DA9','AF13':'COMP_1_OUT','AF14':'LTDC_B4'},
+'PE13':{'AF1':'TIM1_CH3','AF3':'DFSDM_CKIN5','AF5':'SPI4_MISO','AF10':'SAI2_FS_B','AF12':'FMC_D10/FMC_DA10','AF13':'COMP_2_OUT','AF14':'LTDC_DE'},
+'PE14':{'AF1':'TIM1_CH4','AF5':'SPI4_MOSI','AF10':'SAI2_MCK_B','AF12':'FMC_D11/FMC_DA11','AF14':'LTDC_CLK'},
+'PE15':{'AF1':'TIM1_BKIN','AF5':'HDMI_TIM1_BKIN','AF12':'FMC_D12/FMC_DA12','AF13':'TIM1_BKIN_COMP12','AF14':'LTDC_R7'},
+'PF0':{'AF4':'I2C2_SDA','AF12':'FMC_A0'},
+'PF1':{'AF4':'I2C2_SCL','AF12':'FMC_A1'},
+'PF2':{'AF4':'I2C2_SMBA','AF12':'FMC_A2'},
+'PF3':{'AF12':'FMC_A3','ADC':'ADC3_INP5'},
+'PF4':{'AF12':'FMC_A4','ADC':'ADC3_INP9'},
+'PF5':{'AF12':'FMC_A5','ADC':'ADC3_INP4'},
+'PF6':{'AF1':'TIM16_CH1','AF5':'SPI5_NSS','AF6':'SAI1_SD_B','AF7':'UART7_RX','AF8':'SAI4_SD_B','AF9':'QUADSPI_BK1_IO3','ADC':'ADC3_INP8'},
+'PF7':{'AF1':'TIM17_CH1','AF5':'SPI5_SCK','AF6':'SAI1_MCLK_B','AF7':'UART7_TX','AF8':'SAI4_MCLK_B','AF9':'QUADSPI_BK1_IO2','ADC':'ADC3_INP3'},
+'PF8':{'AF1':'TIM16_CH1N','AF5':'SPI5_MISO','AF6':'SAI1_SCK_B','AF7':'UART7_RTS/UART7_DE','AF8':'SAI4_SCK_B','AF9':'TIM13_CH1','AF10':'QUADSPI_BK1_IO0','ADC':'ADC3_INP7'},
+'PF9':{'AF1':'TIM17_CH1N','AF5':'SPI5_MOSI','AF6':'SAI1_FS_B','AF7':'UART7_CTS','AF8':'SAI4_FS_B','AF9':'TIM14_CH1','AF10':'QUADSPI_BK1_IO1','ADC':'ADC3_INP2'},
+'PF10':{'AF1':'TIM16_BKIN','AF2':'SAI1_D3','AF9':'QUADSPI_CLK','AF10':'SAI4_D3','AF13':'DCMI_D11','AF14':'LTDC_DE','ADC':'ADC3_INP6'},
+'PF11':{'AF5':'SPI5_MOSI','AF10':'SAI2_SD_B','AF12':'FMC_SDNRAS','AF13':'DCMI_D12','ADC':'ADC1_INP2'},
+'PF12':{'AF12':'FMC_A6','ADC':'ADC1_INP6'},
+'PF13':{'AF3':'DFSDM_DATIN6','AF4':'I2C4_SMBA','AF12':'FMC_A7','ADC':'ADC2_INP2'},
+'PF14':{'AF3':'DFSDM_CKIN6','AF4':'I2C4_SCL','AF12':'FMC_A8','ADC':'ADC2_INP6'},
+'PF15':{'AF4':'I2C4_SDA','AF12':'FMC_A9'},
+'PG0':{'AF12':'FMC_A10'},
+'PG1':{'AF12':'FMC_A11'},
+'PG2':{'AF3':'TIM8_BKIN','AF11':'TIM8_BKIN_COMP12','AF12':'FMC_A12'},
+'PG3':{'AF3':'TIM8_BKIN2','AF11':'TIM8_BKIN2_COMP12','AF12':'FMC_A13'},
+'PG4':{'AF1':'TIM1_BKIN2','AF11':'TIM1_BKIN2_COMP12','AF12':'FMC_A14/FMC_BA0'},
+'PG5':{'AF1':'TIM1_ETR','AF12':'FMC_A15/FMC_BA1'},
+'PG6':{'AF1':'TIM17_BKIN','AF2':'HRTIM_CHE1','AF10':'QUADSPI_BK1_NCS','AF12':'FMC_NE3','AF13':'DCMI_D12','AF14':'LTDC_R7'},
+'PG7':{'AF2':'HRTIM_CHE2','AF6':'SAI1_MCLK_A','AF7':'USART6_CK','AF12':'FMC_INT','AF13':'DCMI_D13','AF14':'LTDC_CLK'},
+'PG8':{'AF3':'TIM8_ETR','AF5':'SPI6_NSS','AF7':'USART6_RTS/USART6_DE','AF8':'SPDIFRX_IN2','AF11':'ETH_PPS_OUT','AF12':'FMC_SDCLK','AF14':'LTDC_G7'},
+'PG9':{'AF5':'I2S1_SDI/SPI1_MISO','AF7':'USART6_RX','AF8':'SPDIFRX_IN3','AF9':'QUADSPI_BK2_IO2','AF10':'SAI2_FS_B','AF12':'FMC_NCE/FMC_NE2','AF13':'DCMI_VSYNC'},
+'PG10':{'AF2':'HRTIM_FLT5','AF5':'I2S1_WS/SPI1_NSS','AF9':'LTDC_G3','AF10':'SAI2_SD_B','AF12':'FMC_NE3','AF13':'DCMI_D2','AF14':'LTDC_B2'},
+'PG11':{'AF1':'LPTIM1_IN2','AF2':'HRTIM_EEV4','AF5':'I2S1_CK/SPI1_SCK','AF8':'SPDIFRX_IN0','AF10':'SDMMC2_D2','AF11':'ETH_MII_TX_EN/ETH_RMII_TX_EN','AF13':'DCMI_D3','AF14':'LTDC_B3'},
+'PG12':{'AF1':'LPTIM1_IN1','AF2':'HRTIM_EEV5','AF5':'SPI6_MISO','AF7':'USART6_RTS/USART6_DE','AF8':'SPDIFRX_IN1','AF9':'LTDC_B4','AF11':'ETH_MII_TXD1/ETH_RMII_TXD1','AF12':'FMC_NE4','AF14':'LTDC_B1'},
+'PG13':{'AF0':'TRACED0','AF1':'LPTIM1_OUT','AF2':'HRTIM_EEV10','AF5':'SPI6_SCK','AF7':'USART6_CTS_NSS/USART6_NSS','AF11':'ETH_MII_TXD0/ETH_RMII_TXD0','AF12':'FMC_A24','AF14':'LTDC_R0'},
+'PG14':{'AF0':'TRACED1','AF1':'LPTIM1_ETR','AF5':'SPI6_MOSI','AF7':'USART6_TX','AF9':'QUADSPI_BK2_IO3','AF11':'ETH_MII_TXD1/ETH_RMII_TXD1','AF12':'FMC_A25','AF14':'LTDC_B0'},
+'PG15':{'AF7':'USART6_CTS_NSS/USART6_NSS','AF12':'FMC_SDNCAS','AF13':'DCMI_D13'},
+'PH0':{},
+'PH1':{}
+};
+
+const cn11={odd:['PC10','PC12','3V3_VDD','BOOT0','PF6','PF7','PA13','PA14',
+'PA15','GND','PB7','PC13','PC14','PC15','PH0','PH1','VBAT','PC2','PC3','PD4',
+'PD5','PD6','PD7','PE3','GND','PF1','PF0','PD1','PD0','PG0','PE1','PG9',
+'PG12','NC','PD9'],
+even:['PC11','PD2','E5V','GND','NC','IOREF','NRST','3V3','5V','GND','GND',
+'VIN','NC','PA0','PA1','PA4','PB0','PC1','PC0','PD3','PG2','PG3','PE2','PE4',
+'PE5','PF2','PF8','PF9','PG1','GND','PE6','PG15','PG10','PG13','PG11']};
+
+const cn12={odd:['PC9','PB8','PB9','VREFP','GND','PA5','PA6','PA7','PB6','PC7',
+'PA9','PA8','PB10','PB4','PB5','PB3','PA10','PA2','PA3','GND','PD13','PD12',
+'PD11','PE10','PE12','PE14','PE15','PE13','PF13','PF12','PG14','GND','PD10',
+'PG7','PG4'],
+even:['PC8','PC6','PC5','U5V','PD8','PA12','PA11','PB12','PB11','GND','PB2',
+'PB1','PB15','PB14','PB13','AGND','PC4','PF5','PF4','PE8','PF10','PE7','PD14',
+'PD15','PF14','PE9','GND','PE11','PF3','PF15','PF11','PE0','PG8','PG5','PG6']};
+
+const cn7={odd:['PC6','PB15','PB13','PB12','PA15','PC7','PB5','PB3','PA4','PB4'],
+even:['PB8','PB9','VREFP','GND','PA5','PA6','PB5','PD14','PD15','PF3']};
+
+const cn8={odd:['NC','IOREF','NRST','3V3','5V','GND','GND','VIN'],
+even:['PC8','PC9','PC10','PC11','PC12','PD2','PG2','PG3']};
+
+const cn9={odd:['PA3','PC0','PC3','PB1','PC2','PF10','PB2','PE9','PF2','PF1',
+'PF0','GND','PD0','PD1','PG0'],
+even:['PD7','PD6','PD5','PD4','PD3','GND','PE2','PE4','PE5','PE6','PE3','PF8',
+'PF7','PF9','PG1']};
+
+const cn10={odd:['AVDD','AGND','GND','PF4','PF5','PF6','PG6','PB2','GND','PD13',
+'PD12','PD11','PE2','GND','PA0','PB0','PE0'],
+even:['PG12','PE9','PE11','PE14','PE13','PG14','PB6','PB7','PE8','PE7','GND',
+'PE10','PE12','PE6','PE15','PB10','PB11']};
+
+let currentRotation=0;
+
+function getPinClass(pin){
+const p=pin.toUpperCase().replace('_','');
+if(['GND','AGND'].includes(p))return 'pin-gnd';
+if(['VDD','3V3','5V','VBAT','VIN','AVDD','VREFP','E5V','U5V','IOREF'].includes(p))
+return 'pin-pwr';
+if(['NC','X','NRST','BOOT0','BOOT'].includes(p))return 'pin-nc';
+const af=afData[p];
+if(!af)return 'pin-gpio';
+const vals=Object.values(af).join(' ').toUpperCase();
+if(vals.includes('DEBUG')||vals.includes('SWD')||vals.includes('SWO'))
+return 'pin-debug';
+if(vals.includes('ETH')||vals.includes('RMII'))return 'pin-eth';
+if(vals.includes('USB')||vals.includes('OTG'))return 'pin-usb';
+if(vals.includes('FDCAN')||vals.includes('CAN'))return 'pin-can';
+if(vals.includes('SPI'))return 'pin-spi';
+if(vals.includes('I2C'))return 'pin-i2c';
+if(vals.includes('USART')||vals.includes('UART')||vals.includes('LPUART'))
+return 'pin-uart';
+if(vals.includes('SDMMC'))return 'pin-sdmmc';
+if(vals.includes('QUADSPI')||vals.includes('QSPI'))return 'pin-qspi';
+if(vals.includes('SAI')||vals.includes('I2S'))return 'pin-sai';
+if(vals.includes('TIM'))return 'pin-tim';
+if(vals.includes('ADC'))return 'pin-adc';
+if(vals.includes('DAC'))return 'pin-dac';
+if(vals.includes('DCMI'))return 'pin-dcmi';
+if(vals.includes('COMP'))return 'pin-comp';
+if(vals.includes('OSC'))return 'pin-osc';
+if(vals.includes('FMC'))return 'pin-fmc';
+return 'pin-gpio'
+}
+
+function createPin(name,isNum=false){
+const div=document.createElement('div');
+div.className='pin'+(isNum?' pin-num':' '+getPinClass(name));
+div.textContent=name.replace('_','');
+if(!isNum){
+div.onmouseenter=(e)=>showTooltip(e,name);
+div.onmouseleave=hideTooltip
+}
+return div
+}
+
+function showTooltip(e,pin){
+const tt=document.getElementById('tooltip');
+const p=pin.toUpperCase().replace('_','');
+const af=afData[p];
+let html='<h4>'+p+'</h4>';
+if(af){
+html+='<div class="af-list">';
+for(const[k,v]of Object.entries(af)){
+html+='<span class="af-key">'+k+':</span><span class="af-val">'+v+'</span>'
+}
+html+='</div>'
+}else{
+html+='<span style="color:#888">Power/GND/NC</span>'
+}
+tt.innerHTML=html;
+tt.style.display='block';
+tt.style.left=(e.clientX+15)+'px';
+tt.style.top=(e.clientY+15)+'px'
+}
+
+function hideTooltip(){
+document.getElementById('tooltip').style.display='none'
+}
+
+function buildConnector(id,data){
+const container=document.getElementById(id);
+container.innerHTML='';
+const colOdd=document.createElement('div');
+colOdd.className='pin-col';
+data.odd.forEach((p,i)=>{colOdd.appendChild(createPin(p))});
+const colNumOdd=document.createElement('div');
+colNumOdd.className='pin-col';
+data.odd.forEach((p,i)=>{colNumOdd.appendChild(createPin(String(i*2+1),true))});
+const colNumEven=document.createElement('div');
+colNumEven.className='pin-col';
+data.even.forEach((p,i)=>{colNumEven.appendChild(createPin(String(i*2+2),true))});
+const colEven=document.createElement('div');
+colEven.className='pin-col';
+data.even.forEach((p,i)=>{colEven.appendChild(createPin(p))});
+container.appendChild(colOdd);
+container.appendChild(colNumOdd);
+container.appendChild(colNumEven);
+container.appendChild(colEven)
+}
+
+function rotate(){
+currentRotation=(currentRotation+90)%360;
+const boards=document.querySelectorAll('.board');
+boards.forEach(board=>{board.className='board rotate-'+currentRotation});
+document.getElementById('rotationAngle').textContent=currentRotation
+}
+
+function populateAFTable(){
+const tbody=document.getElementById('afTableBody');
+tbody.innerHTML='';
+const pins=Object.keys(afData).sort((a,b)=>{
+const pa=a.match(/P([A-G])(\d+)/);
+const pb=b.match(/P([A-G])(\d+)/);
+if(pa&&pb){
+if(pa[1]!==pb[1])return pa[1].localeCompare(pb[1]);
+return parseInt(pa[2])-parseInt(pb[2])
+}
+return a.localeCompare(b)
+});
+pins.forEach(pin=>{
+const af=afData[pin];
+const tr=document.createElement('tr');
+tr.innerHTML='<td class="pin-cell">'+pin+'</td>';
+for(let i=0;i<=14;i++){
+const key='AF'+i;
+tr.innerHTML+='<td>'+(af[key]||'-')+'</td>'
+}
+let other='';
+['ADC','DAC','COMP','DEBUG','OSC','WKUP'].forEach(k=>{
+if(af[k])other+=(other?', ':'')+af[k]
+});
+tr.innerHTML+='<td>'+(other||'-')+'</td>';
+tbody.appendChild(tr)
+})
+}
+
+function filterTable(){
+const filter=document.getElementById('searchFilter').value.toUpperCase();
+const rows=document.querySelectorAll('#afTableBody tr');
+rows.forEach(row=>{
+row.style.display=row.textContent.toUpperCase().includes(filter)?'':'none'
+})
+}
+
+function showTab(id){
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+document.querySelector('.tab[onclick*="'+id+'"]').classList.add('active');
+document.getElementById(id).classList.add('active')
+}
+
+buildConnector('cn11',cn11);
+buildConnector('cn12',cn12);
+buildConnector('cn7',cn7);
+buildConnector('cn8',cn8);
+buildConnector('cn9',cn9);
+buildConnector('cn10',cn10);
+populateAFTable();
+</script>
+</body>
+</html>

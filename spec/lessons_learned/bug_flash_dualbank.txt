@@ -1,0 +1,236 @@
+# STM32H7: HardFault on boot when .data LMA crosses flash Bank 2 boundary
+
+## Title
+
+stm32h7: HardFault on boot when _eronly falls in flash Bank 2
+(0x08100000+) due to flash wait states not configured before .data copy
+
+## Target Device
+
+- MCU: STM32H753ZI (Nucleo-144, MB1364)
+- Flash: 2MB dual-bank (Bank 1: 0x08000000-0x080FFFFF,
+  Bank 2: 0x08100000-0x081FFFFF)
+- RTOS: Apache NuttX (master branch)
+- Toolchain: arm-none-eabi-gcc
+
+## Issue Description
+
+When the firmware binary grows large enough that the .data section's
+Load Memory Address (LMA) crosses the flash Bank 2 boundary
+(>= 0x08100000), the system hits a HardFault during early boot before
+any application code executes. The crash occurs in `up_serialin()`
+(`stm32_serial.c`) when it tries to read a UART register through a
+corrupted base address pointer.
+
+The HardFault is deterministic and 100% reproducible. A smaller
+firmware (same .config, same board, same toolchain) that keeps
+`_eronly` within Bank 1 boots normally every time.
+
+## Pre-conditions
+
+- STM32H7x3 (dual-bank flash) target
+- Firmware binary large enough that `_eronly` (start of .data init
+  values in flash) falls at or above 0x08100000
+- In the tested case: ~300KB const image array in .rodata pushed
+  total .text section to ~1.2MB, placing `_eronly` at 0x081268D4
+- Linker script correctly defines flash region as 2048K
+- `BOARD_FLASH_WAITSTATES` correctly set to 4
+
+## Error Path / Steps to Reproduce
+
+1. Configure a nucleo-h753zi build with any NuttX baseline config
+2. Add a large const array (~300KB) to .rodata (e.g., an LVGL image
+   asset as a C array)
+3. Build and flash
+4. Observe HardFault on every boot attempt
+
+### Observed serial output
+
+```
+ABC
+```
+
+Only 3 of the 4 `showprogress()` characters appear (A, B, C). The
+crash occurs after `stm32_clockconfig()` and cache enable (which
+print A, B, C) but before `arm_earlyserialinit()` (which would
+print D). However, the root cause is in the .data copy that happens
+before any of these — the corrupted data simply does not manifest
+as a crash until the UART driver first dereferences `uartbase`.
+
+### OpenOCD output
+
+```
+Error: clearing lockup after double fault
+halted due to debug-request, current mode: Handler HardFault
+xPSR: 0x61000003 pc: 0x0800099e msp: 0x24024a78
+```
+
+### Faulting instruction
+
+```
+0800098e <up_serialin>:
+ 800098e:  b082        sub   sp, #8
+ 8000990:  9001        str   r0, [sp, #4]
+ 8000992:  9100        str   r1, [sp, #0]
+ 8000994:  9b01        ldr   r3, [sp, #4]
+ 8000996:  f8d3 20a8   ldr.w r2, [r3, #168]  @ uartbase
+ 800099a:  9b00        ldr   r3, [sp, #0]
+ 800099c:  4413        add   r3, r2
+ 800099e:  681b        ldr   r3, [r3, #0]     @ <-- HARDFAULT
+```
+
+The crash is at `ldr r3, [r3, #0]` — a memory-mapped register read.
+R3 contains `uartbase + offset`, but `uartbase` is garbage because
+the `.data` section was copied from flash with incorrect data.
+
+## Root Cause
+
+In `stm32_start.c`, the `__start()` function performs the `.data`
+copy from flash to SRAM **before** configuring flash wait states:
+
+```c
+/* stm32_start.c - __start() execution order: */
+
+/* Line 209: Clear .bss */
+for (dest = (uint32_t *)_sbss; dest < (uint32_t *)_ebss; )
+    *dest++ = 0;
+
+/* Line 220: Copy .data from flash (reads _eronly in flash) */
+for (src  = (const uint32_t *)_eronly,           /*  <--- HERE  */
+     dest = (uint32_t *)_sdata;
+     dest < (uint32_t *)_edata; )
+    *dest++ = *src++;
+
+/* ... */
+
+/* Line 249: Configure clocks AND flash wait states */
+stm32_clockconfig();     /* wait states set HERE, too late */
+```
+
+The flash wait states are configured inside `stm32_clockconfig()`
+at `stm32h7x3xx_rcc.c:985-988`:
+
+```c
+regval = FLASH_ACR_WRHIGHFREQ(BOARD_FLASH_PROGDELAY) |
+         FLASH_ACR_LATENCY(BOARD_FLASH_WAITSTATES);
+putreg32(regval, STM32_FLASH_ACR);
+```
+
+At reset, the STM32H7 runs from HSI at 64 MHz with the default
+FLASH_ACR value (wait states = 0). Reading from flash Bank 1 at
+64 MHz with 0 wait states may work because Bank 1 is the primary
+boot bank and may tolerate this at lower clock speeds. However,
+when `_eronly` falls in Bank 2 (>= 0x08100000), reads from that
+bank return corrupted data under these conditions.
+
+The `.data` copy at line 220 reads from `_eronly` in Bank 2 with
+wait states = 0. The copied data is garbage. This corrupts all
+statically-initialized variables in `.data`, including
+`g_usart3priv.uartbase`. When the UART driver later dereferences
+this corrupted pointer, the bus fault triggers a HardFault.
+
+### Memory layout comparison
+
+| Build    | _eronly      | Flash Bank | Result    |
+|----------|-------------|------------|-----------|
+| Small    | 0x080DAF74  | Bank 1     | Boots OK  |
+| Large    | 0x081268D4  | Bank 2     | HardFault |
+
+### Key evidence: .data content in ELF is correct
+
+The `g_usart3priv` struct at `0x24000000` has `uartbase` at
+offset `0xA8`. In the ELF file, the init value is `0x40004800`
+(correct USART3 base). The corruption happens at runtime during
+the flash-to-RAM copy, not at link time.
+
+## Evidence
+
+### Symbol addresses (crashing build)
+
+```
+08000000 A _stext
+081268cc A _etext
+081268d4 A _eronly      <-- Bank 2!
+24000000 A _sdata
+24000760 A _edata
+24000760 A _sbss
+24024b0c A _ebss
+```
+
+### Symbol addresses (working build)
+
+```
+08000000 A _stext
+080daf6c A _etext
+080daf74 A _eronly      <-- Bank 1
+24000000 A _sdata
+24000768 A _edata
+24000770 A _sbss
+24024b20 A _ebss
+```
+
+### ELF program headers (crashing build)
+
+```
+Type   Offset   VirtAddr   PhysAddr   FileSiz  MemSiz  Flg
+LOAD   0x001000 0x08000000 0x08000000 0x1268d4 0x1268d4 R E
+LOAD   0x128000 0x24000000 0x081268d4 0x00760  0x24b0c  RW
+                            ^^^^^^^^^^
+                            .data LMA in Bank 2
+```
+
+### .data section content (correct in ELF)
+
+```
+240000a0: 37000000 00e1f505 00480040 ...
+                             ^^^^^^^^
+                    0x40004800 = USART3_BASE (correct)
+```
+
+### Flash section size
+
+```
+.text  1206476 bytes (0x1268CC)
+       0x08000000 + 0x1268CC = 0x081268CC (_etext)
+```
+
+### FLASH_ACR configuration (too late)
+
+`stm32h7x3xx_rcc.c:985` sets `FLASH_ACR_LATENCY(4)` inside
+`stm32_clockconfig()`, which is called at `stm32_start.c:249`
+— 29 lines AFTER the .data copy at line 220.
+
+## Suggested Fix
+
+Set a safe minimum flash latency in `__start()` before the
+`.data` copy loop. The maximum wait state value (0xF or the
+board-defined value) is safe at any clock frequency — it only
+adds read latency but guarantees correct data:
+
+```c
+void __start(void)
+{
+    /* ... stack check, MPU reset ... */
+
+    /* Set flash wait states BEFORE copying .data from flash.
+     * At reset, FLASH_ACR defaults to 0 wait states. If _eronly
+     * falls in flash Bank 2, reads may return corrupt data
+     * without proper wait state configuration.
+     */
+
+    putreg32(FLASH_ACR_LATENCY(BOARD_FLASH_WAITSTATES),
+             STM32_FLASH_ACR);
+
+    /* Clear .bss */
+    for (dest = ...) ...
+
+    /* Copy .data - now safe to read from any flash bank */
+    for (src = _eronly, ...) ...
+
+    /* stm32_clockconfig() will set the final FLASH_ACR value */
+    stm32_clockconfig();
+```
+
+This is a minimal, backward-compatible change. The final
+`FLASH_ACR` value is still set by `stm32_clockconfig()` later,
+so no existing behavior changes for builds that fit in Bank 1.
