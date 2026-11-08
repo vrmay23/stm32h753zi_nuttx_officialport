@@ -1,0 +1,313 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1152" height="1152" viewBox="0 0 1152 1152" font-family="IBM Plex Mono, monospace" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTo5MTY0NmZhNi0wYTc2LTQ2ODQtYWE3YS1lMDUxNjFjN2Q1NDgAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaGvRqRPvgsGBw/NbPTaceYcAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDowOGJlNTc2ZC05YjhjLTRlMjMtODk2My04NzhiNjAzNjZjM2ZscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNom4INjiq8SDibnV8NYr8aywAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggGitz2GRdnGtqk0S3j8CeM03Ke6S2PWt5W+djy0035YakZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaKwwzTbfMkRMe6DA2lW/W1EAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCB6CznkLmrZUIKipyAqjBcyOn7F78fbP/RtfwPXFnXzaWRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBjBZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjkxNjQ2ZmE2LTBhNzYtNDY4NC1hYTdhLWUwNTE2MWM3ZDU0OC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjQwYTRmN2Q1LTE0MzAtNGE1YS05MmE0LWFkNzRiM2YzYTMxMnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCAaK3PYZF2ca2qTRLePwJ4zTcp7pLY9a3lb52PLTTflhqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFgggA6kbwoeMWmfdE/9JWCBhkEAb1Mabd8AR6YeAk2LxuKiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFgg9+Yfxf+f4mc5hzYOXmGTn0XdCSeLlxqSx0pKxSnfErZ0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQCaNuNTYe2G3VovQNKDfxbb/TKuSx6nJ//5I/Oa7GNR1B2/HQvsqPVi3V3LKqwk13MaqgKnTg/bxlRKBbYnK7GY=</c2pa:manifest></metadata>
+<!-- STM32H753ZIT6 LQFP144 top view, rev25 map. Sources: modm-devices package map; board.h/_config/nucleo-h753zi.h for used pins (incl. 11 buttons, DEV_GPIO: PE5 used, PE2/PE4 defined only); rev25 Free Pins for PLANNED (*). + = Nucleo-only (USB: PA9-PA12, PD10, PG7), avoided. -->
+<rect width="1152" height="1152" fill="#ffffff"/>
+<rect x="270" y="270" width="612" height="612" rx="10" fill="#f4f3f0" stroke="#cfcdc6" stroke-width="1.5"/>
+<circle cx="292" cy="292" r="7" fill="#0b7fa8"/>
+<text x="576.0" y="552.0" fill="#26251f" font-size="28" text-anchor="middle" font-weight="600">STM32H753ZIT6</text>
+<text x="576.0" y="580.0" fill="#6b6a64" font-size="16" text-anchor="middle">LQFP144 - top view - rev25</text>
+<text x="576.0" y="608.0" fill="#b8860b" font-size="13" text-anchor="middle">* planned, not wired yet</text>
+<text x="576.0" y="628.0" fill="#a83279" font-size="13" text-anchor="middle">+ Nucleo-only (USB), avoided</text>
+<line x1="270" y1="278.5" x2="262" y2="278.5" stroke="#8a5a44" stroke-width="2"/>
+<text x="258" y="281.5" fill="#8a5a44" font-size="9.5" text-anchor="end" font-weight="600">1 PE2 GPIO_IN1_def</text>
+<line x1="270" y1="295.5" x2="262" y2="295.5" stroke="#c2407f" stroke-width="2"/>
+<text x="258" y="298.5" fill="#c2407f" font-size="9.5" text-anchor="end" font-weight="600">2 PE3 BTN6</text>
+<line x1="270" y1="312.5" x2="262" y2="312.5" stroke="#8a5a44" stroke-width="2"/>
+<text x="258" y="315.5" fill="#8a5a44" font-size="9.5" text-anchor="end" font-weight="600">3 PE4 GPIO_OUT1_def</text>
+<line x1="270" y1="329.5" x2="262" y2="329.5" stroke="#8a5a44" stroke-width="2"/>
+<text x="258" y="332.5" fill="#8a5a44" font-size="9.5" text-anchor="end" font-weight="600">4 PE5 DEVGPIO_INT1</text>
+<line x1="270" y1="346.5" x2="262" y2="346.5" stroke="#c2407f" stroke-width="2"/>
+<text x="258" y="349.5" fill="#c2407f" font-size="9.5" text-anchor="end" font-weight="600">5 PE6 BTN5</text>
+<line x1="270" y1="363.5" x2="262" y2="363.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="258" y="366.5" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400">6 VBAT</text>
+<line x1="270" y1="380.5" x2="262" y2="380.5" stroke="#c2407f" stroke-width="2"/>
+<text x="258" y="383.5" fill="#c2407f" font-size="9.5" text-anchor="end" font-weight="600">7 PC13 BTN0_USER</text>
+<line x1="270" y1="397.5" x2="262" y2="397.5" stroke="#b8860b" stroke-width="2"/>
+<text x="258" y="400.5" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600">8 PC14 LSE_IN*</text>
+<line x1="270" y1="414.5" x2="262" y2="414.5" stroke="#b8860b" stroke-width="2"/>
+<text x="258" y="417.5" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600">9 PC15 LSE_OUT*</text>
+<line x1="270" y1="431.5" x2="262" y2="431.5" stroke="#c76a00" stroke-width="2"/>
+<text x="258" y="434.5" fill="#c76a00" font-size="9.5" text-anchor="end" font-weight="600">10 PF0 I2C2_SDA</text>
+<line x1="270" y1="448.5" x2="262" y2="448.5" stroke="#c76a00" stroke-width="2"/>
+<text x="258" y="451.5" fill="#c76a00" font-size="9.5" text-anchor="end" font-weight="600">11 PF1 I2C2_SCL</text>
+<line x1="270" y1="465.5" x2="262" y2="465.5" stroke="#b8860b" stroke-width="2"/>
+<text x="258" y="468.5" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600">12 PF2 PHY_INT*</text>
+<line x1="270" y1="482.5" x2="262" y2="482.5" stroke="#b8860b" stroke-width="2"/>
+<text x="258" y="485.5" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600">13 PF3 ADC3_IN5*</text>
+<line x1="270" y1="499.5" x2="262" y2="499.5" stroke="#b8860b" stroke-width="2"/>
+<text x="258" y="502.5" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600">14 PF4 ADC3_IN9*</text>
+<line x1="270" y1="516.5" x2="262" y2="516.5" stroke="#b7bcc2" stroke-width="2"/>
+<text x="258" y="519.5" fill="#b7bcc2" font-size="9.5" text-anchor="end" font-weight="400">15 PF5</text>
+<line x1="270" y1="533.5" x2="262" y2="533.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="258" y="536.5" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400">16 VSS</text>
+<line x1="270" y1="550.5" x2="262" y2="550.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="258" y="553.5" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400">17 VDD</text>
+<line x1="270" y1="567.5" x2="262" y2="567.5" stroke="#b8860b" stroke-width="2"/>
+<text x="258" y="570.5" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600">18 PF6 UART7_RX_4G*</text>
+<line x1="270" y1="584.5" x2="262" y2="584.5" stroke="#b8860b" stroke-width="2"/>
+<text x="258" y="587.5" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600">19 PF7 UART7_TX_4G*</text>
+<line x1="270" y1="601.5" x2="262" y2="601.5" stroke="#b7bcc2" stroke-width="2"/>
+<text x="258" y="604.5" fill="#b7bcc2" font-size="9.5" text-anchor="end" font-weight="400">20 PF8</text>
+<line x1="270" y1="618.5" x2="262" y2="618.5" stroke="#c2407f" stroke-width="2"/>
+<text x="258" y="621.5" fill="#c2407f" font-size="9.5" text-anchor="end" font-weight="600">21 PF9 BTN8</text>
+<line x1="270" y1="635.5" x2="262" y2="635.5" stroke="#b8860b" stroke-width="2"/>
+<text x="258" y="638.5" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600">22 PF10 MODEM_PWRKEY*</text>
+<line x1="270" y1="652.5" x2="262" y2="652.5" stroke="#b85c1e" stroke-width="2"/>
+<text x="258" y="655.5" fill="#b85c1e" font-size="9.5" text-anchor="end" font-weight="600">23 PH0 HSE_IN</text>
+<line x1="270" y1="669.5" x2="262" y2="669.5" stroke="#b85c1e" stroke-width="2"/>
+<text x="258" y="672.5" fill="#b85c1e" font-size="9.5" text-anchor="end" font-weight="600">24 PH1 HSE_OUT</text>
+<line x1="270" y1="686.5" x2="262" y2="686.5" stroke="#7d858c" stroke-width="2"/>
+<text x="258" y="689.5" fill="#7d858c" font-size="9.5" text-anchor="end" font-weight="400">25 NRST</text>
+<line x1="270" y1="703.5" x2="262" y2="703.5" stroke="#b8860b" stroke-width="2"/>
+<text x="258" y="706.5" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600">26 PC0 ADC_IN10*</text>
+<line x1="270" y1="720.5" x2="262" y2="720.5" stroke="#1e8a4c" stroke-width="2"/>
+<text x="258" y="723.5" fill="#1e8a4c" font-size="9.5" text-anchor="end" font-weight="600">27 PC1 ETH_MDC</text>
+<line x1="270" y1="737.5" x2="262" y2="737.5" stroke="#0b7fa8" stroke-width="2"/>
+<text x="258" y="740.5" fill="#0b7fa8" font-size="9.5" text-anchor="end" font-weight="600">28 PC2 SPI2_MISO</text>
+<line x1="270" y1="754.5" x2="262" y2="754.5" stroke="#0b7fa8" stroke-width="2"/>
+<text x="258" y="757.5" fill="#0b7fa8" font-size="9.5" text-anchor="end" font-weight="600">29 PC3 SPI2_MOSI</text>
+<line x1="270" y1="771.5" x2="262" y2="771.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="258" y="774.5" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400">30 VDD</text>
+<line x1="270" y1="788.5" x2="262" y2="788.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="258" y="791.5" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400">31 VSSA</text>
+<line x1="270" y1="805.5" x2="262" y2="805.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="258" y="808.5" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400">32 VREF+</text>
+<line x1="270" y1="822.5" x2="262" y2="822.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="258" y="825.5" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400">33 VDDA</text>
+<line x1="270" y1="839.5" x2="262" y2="839.5" stroke="#7b4fc9" stroke-width="2"/>
+<text x="258" y="842.5" fill="#7b4fc9" font-size="9.5" text-anchor="end" font-weight="600">34 PA0 RFID_CS</text>
+<line x1="270" y1="856.5" x2="262" y2="856.5" stroke="#1e8a4c" stroke-width="2"/>
+<text x="258" y="859.5" fill="#1e8a4c" font-size="9.5" text-anchor="end" font-weight="600">35 PA1 ETH_REFCLK</text>
+<line x1="270" y1="873.5" x2="262" y2="873.5" stroke="#1e8a4c" stroke-width="2"/>
+<text x="258" y="876.5" fill="#1e8a4c" font-size="9.5" text-anchor="end" font-weight="600">36 PA2 ETH_MDIO</text>
+<line x1="278.5" y1="882" x2="278.5" y2="890" stroke="#0b7fa8" stroke-width="2"/>
+<text x="281.5" y="894" fill="#0b7fa8" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 281.5 894)">37 PA3 LCD_DC</text>
+<line x1="295.5" y1="882" x2="295.5" y2="890" stroke="#9aa0a6" stroke-width="2"/>
+<text x="298.5" y="894" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 298.5 894)">38 VSS</text>
+<line x1="312.5" y1="882" x2="312.5" y2="890" stroke="#9aa0a6" stroke-width="2"/>
+<text x="315.5" y="894" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 315.5 894)">39 VDD</text>
+<line x1="329.5" y1="882" x2="329.5" y2="890" stroke="#0b7fa8" stroke-width="2"/>
+<text x="332.5" y="894" fill="#0b7fa8" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 332.5 894)">40 PA4 LCD_CS</text>
+<line x1="346.5" y1="882" x2="346.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="349.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 349.5 894)">41 PA5 ADC_DAC*</text>
+<line x1="363.5" y1="882" x2="363.5" y2="890" stroke="#b7bcc2" stroke-width="2"/>
+<text x="366.5" y="894" fill="#b7bcc2" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 366.5 894)">42 PA6</text>
+<line x1="380.5" y1="882" x2="380.5" y2="890" stroke="#1e8a4c" stroke-width="2"/>
+<text x="383.5" y="894" fill="#1e8a4c" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 383.5 894)">43 PA7 ETH_CRSDV</text>
+<line x1="397.5" y1="882" x2="397.5" y2="890" stroke="#1e8a4c" stroke-width="2"/>
+<text x="400.5" y="894" fill="#1e8a4c" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 400.5 894)">44 PC4 ETH_RXD0</text>
+<line x1="414.5" y1="882" x2="414.5" y2="890" stroke="#1e8a4c" stroke-width="2"/>
+<text x="417.5" y="894" fill="#1e8a4c" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 417.5 894)">45 PC5 ETH_RXD1</text>
+<line x1="431.5" y1="882" x2="431.5" y2="890" stroke="#9c7c00" stroke-width="2"/>
+<text x="434.5" y="894" fill="#9c7c00" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 434.5 894)">46 PB0 LED1</text>
+<line x1="448.5" y1="882" x2="448.5" y2="890" stroke="#c2407f" stroke-width="2"/>
+<text x="451.5" y="894" fill="#c2407f" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 451.5 894)">47 PB1 BTN1</text>
+<line x1="465.5" y1="882" x2="465.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="468.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 468.5 894)">48 PB2 QSPI_CLK*</text>
+<line x1="482.5" y1="882" x2="482.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="485.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 485.5 894)">49 PF11 MODEM_RESET*</text>
+<line x1="499.5" y1="882" x2="499.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="502.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 502.5 894)">50 PF12 MODEM_STATUS*</text>
+<line x1="516.5" y1="882" x2="516.5" y2="890" stroke="#9aa0a6" stroke-width="2"/>
+<text x="519.5" y="894" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 519.5 894)">51 VSS</text>
+<line x1="533.5" y1="882" x2="533.5" y2="890" stroke="#9aa0a6" stroke-width="2"/>
+<text x="536.5" y="894" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 536.5 894)">52 VDD</text>
+<line x1="550.5" y1="882" x2="550.5" y2="890" stroke="#b7bcc2" stroke-width="2"/>
+<text x="553.5" y="894" fill="#b7bcc2" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 553.5 894)">53 PF13</text>
+<line x1="567.5" y1="882" x2="567.5" y2="890" stroke="#b7bcc2" stroke-width="2"/>
+<text x="570.5" y="894" fill="#b7bcc2" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 570.5 894)">54 PF14</text>
+<line x1="584.5" y1="882" x2="584.5" y2="890" stroke="#b7bcc2" stroke-width="2"/>
+<text x="587.5" y="894" fill="#b7bcc2" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 587.5 894)">55 PF15</text>
+<line x1="601.5" y1="882" x2="601.5" y2="890" stroke="#b7bcc2" stroke-width="2"/>
+<text x="604.5" y="894" fill="#b7bcc2" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 604.5 894)">56 PG0</text>
+<line x1="618.5" y1="882" x2="618.5" y2="890" stroke="#b7bcc2" stroke-width="2"/>
+<text x="621.5" y="894" fill="#b7bcc2" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 621.5 894)">57 PG1</text>
+<line x1="635.5" y1="882" x2="635.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="638.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 638.5 894)">58 PE7 QSPI_BK2_IO0*</text>
+<line x1="652.5" y1="882" x2="652.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="655.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 655.5 894)">59 PE8 QSPI_BK2_IO1*</text>
+<line x1="669.5" y1="882" x2="669.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="672.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 672.5 894)">60 PE9 QSPI_BK2_IO2*</text>
+<line x1="686.5" y1="882" x2="686.5" y2="890" stroke="#9aa0a6" stroke-width="2"/>
+<text x="689.5" y="894" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 689.5 894)">61 VSS</text>
+<line x1="703.5" y1="882" x2="703.5" y2="890" stroke="#9aa0a6" stroke-width="2"/>
+<text x="706.5" y="894" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 706.5 894)">62 VDD</text>
+<line x1="720.5" y1="882" x2="720.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="723.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 723.5 894)">63 PE10 QSPI_BK2_IO3*</text>
+<line x1="737.5" y1="882" x2="737.5" y2="890" stroke="#c2407f" stroke-width="2"/>
+<text x="740.5" y="894" fill="#c2407f" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 740.5 894)">64 PE11 BTN10</text>
+<line x1="754.5" y1="882" x2="754.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="757.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 757.5 894)">65 PE12 SPI4_SCK*</text>
+<line x1="771.5" y1="882" x2="771.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="774.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 774.5 894)">66 PE13 SPI4_MISO*</text>
+<line x1="788.5" y1="882" x2="788.5" y2="890" stroke="#b8860b" stroke-width="2"/>
+<text x="791.5" y="894" fill="#b8860b" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 791.5 894)">67 PE14 SPI4_MOSI*</text>
+<line x1="805.5" y1="882" x2="805.5" y2="890" stroke="#0b7fa8" stroke-width="2"/>
+<text x="808.5" y="894" fill="#0b7fa8" font-size="9.5" text-anchor="end" font-weight="600" transform="rotate(-90 808.5 894)">68 PE15 LCD_LED</text>
+<line x1="822.5" y1="882" x2="822.5" y2="890" stroke="#b7bcc2" stroke-width="2"/>
+<text x="825.5" y="894" fill="#b7bcc2" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 825.5 894)">69 PB10</text>
+<line x1="839.5" y1="882" x2="839.5" y2="890" stroke="#b7bcc2" stroke-width="2"/>
+<text x="842.5" y="894" fill="#b7bcc2" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 842.5 894)">70 PB11</text>
+<line x1="856.5" y1="882" x2="856.5" y2="890" stroke="#9aa0a6" stroke-width="2"/>
+<text x="859.5" y="894" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 859.5 894)">71 VCAP</text>
+<line x1="873.5" y1="882" x2="873.5" y2="890" stroke="#9aa0a6" stroke-width="2"/>
+<text x="876.5" y="894" fill="#9aa0a6" font-size="9.5" text-anchor="end" font-weight="400" transform="rotate(-90 876.5 894)">72 VDD</text>
+<line x1="882" y1="873.5" x2="890" y2="873.5" stroke="#b8860b" stroke-width="2"/>
+<text x="894" y="876.5" fill="#b8860b" font-size="9.5" font-weight="600">73 PB12 FDCAN2_RX*</text>
+<line x1="882" y1="856.5" x2="890" y2="856.5" stroke="#1e8a4c" stroke-width="2"/>
+<text x="894" y="859.5" fill="#1e8a4c" font-size="9.5" font-weight="600">74 PB13 ETH_TXD1</text>
+<line x1="882" y1="839.5" x2="890" y2="839.5" stroke="#9c7c00" stroke-width="2"/>
+<text x="894" y="842.5" fill="#9c7c00" font-size="9.5" font-weight="600">75 PB14 LED3</text>
+<line x1="882" y1="822.5" x2="890" y2="822.5" stroke="#b7bcc2" stroke-width="2"/>
+<text x="894" y="825.5" fill="#b7bcc2" font-size="9.5" font-weight="400">76 PB15</text>
+<line x1="882" y1="805.5" x2="890" y2="805.5" stroke="#2a6fb5" stroke-width="2"/>
+<text x="894" y="808.5" fill="#2a6fb5" font-size="9.5" font-weight="600">77 PD8 USART3_TX</text>
+<line x1="882" y1="788.5" x2="890" y2="788.5" stroke="#2a6fb5" stroke-width="2"/>
+<text x="894" y="791.5" fill="#2a6fb5" font-size="9.5" font-weight="600">78 PD9 USART3_RX</text>
+<line x1="882" y1="771.5" x2="890" y2="771.5" stroke="#a83279" stroke-width="2"/>
+<text x="894" y="774.5" fill="#a83279" font-size="9.5" font-weight="600">79 PD10 USB_PWR_EN+</text>
+<line x1="882" y1="754.5" x2="890" y2="754.5" stroke="#b7bcc2" stroke-width="2"/>
+<text x="894" y="757.5" fill="#b7bcc2" font-size="9.5" font-weight="400">80 PD11</text>
+<line x1="882" y1="737.5" x2="890" y2="737.5" stroke="#c2407f" stroke-width="2"/>
+<text x="894" y="740.5" fill="#c2407f" font-size="9.5" font-weight="600">81 PD12 BTN7</text>
+<line x1="882" y1="720.5" x2="890" y2="720.5" stroke="#b8860b" stroke-width="2"/>
+<text x="894" y="723.5" fill="#b8860b" font-size="9.5" font-weight="600">82 PD13 ESP32_EN*</text>
+<line x1="882" y1="703.5" x2="890" y2="703.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="894" y="706.5" fill="#9aa0a6" font-size="9.5" font-weight="400">83 VSS</text>
+<line x1="882" y1="686.5" x2="890" y2="686.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="894" y="689.5" fill="#9aa0a6" font-size="9.5" font-weight="400">84 VDD</text>
+<line x1="882" y1="669.5" x2="890" y2="669.5" stroke="#b8860b" stroke-width="2"/>
+<text x="894" y="672.5" fill="#b8860b" font-size="9.5" font-weight="600">85 PD14 ESP32_IRQ*</text>
+<line x1="882" y1="652.5" x2="890" y2="652.5" stroke="#c2407f" stroke-width="2"/>
+<text x="894" y="655.5" fill="#c2407f" font-size="9.5" font-weight="600">86 PD15 BTN9</text>
+<line x1="882" y1="635.5" x2="890" y2="635.5" stroke="#b8860b" stroke-width="2"/>
+<text x="894" y="638.5" fill="#b8860b" font-size="9.5" font-weight="600">87 PG2 PHY_RESET*</text>
+<line x1="882" y1="618.5" x2="890" y2="618.5" stroke="#b7bcc2" stroke-width="2"/>
+<text x="894" y="621.5" fill="#b7bcc2" font-size="9.5" font-weight="400">88 PG3</text>
+<line x1="882" y1="601.5" x2="890" y2="601.5" stroke="#c2407f" stroke-width="2"/>
+<text x="894" y="604.5" fill="#c2407f" font-size="9.5" font-weight="600">89 PG4 BTN3</text>
+<line x1="882" y1="584.5" x2="890" y2="584.5" stroke="#c76a00" stroke-width="2"/>
+<text x="894" y="587.5" fill="#c76a00" font-size="9.5" font-weight="600">90 PG5 TOUCH_RST</text>
+<line x1="882" y1="567.5" x2="890" y2="567.5" stroke="#b7bcc2" stroke-width="2"/>
+<text x="894" y="570.5" fill="#b7bcc2" font-size="9.5" font-weight="400">91 PG6</text>
+<line x1="882" y1="550.5" x2="890" y2="550.5" stroke="#a83279" stroke-width="2"/>
+<text x="894" y="553.5" fill="#a83279" font-size="9.5" font-weight="600">92 PG7 USB_OVCR+</text>
+<line x1="882" y1="533.5" x2="890" y2="533.5" stroke="#c76a00" stroke-width="2"/>
+<text x="894" y="536.5" fill="#c76a00" font-size="9.5" font-weight="600">93 PG8 TOUCH_INT</text>
+<line x1="882" y1="516.5" x2="890" y2="516.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="894" y="519.5" fill="#9aa0a6" font-size="9.5" font-weight="400">94 VSS</text>
+<line x1="882" y1="499.5" x2="890" y2="499.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="894" y="502.5" fill="#9aa0a6" font-size="9.5" font-weight="400">95 VDD33_USB</text>
+<line x1="882" y1="482.5" x2="890" y2="482.5" stroke="#b7bcc2" stroke-width="2"/>
+<text x="894" y="485.5" fill="#b7bcc2" font-size="9.5" font-weight="400">96 PC6</text>
+<line x1="882" y1="465.5" x2="890" y2="465.5" stroke="#b8860b" stroke-width="2"/>
+<text x="894" y="468.5" fill="#b8860b" font-size="9.5" font-weight="600">97 PC7 I2S3_MCK*</text>
+<line x1="882" y1="448.5" x2="890" y2="448.5" stroke="#b7bcc2" stroke-width="2"/>
+<text x="894" y="451.5" fill="#b7bcc2" font-size="9.5" font-weight="400">98 PC8</text>
+<line x1="882" y1="431.5" x2="890" y2="431.5" stroke="#b8860b" stroke-width="2"/>
+<text x="894" y="434.5" fill="#b8860b" font-size="9.5" font-weight="600">99 PC9 I2C3_SDA*</text>
+<line x1="882" y1="414.5" x2="890" y2="414.5" stroke="#b8860b" stroke-width="2"/>
+<text x="894" y="417.5" fill="#b8860b" font-size="9.5" font-weight="600">100 PA8 I2C3_SCL*</text>
+<line x1="882" y1="397.5" x2="890" y2="397.5" stroke="#a83279" stroke-width="2"/>
+<text x="894" y="400.5" fill="#a83279" font-size="9.5" font-weight="600">101 PA9 USB_VBUS+</text>
+<line x1="882" y1="380.5" x2="890" y2="380.5" stroke="#a83279" stroke-width="2"/>
+<text x="894" y="383.5" fill="#a83279" font-size="9.5" font-weight="600">102 PA10 USB_ID+</text>
+<line x1="882" y1="363.5" x2="890" y2="363.5" stroke="#a83279" stroke-width="2"/>
+<text x="894" y="366.5" fill="#a83279" font-size="9.5" font-weight="600">103 PA11 USB_DM+</text>
+<line x1="882" y1="346.5" x2="890" y2="346.5" stroke="#a83279" stroke-width="2"/>
+<text x="894" y="349.5" fill="#a83279" font-size="9.5" font-weight="600">104 PA12 USB_DP+</text>
+<line x1="882" y1="329.5" x2="890" y2="329.5" stroke="#5f6b76" stroke-width="2"/>
+<text x="894" y="332.5" fill="#5f6b76" font-size="9.5" font-weight="600">105 PA13 SWDIO</text>
+<line x1="882" y1="312.5" x2="890" y2="312.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="894" y="315.5" fill="#9aa0a6" font-size="9.5" font-weight="400">106 VCAP</text>
+<line x1="882" y1="295.5" x2="890" y2="295.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="894" y="298.5" fill="#9aa0a6" font-size="9.5" font-weight="400">107 VSS</text>
+<line x1="882" y1="278.5" x2="890" y2="278.5" stroke="#9aa0a6" stroke-width="2"/>
+<text x="894" y="281.5" fill="#9aa0a6" font-size="9.5" font-weight="400">108 VDD</text>
+<line x1="873.5" y1="270" x2="873.5" y2="262" stroke="#5f6b76" stroke-width="2"/>
+<text x="876.5" y="258" fill="#5f6b76" font-size="9.5" font-weight="600" transform="rotate(-90 876.5 258)">109 PA14 SWCLK</text>
+<line x1="856.5" y1="270" x2="856.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="859.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 859.5 258)">110 PA15 I2S3_WS*</text>
+<line x1="839.5" y1="270" x2="839.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="842.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 842.5 258)">111 PC10 I2S3_CK*</text>
+<line x1="822.5" y1="270" x2="822.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="825.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 825.5 258)">112 PC11 QSPI_BK2_NCS*</text>
+<line x1="805.5" y1="270" x2="805.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="808.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 808.5 258)">113 PC12 I2S3_SDO*</text>
+<line x1="788.5" y1="270" x2="788.5" y2="262" stroke="#c2407f" stroke-width="2"/>
+<text x="791.5" y="258" fill="#c2407f" font-size="9.5" font-weight="600" transform="rotate(-90 791.5 258)">114 PD0 BTN2</text>
+<line x1="771.5" y1="270" x2="771.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="774.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 774.5 258)">115 PD1 UART4_TX_1W*</text>
+<line x1="754.5" y1="270" x2="754.5" y2="262" stroke="#b7bcc2" stroke-width="2"/>
+<text x="757.5" y="258" fill="#b7bcc2" font-size="9.5" font-weight="400" transform="rotate(-90 757.5 258)">116 PD2</text>
+<line x1="737.5" y1="270" x2="737.5" y2="262" stroke="#0b7fa8" stroke-width="2"/>
+<text x="740.5" y="258" fill="#0b7fa8" font-size="9.5" font-weight="600" transform="rotate(-90 740.5 258)">117 PD3 SPI2_SCK</text>
+<line x1="720.5" y1="270" x2="720.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="723.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 723.5 258)">118 PD4 CAN1_STB*</text>
+<line x1="703.5" y1="270" x2="703.5" y2="262" stroke="#c2407f" stroke-width="2"/>
+<text x="706.5" y="258" fill="#c2407f" font-size="9.5" font-weight="600" transform="rotate(-90 706.5 258)">119 PD5 BTN4</text>
+<line x1="686.5" y1="270" x2="686.5" y2="262" stroke="#9aa0a6" stroke-width="2"/>
+<text x="689.5" y="258" fill="#9aa0a6" font-size="9.5" font-weight="400" transform="rotate(-90 689.5 258)">120 VSS</text>
+<line x1="669.5" y1="270" x2="669.5" y2="262" stroke="#9aa0a6" stroke-width="2"/>
+<text x="672.5" y="258" fill="#9aa0a6" font-size="9.5" font-weight="400" transform="rotate(-90 672.5 258)">121 VDD</text>
+<line x1="652.5" y1="270" x2="652.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="655.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 655.5 258)">122 PD6 CAN2_STB*</text>
+<line x1="635.5" y1="270" x2="635.5" y2="262" stroke="#0b7fa8" stroke-width="2"/>
+<text x="638.5" y="258" fill="#0b7fa8" font-size="9.5" font-weight="600" transform="rotate(-90 638.5 258)">123 PD7 LCD_RESET</text>
+<line x1="618.5" y1="270" x2="618.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="621.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 621.5 258)">124 PG9 USART6_RX_GPS*</text>
+<line x1="601.5" y1="270" x2="601.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="604.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 604.5 258)">125 PG10 MODEM_RI*</text>
+<line x1="584.5" y1="270" x2="584.5" y2="262" stroke="#1e8a4c" stroke-width="2"/>
+<text x="587.5" y="258" fill="#1e8a4c" font-size="9.5" font-weight="600" transform="rotate(-90 587.5 258)">126 PG11 ETH_TXEN</text>
+<line x1="567.5" y1="270" x2="567.5" y2="262" stroke="#b7bcc2" stroke-width="2"/>
+<text x="570.5" y="258" fill="#b7bcc2" font-size="9.5" font-weight="400" transform="rotate(-90 570.5 258)">127 PG12</text>
+<line x1="550.5" y1="270" x2="550.5" y2="262" stroke="#1e8a4c" stroke-width="2"/>
+<text x="553.5" y="258" fill="#1e8a4c" font-size="9.5" font-weight="600" transform="rotate(-90 553.5 258)">128 PG13 ETH_TXD0</text>
+<line x1="533.5" y1="270" x2="533.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="536.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 536.5 258)">129 PG14 USART6_TX_GPS*</text>
+<line x1="516.5" y1="270" x2="516.5" y2="262" stroke="#9aa0a6" stroke-width="2"/>
+<text x="519.5" y="258" fill="#9aa0a6" font-size="9.5" font-weight="400" transform="rotate(-90 519.5 258)">130 VSS</text>
+<line x1="499.5" y1="270" x2="499.5" y2="262" stroke="#9aa0a6" stroke-width="2"/>
+<text x="502.5" y="258" fill="#9aa0a6" font-size="9.5" font-weight="400" transform="rotate(-90 502.5 258)">131 VDD</text>
+<line x1="482.5" y1="270" x2="482.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="485.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 485.5 258)">132 PG15 GNSS_RESET*</text>
+<line x1="465.5" y1="270" x2="465.5" y2="262" stroke="#7b4fc9" stroke-width="2"/>
+<text x="468.5" y="258" fill="#7b4fc9" font-size="9.5" font-weight="600" transform="rotate(-90 468.5 258)">133 PB3 SPI1_SCK</text>
+<line x1="448.5" y1="270" x2="448.5" y2="262" stroke="#7b4fc9" stroke-width="2"/>
+<text x="451.5" y="258" fill="#7b4fc9" font-size="9.5" font-weight="600" transform="rotate(-90 451.5 258)">134 PB4 SPI1_MISO</text>
+<line x1="431.5" y1="270" x2="431.5" y2="262" stroke="#7b4fc9" stroke-width="2"/>
+<text x="434.5" y="258" fill="#7b4fc9" font-size="9.5" font-weight="600" transform="rotate(-90 434.5 258)">135 PB5 SPI1_MOSI</text>
+<line x1="414.5" y1="270" x2="414.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="417.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 417.5 258)">136 PB6 FDCAN2_TX*</text>
+<line x1="397.5" y1="270" x2="397.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="400.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 400.5 258)">137 PB7 GNSS_PPS*</text>
+<line x1="380.5" y1="270" x2="380.5" y2="262" stroke="#7d858c" stroke-width="2"/>
+<text x="383.5" y="258" fill="#7d858c" font-size="9.5" font-weight="400" transform="rotate(-90 383.5 258)">138 BOOT0</text>
+<line x1="363.5" y1="270" x2="363.5" y2="262" stroke="#c0392b" stroke-width="2"/>
+<text x="366.5" y="258" fill="#c0392b" font-size="9.5" font-weight="600" transform="rotate(-90 366.5 258)">139 PB8 FDCAN1_RX</text>
+<line x1="346.5" y1="270" x2="346.5" y2="262" stroke="#c0392b" stroke-width="2"/>
+<text x="349.5" y="258" fill="#c0392b" font-size="9.5" font-weight="600" transform="rotate(-90 349.5 258)">140 PB9 FDCAN1_TX</text>
+<line x1="329.5" y1="270" x2="329.5" y2="262" stroke="#b8860b" stroke-width="2"/>
+<text x="332.5" y="258" fill="#b8860b" font-size="9.5" font-weight="600" transform="rotate(-90 332.5 258)">141 PE0 SPI4_CS*</text>
+<line x1="312.5" y1="270" x2="312.5" y2="262" stroke="#9c7c00" stroke-width="2"/>
+<text x="315.5" y="258" fill="#9c7c00" font-size="9.5" font-weight="600" transform="rotate(-90 315.5 258)">142 PE1 LED2</text>
+<line x1="295.5" y1="270" x2="295.5" y2="262" stroke="#7d858c" stroke-width="2"/>
+<text x="298.5" y="258" fill="#7d858c" font-size="9.5" font-weight="400" transform="rotate(-90 298.5 258)">143 PDR_ON</text>
+<line x1="278.5" y1="270" x2="278.5" y2="262" stroke="#9aa0a6" stroke-width="2"/>
+<text x="281.5" y="258" fill="#9aa0a6" font-size="9.5" font-weight="400" transform="rotate(-90 281.5 258)">144 VDD</text>
+<rect x="20" y="20" width="12" height="12" rx="2" fill="#1e8a4c"/><text x="40" y="30" fill="#3d3d3a" font-size="12">Ethernet RMII</text>
+<rect x="20" y="40" width="12" height="12" rx="2" fill="#0b7fa8"/><text x="40" y="50" fill="#3d3d3a" font-size="12">LCD / SPI2</text>
+<rect x="20" y="60" width="12" height="12" rx="2" fill="#7b4fc9"/><text x="40" y="70" fill="#3d3d3a" font-size="12">RFID / SPI1</text>
+<rect x="20" y="80" width="12" height="12" rx="2" fill="#c76a00"/><text x="40" y="90" fill="#3d3d3a" font-size="12">I2C2 / touch</text>
+<rect x="20" y="100" width="12" height="12" rx="2" fill="#c0392b"/><text x="40" y="110" fill="#3d3d3a" font-size="12">FDCAN1</text>
+<rect x="20" y="120" width="12" height="12" rx="2" fill="#2a6fb5"/><text x="40" y="130" fill="#3d3d3a" font-size="12">Console USART3</text>
+<rect x="20" y="140" width="12" height="12" rx="2" fill="#9c7c00"/><text x="40" y="150" fill="#3d3d3a" font-size="12">LEDs</text>
+<rect x="20" y="160" width="12" height="12" rx="2" fill="#c2407f"/><text x="40" y="170" fill="#3d3d3a" font-size="12">Buttons (11)</text>
+<rect x="20" y="180" width="12" height="12" rx="2" fill="#5f6b76"/><text x="40" y="190" fill="#3d3d3a" font-size="12">SWD</text>
+<rect x="20" y="200" width="12" height="12" rx="2" fill="#b85c1e"/><text x="40" y="210" fill="#3d3d3a" font-size="12">HSE</text>
+<rect x="20" y="220" width="12" height="12" rx="2" fill="#8a5a44"/><text x="40" y="230" fill="#3d3d3a" font-size="12">DEV_GPIO (PE5 used)</text>
+<rect x="20" y="240" width="12" height="12" rx="2" fill="#b8860b"/><text x="40" y="250" fill="#3d3d3a" font-size="12">Planned *</text>
+<rect x="20" y="260" width="12" height="12" rx="2" fill="#a83279"/><text x="40" y="270" fill="#3d3d3a" font-size="12">Nucleo-only +</text>
+<rect x="20" y="280" width="12" height="12" rx="2" fill="#9aa0a6"/><text x="40" y="290" fill="#3d3d3a" font-size="12">Power</text>
+<rect x="20" y="300" width="12" height="12" rx="2" fill="#b7bcc2"/><text x="40" y="310" fill="#3d3d3a" font-size="12">Free</text>
+</svg>

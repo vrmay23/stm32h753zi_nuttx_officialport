@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HMI Manager - Complete Documentation with Design Workflow</title>
+<style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+    line-height: 1.6;
+    font-size: 11pt;
+    background-color: #fafafa;
+}
+.container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+h1 {
+    color: #2c3e50;
+    border-bottom: 4px solid #3498db;
+    padding-bottom: 15px;
+    margin-top: 0;
+}
+h2 {
+    color: #2980b9;
+    margin-top: 40px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 8px;
+}
+h3 {
+    color: #34495e;
+    margin-top: 25px;
+}
+h4 {
+    color: #555;
+    margin-top: 20px;
+}
+.section {
+    margin: 30px 0;
+}
+.highlight {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+.success {
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+.warning {
+    background-color: #f8d7da;
+    border-left: 4px solid #dc3545;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+.info {
+    background-color: #d1ecf1;
+    border-left: 4px solid #17a2b8;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+.tool-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 15px 0;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 10pt;
+}
+table th {
+    background-color: #34495e;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    vertical-align: top;
+}
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.code {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-left: 4px solid #3498db;
+    padding: 15px;
+    font-family: 'Courier New', 'Consolas', monospace;
+    font-size: 10pt;
+    overflow-x: auto;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+.mono {
+    font-family: 'Courier New', 'Consolas', monospace;
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.95em;
+}
+ul, ol {
+    margin: 10px 0;
+    padding-left: 30px;
+}
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+.badge-success { background-color: #28a745; color: white; }
+.badge-warning { background-color: #ffc107; color: #333; }
+.badge-danger { background-color: #dc3545; color: white; }
+.badge-info { background-color: #17a2b8; color: white; }
+.badge-free { background-color: #6f42c1; color: white; }
+.display-mockup {
+    border: 3px solid #333;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+.workflow {
+    background-color: #e8f5e9;
+    border: 2px solid #4caf50;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+.workflow-step {
+    background-color: white;
+    border-left: 4px solid #4caf50;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+.comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+}
+.comparison-item {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+}
+.comparison-item h4 {
+    margin-top: 0;
+}
+.pros { color: #28a745; }
+.cons { color: #dc3545; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>HMI Manager - Complete Documentation with Design Workflow</h1>
+
+<div class="info">
+<strong>Project:</strong> HMI System for Electric Truck<br>
+<strong>Hardware:</strong> STM32H753ZI Nucleo (Cortex-M7 @ 480MHz)<br>
+<strong>Displays:</strong> ST7796 (480x320) + GC9A01 (240x240) + TBD Telltales<br>
+<strong>Design Tools:</strong> 100% Free & Open Source<br>
+<strong>Last Updated:</strong> February 2026
+</div>
+
+<h2>Table of Contents</h2>
+<ol>
+    <li><a href="#display-analysis">Display Distribution Analysis & Recommendations</a></li>
+    <li><a href="#hmi-layout">Recommended HMI Layout for Each Display</a></li>
+    <li><a href="#design-tools">Free Design Tools & Workflow</a></li>
+    <li><a href="#figma-to-lvgl">Figma/GIMP to LVGL Complete Tutorial</a></li>
+    <li><a href="#animation">Creating Animations for LVGL</a></li>
+    <li><a href="#implementation">Code Implementation Examples</a></li>
+</ol>
+
+<h2 id="display-analysis">1. Display Distribution Analysis & Recommendations</h2>
+
+<div class="section">
+<h3>1.1 Available Displays</h3>
+
+<table>
+<tr>
+    <th>Display</th>
+    <th>Resolution</th>
+    <th>Interface</th>
+    <th>Characteristics</th>
+    <th>Best Use</th>
+</tr>
+<tr>
+    <td><strong>ST7796</strong></td>
+    <td>480x320</td>
+    <td>SPI</td>
+    <td>Large, landscape, RGB565, high resolution</td>
+    <td>Primary cluster, detailed information</td>
+</tr>
+<tr>
+    <td><strong>GC9A01</strong></td>
+    <td>240x240</td>
+    <td>SPI</td>
+    <td>Circular, medium size, RGB565</td>
+    <td>Gauges, secondary info, aesthetics</td>
+</tr>
+<tr>
+    <td><strong>SSD1306</strong></td>
+    <td>128x64</td>
+    <td>I2C</td>
+    <td>Monochrome OLED, very low power</td>
+    <td>Simple icons, always-on indicators</td>
+</tr>
+</table>
+
+<h3>1.2 Telltales Display Decision</h3>
+
+<div class="comparison">
+<div class="comparison-item">
+<h4>Option A: SSD1306 (Monochrome OLED)</h4>
+<p class="pros">✓ Pros:</p>
+<ul>
+    <li>Ultra-low power consumption (~20mW)</li>
+    <li>Can stay on 24/7 without draining battery</li>
+    <li>High contrast, visible in all lighting</li>
+    <li>Cheap ($3-5)</li>
+    <li>Simple to implement (I2C)</li>
+    <li>Perfect for simple icon-based warnings</li>
+</ul>
+<p class="cons">✗ Cons:</p>
+<ul>
+    <li>No color (can't show severity via color)</li>
+    <li>Small size limits number of icons</li>
+    <li>Limited to ~10-12 icons at once</li>
+</ul>
+</div>
+
+<div class="comparison-item">
+<h4>Option B: Small Color TFT (e.g., ST7735 128x160)</h4>
+<p class="pros">✓ Pros:</p>
+<ul>
+    <li>Color coding (red/yellow/green)</li>
+    <li>More flexible layouts</li>
+    <li>Can show text + icons</li>
+    <li>Better aesthetics</li>
+</ul>
+<p class="cons">✗ Cons:</p>
+<ul>
+    <li>Higher power consumption (~100mW)</li>
+    <li>Needs backlight (drains battery)</li>
+    <li>More expensive ($8-12)</li>
+    <li>Requires another SPI channel</li>
+</ul>
+</div>
+</div>
+
+<div class="success">
+<h4>Recommendation: Use SSD1306 for MVP</h4>
+<p><strong>Reasoning:</strong></p>
+<ul>
+    <li>Telltales should be <strong>always visible</strong> - even when truck is off</li>
+    <li>Low power is critical for safety warnings (parking brake, door open, etc)</li>
+    <li>Color is "nice to have" but not essential - icon shape conveys meaning</li>
+    <li>Can upgrade to color TFT in v2.0 if needed</li>
+</ul>
+<p><strong>Alternative for more icons:</strong> Use <strong>SSD1309</strong> (128x64, same as SSD1306 but better driver) or <strong>SSD1322</strong> (256x64, grayscale) for more space.</p>
+</div>
+</div>
+
+<h2 id="hmi-layout">2. Recommended HMI Layout for Each Display</h2>
+
+<div class="section">
+<h3>2.1 Display #1: ST7796 (Main Cluster - 480x320)</h3>
+
+<div class="display-mockup">
+<h4 style="text-align: center;">ST7796 - 480x320 Landscape</h4>
+<pre style="color: white;">
+┌─────────────────────────────────────────────────────────┐
+│  12:34 PM           ELECTRIC TRUCK           [BT] [RFID]│
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│         ┌─────────────┐                                 │
+│         │   ┌─────┐   │     ╔════════════════╗          │
+│         │  /       \  │     ║  SPEEDOMETER   ║          │
+│         │ │   65    │ │     ║                ║          │
+│         │  \  km/h /  │     ║      120       ║          │
+│         │   └─────┘   │     ║     /    \     ║          │
+│         │   Battery   │     ║    │  65  │    ║          │
+│         │    48.5V    │     ║     \    /     ║          │
+│         │  ▓▓▓▓▓▓░░  │     ║       0        ║          │
+│         │    85%      │     ║                ║          │
+│         └─────────────┘     ╚════════════════╝          │
+│                                                         │
+│  ⚡ 125A    PRND: [D]    Temp: 45°C    Trip: 127.5 km  │
+│                                                         │
+│  Range: 85 km   │  kWh/km: 0.25   │  ODO: 12,450 km   │
+└─────────────────────────────────────────────────────────┘
+</pre>
+</div>
+
+<h4>Content Assignment:</h4>
+<table>
+<tr>
+    <th>Area</th>
+    <th>Content</th>
+    <th>Priority</th>
+</tr>
+<tr>
+    <td><strong>Top Bar</strong></td>
+    <td>Time, truck name, connectivity icons (Bluetooth, RFID status)</td>
+    <td>Low</td>
+</tr>
+<tr>
+    <td><strong>Center Large</strong></td>
+    <td>Digital speedometer (large font, main focus)</td>
+    <td>Critical</td>
+</tr>
+<tr>
+    <td><strong>Left Panel</strong></td>
+    <td>Battery gauge (circular), voltage, SOC %, bar graph</td>
+    <td>High</td>
+</tr>
+<tr>
+    <td><strong>Bottom Bar</strong></td>
+    <td>Current draw, gear selector (PRND), motor temp, trip distance</td>
+    <td>Medium</td>
+</tr>
+<tr>
+    <td><strong>Bottom Info</strong></td>
+    <td>Estimated range, efficiency (kWh/km), odometer</td>
+    <td>Medium</td>
+</tr>
+</table>
+
+<h3>2.2 Display #2: GC9A01 (Auxiliary - 240x240 Round)</h3>
+
+<div class="display-mockup">
+<h4 style="text-align: center;">GC9A01 - 240x240 Circular</h4>
+<pre style="color: white;">
+        ┌─────────────────┐
+      ╱                   ╲
+     │   Rear Camera View  │  ← When in Reverse
+     │                     │
+     │   ┌─────────────┐   │
+     │   │             │   │
+     │   │   [VIDEO]   │   │  OR
+     │   │             │   │
+     │   └─────────────┘   │  ← Power Graph (normal driving)
+     │                     │     
+     │   Power: 25 kW     │     ┌─────┐
+     │   ┌───────────┐     │    ╱       ╲
+     │   │ ▁▃▅▇█▇▅▃▁ │     │   │  ▁▃▅▇█ │
+     │   └───────────┘     │   │  Power │
+     │   Last 60 seconds   │    ╲  Graph╱
+      ╲                   ╱      └─────┘
+        └─────────────────┘
+</pre>
+</div>
+
+<h4>Content Assignment (Context-Dependent):</h4>
+<table>
+<tr>
+    <th>Mode</th>
+    <th>Display Content</th>
+    <th>When Active</th>
+</tr>
+<tr>
+    <td><strong>Driving Mode</strong></td>
+    <td>
+        <ul>
+            <li>Real-time power graph (last 60s)</li>
+            <li>Instantaneous power (kW)</li>
+            <li>Energy consumption trend</li>
+            <li>Regenerative braking indicator</li>
+        </ul>
+    </td>
+    <td>Gear: Forward or Neutral</td>
+</tr>
+<tr>
+    <td><strong>Reverse Mode</strong></td>
+    <td>
+        <ul>
+            <li>Rear camera feed (if camera available)</li>
+            <li>OR: Distance sensors (ultrasonic/lidar)</li>
+            <li>OR: Reverse warnings</li>
+        </ul>
+    </td>
+    <td>Gear: Reverse</td>
+</tr>
+<tr>
+    <td><strong>Diagnostics Mode</strong></td>
+    <td>
+        <ul>
+            <li>Inverter temperature (3 phases)</li>
+            <li>Motor RPM</li>
+            <li>CAN message statistics</li>
+            <li>Active faults list</li>
+        </ul>
+    </td>
+    <td>User activates via button</td>
+</tr>
+<tr>
+    <td><strong>Navigation Mode</strong></td>
+    <td>
+        <ul>
+            <li>Turn-by-turn arrow</li>
+            <li>Distance to next turn</li>
+            <li>Compass direction</li>
+        </ul>
+    </td>
+    <td>GPS navigation active (future)</td>
+</tr>
+</table>
+
+<h3>2.3 Display #3: SSD1306 (Telltales - 128x64 Monochrome)</h3>
+
+<div class="display-mockup">
+<h4 style="text-align: center;">SSD1306 - 128x64 OLED</h4>
+<pre style="color: white;">
+┌──────────────────────────────────────┐
+│  ⚠  🔋  🌡  ⚙  🚪  🅿  ⚡  💡  ⬅  ➡ │  Row 1: Status Icons
+│                                      │
+│  ● ● ● ● ○ ○ ○ ○ ○ ○                │  Row 2: 10 LED-style indicators
+│                                      │
+│  [  DOOR OPEN  ]  [  PARKING  ]     │  Row 3-4: Text warnings (if active)
+└──────────────────────────────────────┘
+</pre>
+</div>
+
+<h4>Icon Assignment (Priority Order):</h4>
+<table>
+<tr>
+    <th>Icon</th>
+    <th>Meaning</th>
+    <th>CAN Source</th>
+    <th>Priority</th>
+</tr>
+<tr>
+    <td>⚠ Triangle</td>
+    <td>General Warning</td>
+    <td>Any active fault</td>
+    <td>Critical</td>
+</tr>
+<tr>
+    <td>🔋 Battery</td>
+    <td>Low Battery (< 20%)</td>
+    <td>SYSTEM_VOLTAGES</td>
+    <td>Critical</td>
+</tr>
+<tr>
+    <td>🌡 Thermometer</td>
+    <td>High Temperature (> 80°C)</td>
+    <td>INVERTER_TEMP</td>
+    <td>Critical</td>
+</tr>
+<tr>
+    <td>⚙ Gear</td>
+    <td>Inverter Fault</td>
+    <td>INVERTER_FAULTS</td>
+    <td>Critical</td>
+</tr>
+<tr>
+    <td>🚪 Door</td>
+    <td>Door/Hatch Open</td>
+    <td>GPIO or CAN</td>
+    <td>High</td>
+</tr>
+<tr>
+    <td>🅿 Parking Brake</td>
+    <td>Parking Brake Engaged</td>
+    <td>GPIO or CAN</td>
+    <td>High</td>
+</tr>
+<tr>
+    <td>⚡ Lightning</td>
+    <td>Charging Active</td>
+    <td>SYSTEM_VOLTAGES</td>
+    <td>Medium</td>
+</tr>
+<tr>
+    <td>💡 Light Bulb</td>
+    <td>Headlights On</td>
+    <td>GPIO or CAN</td>
+    <td>Low</td>
+</tr>
+<tr>
+    <td>⬅ Left Arrow</td>
+    <td>Left Turn Signal</td>
+    <td>GPIO or CAN</td>
+    <td>High</td>
+</tr>
+<tr>
+    <td>➡ Right Arrow</td>
+    <td>Right Turn Signal</td>
+    <td>GPIO or CAN</td>
+    <td>High</td>
+</tr>
+</table>
+
+<div class="info">
+<strong>Design Principle:</strong> Keep it simple. Each icon should be instantly recognizable at a glance. Use universally understood symbols (ISO 7000 standard automotive symbols where possible).
+</div>
+</div>
+
+<h2 id="design-tools">3. Free Design Tools & Workflow</h2>
+
+<div class="section">
+<h3>3.1 Recommended Free Tools</h3>
+
+<div class="tool-card">
+<h4>🎨 Figma <span class="badge badge-free">FREE</span></h4>
+<p><strong>Purpose:</strong> UI/UX design, prototyping, layout</p>
+<p><strong>Website:</strong> <a href="https://figma.com">figma.com</a></p>
+<p><strong>Use for:</strong></p>
+<ul>
+    <li>Designing complete HMI layouts</li>
+    <li>Creating mockups for all 3 displays</li>
+    <li>Prototyping animations and transitions</li>
+    <li>Exporting assets (PNG/SVG)</li>
+</ul>
+<p><strong>Free Tier:</strong> Unlimited files, 3 projects, unlimited personal files</p>
+</div>
+
+<div class="tool-card">
+<h4>🖌 GIMP <span class="badge badge-free">FREE</span></h4>
+<p><strong>Purpose:</strong> Raster graphics editor (Photoshop alternative)</p>
+<p><strong>Website:</strong> <a href="https://gimp.org">gimp.org</a></p>
+<p><strong>Use for:</strong></p>
+<ul>
+    <li>Creating and editing icons</li>
+    <li>Photo manipulation</li>
+    <li>Converting images to RGB565</li>
+    <li>Batch processing</li>
+</ul>
+<p><strong>License:</strong> GPL (100% free and open source)</p>
+</div>
+
+<div class="tool-card">
+<h4>✏ Inkscape <span class="badge badge-free">FREE</span></h4>
+<p><strong>Purpose:</strong> Vector graphics editor (Illustrator alternative)</p>
+<p><strong>Website:</strong> <a href="https://inkscape.org">inkscape.org</a></p>
+<p><strong>Use for:</strong></p>
+<ul>
+    <li>Creating scalable icons (SVG)</li>
+    <li>Designing gauges and dials</li>
+    <li>Exporting to multiple resolutions</li>
+</ul>
+<p><strong>License:</strong> GPL (100% free and open source)</p>
+</div>
+
+<div class="tool-card">
+<h4>🔧 ImageMagick <span class="badge badge-free">FREE</span></h4>
+<p><strong>Purpose:</strong> Command-line image processing</p>
+<p><strong>Website:</strong> <a href="https://imagemagick.org">imagemagick.org</a></p>
+<p><strong>Use for:</strong></p>
+<ul>
+    <li>Batch conversion (PNG → C array)</li>
+    <li>Resizing</li>
+    <li>Format conversion</li>
+    <li>Automation via scripts</li>
+</ul>
+<p><strong>License:</strong> Apache 2.0 (free)</p>
+</div>
+
+<div class="tool-card">
+<h4>🐍 Python PIL/Pillow <span class="badge badge-free">FREE</span></h4>
+<p><strong>Purpose:</strong> Python image processing library</p>
+<p><strong>Install:</strong> <span class="mono">pip install pillow</span></p>
+<p><strong>Use for:</strong></p>
+<ul>
+    <li>Custom image processing scripts</li>
+    <li>RGB565 conversion</li>
+    <li>Creating C arrays from images</li>
+    <li>Automation</li>
+</ul>
+<p><strong>License:</strong> PIL License (free)</p>
+</div>
+
+<div class="tool-card">
+<h4>📐 LVGL Image Converter <span class="badge badge-free">FREE</span></h4>
+<p><strong>Purpose:</strong> Online tool for LVGL image conversion</p>
+<p><strong>Website:</strong> <a href="https://lvgl.io/tools/imageconverter">lvgl.io/tools/imageconverter</a></p>
+<p><strong>Use for:</strong></p>
+<ul>
+    <li>Converting PNG/JPG to LVGL C array</li>
+    <li>Choosing color format (RGB565, RGB888, etc)</li>
+    <li>Dithering options</li>
+</ul>
+<p><strong>Note:</strong> 100% free, web-based, no registration needed</p>
+</div>
+
+<div class="tool-card">
+<h4>🎬 SquareLine Studio <span class="badge badge-warning">FREE TIER</span></h4>
+<p><strong>Purpose:</strong> LVGL GUI builder (drag & drop)</p>
+<p><strong>Website:</strong> <a href="https://squareline.io">squareline.io</a></p>
+<p><strong>Use for:</strong></p>
+<ul>
+    <li>Visual LVGL GUI design</li>
+    <li>Generates LVGL C code automatically</li>
+    <li>Animation timeline editor</li>
+</ul>
+<p><strong>Free Tier:</strong> Basic features, exports C code (limited advanced features)</p>
+<p><strong>Note:</strong> Optional - you can code LVGL manually without this</p>
+</div>
+
+<div class="warning">
+<strong>Avoid Paid Tools:</strong> All Adobe products (Photoshop, Illustrator, XD) have free alternatives listed above. SquareLine Studio Pro is NOT required - the free tier + manual coding is sufficient.
+</div>
+</div>
+
+<h2 id="figma-to-lvgl">4. Figma/GIMP to LVGL Complete Tutorial</h2>
+
+<div class="workflow">
+<h3>Complete Workflow: Design → Code</h3>
+
+<div class="workflow-step">
+<h4>Step 1: Design in Figma</h4>
+<ol>
+    <li>Create a new Figma file</li>
+    <li>Create frames for each display:
+        <ul>
+            <li>ST7796: 480x320 frame (landscape)</li>
+            <li>GC9A01: 240x240 frame (square/circular mask)</li>
+            <li>SSD1306: 128x64 frame (black background, white elements)</li>
+        </ul>
+    </li>
+    <li>Design your HMI using Figma's built-in shapes and text</li>
+    <li>Use components for reusable elements (icons, buttons)</li>
+    <li>Export individual assets:
+        <ul>
+            <li>Select element → Right-click → Export → PNG</li>
+            <li>Choose resolution (1x, 2x, etc)</li>
+            <li>Name clearly: <span class="mono">icon_battery.png</span>, <span class="mono">gauge_speed.png</span></li>
+        </ul>
+    </li>
+</ol>
+</div>
+
+<div class="workflow-step">
+<h4>Step 2: Edit/Optimize in GIMP (if needed)</h4>
+<ol>
+    <li>Open exported PNG in GIMP</li>
+    <li>Adjust colors, contrast, transparency</li>
+    <li>For RGB565 displays:
+        <ul>
+            <li>Image → Mode → RGB (if not already)</li>
+            <li>Colors → Levels → Adjust to compensate for color depth loss</li>
+        </ul>
+    </li>
+    <li>For SSD1306 (monochrome):
+        <ul>
+            <li>Image → Mode → Grayscale</li>
+            <li>Colors → Threshold → Convert to pure black/white</li>
+        </ul>
+    </li>
+    <li>Export as PNG</li>
+</ol>
+</div>
+
+<div class="workflow-step">
+<h4>Step 3: Convert to LVGL Format</h4>
+<p><strong>Method A: Online LVGL Image Converter (Easiest)</strong></p>
+<ol>
+    <li>Go to <a href="https://lvgl.io/tools/imageconverter">https://lvgl.io/tools/imageconverter</a></li>
+    <li>Upload your PNG file</li>
+    <li>Select settings:
+        <ul>
+            <li><strong>Color format:</strong> RGB565 for ST7796/GC9A01, or Raw for SSD1306</li>
+            <li><strong>Output format:</strong> C array</li>
+        </ul>
+    </li>
+    <li>Click "Convert"</li>
+    <li>Download the <span class="mono">.c</span> file</li>
+</ol>
+
+<p><strong>Method B: Python Script (For Batch Processing)</strong></p>
+<div class="code">
+#!/usr/bin/env python3
+from PIL import Image
+import sys
+
+def png_to_c_array(png_file, output_name):
+    img = Image.open(png_file)
+    img = img.convert('RGB')
+    
+    width, height = img.size
+    pixels = list(img.getdata())
+    
+    # Convert to RGB565
+    rgb565_data = []
+    for r, g, b in pixels:
+        rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
+        rgb565_data.append(rgb565)
+    
+    # Generate C file
+    with open(f"{output_name}.c", 'w') as f:
+        f.write(f"#include \"lvgl.h\"\n\n")
+        f.write(f"const uint16_t {output_name}_map[] = {{\n")
+        for i, pixel in enumerate(rgb565_data):
+            if i % 10 == 0:
+                f.write("\n    ")
+            f.write(f"0x{pixel:04X}, ")
+        f.write("\n};\n\n")
+        f.write(f"const lv_img_dsc_t {output_name} = {{\n")
+        f.write(f"    .header.cf = LV_IMG_CF_TRUE_COLOR,\n")
+        f.write(f"    .header.w = {width},\n")
+        f.write(f"    .header.h = {height},\n")
+        f.write(f"    .data_size = {len(rgb565_data) * 2},\n")
+        f.write(f"    .data = (uint8_t*){output_name}_map,\n")
+        f.write(f"}};\n")
+
+if __name__ == "__main__":
+    png_to_c_array(sys.argv[1], sys.argv[2])
+</div>
+
+<p><strong>Usage:</strong></p>
+<div class="code">
+python3 png_to_c.py icon_battery.png img_battery
+# Generates: img_battery.c
+</div>
+</div>
+
+<div class="workflow-step">
+<h4>Step 4: Integrate into NuttX Project</h4>
+<ol>
+    <li>Copy generated <span class="mono">.c</span> files to <span class="mono">apps/hmi_manager/uiux/images/</span></li>
+    <li>Create header file <span class="mono">images.h</span>:
+<div class="code">
+#ifndef __IMAGES_H
+#define __IMAGES_H
+
+#include "lvgl.h"
+
+/* Declare all images */
+extern const lv_img_dsc_t img_battery;
+extern const lv_img_dsc_t img_temperature;
+extern const lv_img_dsc_t img_warning;
+/* ... add more */
+
+#endif
+</div>
+    </li>
+    <li>Use in widgets:
+<div class="code">
+#include "images.h"
+
+/* Create image object */
+lv_obj_t *img = lv_img_create(parent);
+lv_img_set_src(img, &img_battery);
+lv_obj_align(img, LV_ALIGN_CENTER, 0, 0);
+</div>
+    </li>
+    <li>Update Makefile to compile image files</li>
+</ol>
+</div>
+
+</div>
+
+<h3>4.1 Complete Example: Battery Icon</h3>
+
+<div class="code">
+/* File: apps/hmi_manager/uiux/images/img_battery.c */
+
+#include "lvgl.h"
+
+/* Battery icon - 32x32 pixels, RGB565 */
+const uint16_t img_battery_map[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0x0000, 0x0000, /* ... 1024 values ... */
+};
+
+const lv_img_dsc_t img_battery = {
+    .header.cf = LV_IMG_CF_TRUE_COLOR,
+    .header.w = 32,
+    .header.h = 32,
+    .data_size = 2048,  /* 32x32x2 bytes */
+    .data = (uint8_t*)img_battery_map,
+};
+</div>
+
+<div class="code">
+/* File: apps/hmi_manager/uiux/widgets.c */
+
+#include "images/images.h"
+
+void widgets_create_battery_indicator(lv_obj_t *parent)
+{
+    /* Create container */
+    lv_obj_t *cont = lv_obj_create(parent);
+    lv_obj_set_size(cont, 100, 60);
+    
+    /* Add battery icon */
+    lv_obj_t *icon = lv_img_create(cont);
+    lv_img_set_src(icon, &img_battery);
+    lv_obj_align(icon, LV_ALIGN_TOP_MID, 0, 5);
+    
+    /* Add percentage label */
+    lv_obj_t *label = lv_label_create(cont);
+    lv_label_set_text(label, "85%");
+    lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, -5);
+}
+</div>
+</div>
+
+<h2 id="animation">5. Creating Animations for LVGL</h2>
+
+<div class="section">
+<h3>5.1 Types of Animations</h3>
+
+<table>
+<tr>
+    <th>Animation Type</th>
+    <th>Use Case</th>
+    <th>Implementation</th>
+</tr>
+<tr>
+    <td><strong>Property Animation</strong></td>
+    <td>Fade in/out, move, scale, rotate</td>
+    <td>LVGL <span class="mono">lv_anim</span> API</td>
+</tr>
+<tr>
+    <td><strong>Image Sequence</strong></td>
+    <td>Sprite animation, loading spinner</td>
+    <td>Array of images + timer</td>
+</tr>
+<tr>
+    <td><strong>Gauge Needle</strong></td>
+    <td>Speedometer, tachometer</td>
+    <td>LVGL meter widget or custom arc</td>
+</tr>
+<tr>
+    <td><strong>Progress Bar</strong></td>
+    <td>Battery charging, loading</td>
+    <td>LVGL bar widget with animation</td>
+</tr>
+<tr>
+    <td><strong>Blinking Icon</strong></td>
+    <td>Turn signals, warnings</td>
+    <td>Toggle visibility with timer</td>
+</tr>
+</table>
+
+<h3>5.2 Example: Fade-In Animation</h3>
+
+<div class="code">
+void animate_fade_in(lv_obj_t *obj)
+{
+    lv_anim_t a;
+    lv_anim_init(&a);
+    lv_anim_set_var(&a, obj);
+    lv_anim_set_values(&a, 0, 255);  /* From transparent to opaque */
+    lv_anim_set_time(&a, 500);        /* 500ms duration */
+    lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)lv_obj_set_style_opa);
+    lv_anim_start(&a);
+}
+</div>
+
+<h3>5.3 Example: Speedometer Needle Animation</h3>
+
+<div class="code">
+static lv_obj_t *speed_meter;
+static lv_meter_indicator_t *speed_needle;
+
+void widgets_create_speedometer(lv_obj_t *parent)
+{
+    /* Create meter widget */
+    speed_meter = lv_meter_create(parent);
+    lv_obj_set_size(speed_meter, 200, 200);
+    
+    /* Add scale 0-120 km/h */
+    lv_meter_scale_t *scale = lv_meter_add_scale(speed_meter);
+    lv_meter_set_scale_range(speed_meter, scale, 0, 120, 240, 135);
+    
+    /* Add needle */
+    speed_needle = lv_meter_add_needle_line(speed_meter, scale, 
+                                             4, lv_color_red(), -10);
+    
+    /* Set initial value */
+    lv_meter_set_indicator_value(speed_meter, speed_needle, 0);
+}
+
+void widgets_update_speed_animated(int new_speed)
+{
+    /* Smooth animation to new value */
+    lv_anim_t a;
+    lv_anim_init(&a);
+    lv_anim_set_var(&a, speed_needle);
+    lv_anim_set_values(&a, 
+        lv_meter_get_indicator_value(speed_meter, speed_needle),
+        new_speed);
+    lv_anim_set_time(&a, 300);  /* 300ms smooth transition */
+    lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)lv_meter_set_indicator_value);
+    lv_anim_start(&a);
+}
+</div>
+
+<h3>5.4 Example: Blinking Turn Signal</h3>
+
+<div class="code">
+static lv_obj_t *left_signal_icon;
+static lv_timer_t *blink_timer;
+static bool blink_state = false;
+
+void blink_timer_cb(lv_timer_t *timer)
+{
+    blink_state = !blink_state;
+    
+    if (blink_state)
+    {
+        lv_obj_clear_flag(left_signal_icon, LV_OBJ_FLAG_HIDDEN);
+    }
+    else
+    {
+        lv_obj_add_flag(left_signal_icon, LV_OBJ_FLAG_HIDDEN);
+    }
+}
+
+void widgets_enable_left_signal(bool enable)
+{
+    if (enable)
+    {
+        /* Start blinking at 1Hz (500ms on, 500ms off) */
+        blink_timer = lv_timer_create(blink_timer_cb, 500, NULL);
+    }
+    else
+    {
+        /* Stop blinking, hide icon */
+        if (blink_timer)
+        {
+            lv_timer_del(blink_timer);
+            blink_timer = NULL;
+        }
+        lv_obj_add_flag(left_signal_icon, LV_OBJ_FLAG_HIDDEN);
+    }
+}
+</div>
+
+<h3>5.5 Example: Image Sequence Animation (Loading Spinner)</h3>
+
+<div class="code">
+/* Create spinner frames in Figma/GIMP:
+   spinner_00.png, spinner_01.png, ... spinner_07.png
+   (8 frames, 45° rotation each)
+*/
+
+const lv_img_dsc_t *spinner_frames[] = {
+    &img_spinner_00,
+    &img_spinner_01,
+    &img_spinner_02,
+    &img_spinner_03,
+    &img_spinner_04,
+    &img_spinner_05,
+    &img_spinner_06,
+    &img_spinner_07,
+};
+
+static uint8_t current_frame = 0;
+static lv_obj_t *spinner_img;
+static lv_timer_t *spinner_timer;
+
+void spinner_timer_cb(lv_timer_t *timer)
+{
+    current_frame = (current_frame + 1) % 8;
+    lv_img_set_src(spinner_img, spinner_frames[current_frame]);
+}
+
+void widgets_show_loading_spinner(lv_obj_t *parent, bool show)
+{
+    if (show)
+    {
+        spinner_img = lv_img_create(parent);
+        lv_img_set_src(spinner_img, spinner_frames[0]);
+        lv_obj_align(spinner_img, LV_ALIGN_CENTER, 0, 0);
+        
+        /* Animate at 12 FPS (83ms per frame) */
+        spinner_timer = lv_timer_create(spinner_timer_cb, 83, NULL);
+    }
+    else
+    {
+        if (spinner_timer)
+        {
+            lv_timer_del(spinner_timer);
+            spinner_timer = NULL;
+        }
+        if (spinner_img)
+        {
+            lv_obj_del(spinner_img);
+            spinner_img = NULL;
+        }
+    }
+}
+</div>
+
+<div class="info">
+<strong>Performance Tip:</strong> Keep animations simple on embedded systems. Avoid:
+<ul>
+    <li>Too many simultaneous animations (max 2-3)</li>
+    <li>Very high frame rates (30 FPS is overkill, 10-15 FPS is enough)</li>
+    <li>Large image sequences (keep frames small or use fewer frames)</li>
+    <li>Complex easing functions (linear or simple ease-in-out is fine)</li>
+</ul>
+</div>
+</div>
+
+<h2 id="implementation">6. Code Implementation Examples</h2>
+
+<div class="section">
+<h3>6.1 Complete Widget File Structure</h3>
+
+<div class="code">
+apps/hmi_manager/uiux/
+├── images/
+│   ├── images.h                 # Header declaring all images
+│   ├── img_battery.c
+│   ├── img_temperature.c
+│   ├── img_warning.c
+│   ├── img_door.c
+│   ├── img_parking_brake.c
+│   └── ... (more icons)
+├── widgets/
+│   ├── main_cluster.c           # ST7796 widgets
+│   ├── main_cluster.h
+│   ├── aux_display.c            # GC9A01 widgets
+│   ├── aux_display.h
+│   ├── telltales.c              # SSD1306 widgets
+│   └── telltales.h
+├── fb_handler.c                 # ST7796 framebuffer
+├── aux_fb_handler.c             # GC9A01 framebuffer (to develop)
+└── oled_handler.c               # SSD1306 handler (to develop)
+</div>
+
+<h3>6.2 Telltales Implementation Example</h3>
+
+<div class="code">
+/* File: apps/hmi_manager/uiux/widgets/telltales.c */
+
+#include "telltales.h"
+#include "../images/images.h"
+
+#define NUM_TELLTALES 10
+
+typedef struct {
+    lv_obj_t *icon;
+    bool active;
+    const lv_img_dsc_t *img;
+} telltale_t;
+
+static telltale_t telltales[NUM_TELLTALES];
+static lv_obj_t *telltales_container;
+
+int telltales_init(lv_obj_t *parent)
+{
+    /* Create container for all telltales */
+    telltales_container = lv_obj_create(parent);
+    lv_obj_set_size(telltales_container, 128, 32);
+    lv_obj_set_style_bg_color(telltales_container, lv_color_black(), 0);
+    
+    /* Create 10 icon slots (16x16 each) */
+    for (int i = 0; i < NUM_TELLTALES; i++)
+    {
+        telltales[i].icon = lv_img_create(telltales_container);
+        lv_obj_set_pos(telltales[i].icon, i * 13, 0);
+        lv_obj_add_flag(telltales[i].icon, LV_OBJ_FLAG_HIDDEN);
+        telltales[i].active = false;
+    }
+    
+    /* Assign images to slots */
+    telltales[0].img = &img_warning;
+    telltales[1].img = &img_battery;
+    telltales[2].img = &img_temperature;
+    telltales[3].img = &img_gear;
+    telltales[4].img = &img_door;
+    telltales[5].img = &img_parking_brake;
+    telltales[6].img = &img_charging;
+    telltales[7].img = &img_lights;
+    telltales[8].img = &img_left_turn;
+    telltales[9].img = &img_right_turn;
+    
+    return 0;
+}
+
+void telltales_set(int index, bool active)
+{
+    if (index < 0 || index >= NUM_TELLTALES)
+        return;
+    
+    if (active && !telltales[index].active)
+    {
+        /* Show telltale */
+        lv_img_set_src(telltales[index].icon, telltales[index].img);
+        lv_obj_clear_flag(telltales[index].icon, LV_OBJ_FLAG_HIDDEN);
+        telltales[index].active = true;
+    }
+    else if (!active && telltales[index].active)
+    {
+        /* Hide telltale */
+        lv_obj_add_flag(telltales[index].icon, LV_OBJ_FLAG_HIDDEN);
+        telltales[index].active = false;
+    }
+}
+
+/* Public API */
+void telltales_show_warning(bool show)       { telltales_set(0, show); }
+void telltales_show_battery_low(bool show)  { telltales_set(1, show); }
+void telltales_show_temperature(bool show)  { telltales_set(2, show); }
+void telltales_show_fault(bool show)        { telltales_set(3, show); }
+void telltales_show_door_open(bool show)    { telltales_set(4, show); }
+void telltales_show_parking(bool show)      { telltales_set(5, show); }
+void telltales_show_charging(bool show)     { telltales_set(6, show); }
+void telltales_show_lights(bool show)       { telltales_set(7, show); }
+void telltales_show_left_turn(bool show)    { telltales_set(8, show); }
+void telltales_show_right_turn(bool show)   { telltales_set(9, show); }
+</div>
+
+<h3>6.3 Integration with CAN Messages</h3>
+
+<div class="code">
+/* File: apps/hmi_manager/app_hmi_manager.c */
+
+static void process_can_frame(struct can_frame *frame)
+{
+    uint32_t id = frame->can_id & CAN_EFF_MASK;
+    int ret;
+    
+    /* Battery voltage → Low battery telltale */
+    if (id == CAR_CAN_SYSTEM_VOLTAGES_FRAME_ID)
+    {
+        struct car_can_system_voltages_t msg;
+        ret = car_can_system_voltages_unpack(&msg, frame->data, 
+                                              frame->can_dlc);
+        if (ret == 0)
+        {
+            double voltage = 
+                car_can_system_voltages_meas_batt_voltage_decode(
+                    msg.meas_batt_voltage);
+            
+            /* Update main display */
+            widgets_set_voltage((int)(voltage * 10.0));
+            
+            /* Check for low battery (< 20% assumed at 40V) */
+            if (voltage < 40.0)
+            {
+                telltales_show_battery_low(true);
+            }
+            else
+            {
+                telltales_show_battery_low(false);
+            }
+        }
+    }
+    
+    /* Temperature → High temp telltale */
+    else if (id == CAR_CAN_INVERTER_TEMP_FRAME_ID)
+    {
+        struct car_can_inverter_temp_t msg;
+        ret = car_can_inverter_temp_unpack(&msg, frame->data, 
+                                            frame->can_dlc);
+        if (ret == 0)
+        {
+            double temp_u = 
+                car_can_inverter_temp_inverter_temp_u_decode(
+                    msg.inverter_temp_u);
+            
+            /* Check for high temperature (> 80°C) */
+            if (temp_u > 80.0)
+            {
+                telltales_show_temperature(true);
+            }
+            else
+            {
+                telltales_show_temperature(false);
+            }
+        }
+    }
+    
+    /* Faults → Fault telltale */
+    else if (id == CAR_CAN_INVERTER_FAULTS_FRAME_ID)
+    {
+        struct car_can_inverter_faults_t msg;
+        ret = car_can_inverter_faults_unpack(&msg, frame->data, 
+                                              frame->can_dlc);
+        if (ret == 0)
+        {
+            /* Any active fault? */
+            if (msg.flh_active_faults != 0)
+            {
+                telltales_show_fault(true);
+                telltales_show_warning(true);
+            }
+            else
+            {
+                telltales_show_fault(false);
+                telltales_show_warning(false);
+            }
+        }
+    }
+}
+</div>
+
+<div class="success">
+<h3>Summary: Complete Workflow</h3>
+<ol>
+    <li><strong>Design:</strong> Create layouts in Figma (free)</li>
+    <li><strong>Export:</strong> Export assets as PNG</li>
+    <li><strong>Optimize:</strong> Edit in GIMP if needed (free)</li>
+    <li><strong>Convert:</strong> Use LVGL online converter or Python script (free)</li>
+    <li><strong>Integrate:</strong> Add <span class="mono">.c</span> files to project</li>
+    <li><strong>Code:</strong> Create LVGL widgets using images</li>
+    <li><strong>Animate:</strong> Use LVGL animations API</li>
+    <li><strong>Connect:</strong> Link widgets to CAN data</li>
+</ol>
+<p><strong>Result:</strong> Professional HMI with zero paid software!</p>
+</div>
+</div>
+
+<div class="info">
+<h3>Next Steps</h3>
+<ol>
+    <li>Create Figma mockups for all 3 displays</li>
+    <li>Export and convert first batch of icons</li>
+    <li>Implement telltales display (SSD1306)</li>
+    <li>Test integration with real CAN data</li>
+    <li>Develop GC9A01 driver</li>
+    <li>Implement auxiliary display widgets</li>
+    <li>Polish animations and transitions</li>
+</ol>
+</div>
+
+</div>
+
+</body>
+</html>
